@@ -3,9 +3,10 @@
 Detection, tracking, re-identification, cooperative navigation, and filtering all produce numbers
 with a random component, from initialization, data order, sampling, Monte Carlo draws, scenario
 generation, or the environment. This file states how to size the experiment, how to report it, and
-what to do when the effect is smaller than the noise. The governing test is simple. If the difference
-between two arms is not larger than the spread each arm shows across runs, it is not an improvement
-and must not be written as one.
+what to do when an effect is uncertain. Judge the interval/test on the **difference**, not the
+ratio of the mean difference to either arm's standard deviation. A small paired effect can be
+precisely estimated; a large noisy effect can remain unresolved. Statistical uncertainty and
+practical importance are separate questions.
 
 ## Seed policy
 
@@ -89,20 +90,23 @@ with the same mean RMSE and a much heavier 95th percentile is a different method
 system. This is also the most common reporting decision in the five axes and the one most often made
 dishonestly, so apply the ladder below in order and stop at the first rung that applies.
 
-1. **Compute the interval on the difference.** If it contains zero there is no evidence of an
-   improvement at this run count. Write `no measurable difference under this protocol`.
-2. **Do not soften it into an improvement.** `slightly better`, `trends higher`, `on par but more
-   elegant`, and `competitive while being simpler` are claims the data do not support when the
-   interval contains zero. Delete the comparison or state it as equivalent.
+1. **Compute the interval on the difference.** If it contains zero, superiority is not established
+   at the stated level and sample size. Report the observed delta and interval, and write
+   `the comparison is inconclusive at this sample size` rather than claiming a win.
+2. **Do not turn a null test into equivalence.** Do not write `equivalent`, `on par` or `no effect`
+   merely because zero is inside the interval. Equivalence/non-inferiority requires a pre-declared
+   practical margin and an appropriate test/interval. Lower compute cost can be reported if measured,
+   but cannot make an unresolved accuracy comparison equivalent.
 3. **If the design is underpowered, say so instead of claiming a win.** Report the observed
    difference, the dispersion, and the run count, and state that the experiment cannot separate the
    arms at this run count. That sentence is a result.
 4. **If the difference is detectable but practically irrelevant, say both.** A `+0.03 mAP`
    difference with 20 seeds is detectable and meaningless. Report the value and state that it is
    below the precision at which the benchmark discriminates.
-5. **If more runs are affordable, run them, then report the new interval.** Adding runs after seeing
-   a null result is acceptable when the added runs are pre-declared and every arm is extended
-   identically. Adding runs only for the arm that lost is not.
+5. **Do not repeatedly sample until significance.** Additional runs require a pre-specified
+   sequential design with its error control, or a new confirmatory phase with a fresh freeze and
+   independent data. Record any post-hoc extension as exploratory, extend arms symmetrically, and
+   do not treat declaring an extension after a null result as correcting optional stopping.
 6. **Keep the null result in the paper.** `ctrl-shared` `core/evidence-integrity.md` Rule 9 makes
    this mandatory. A component that does not help belongs in the ablation table and in the
    limitations section, with the same status as a component that does.
@@ -114,11 +118,11 @@ who recomputes the second one rejects the paper.
 
 ### `det`
 
-- Per-image AP contributions are not independent across images that share a scene or a video frame,
-  so bootstrap over images or, better, over the scene or sequence unit.
-- Class-level mAP averages per-class AP values whose variances differ by an order of magnitude, so a
-  confidence interval on mAP from per-class values needs a per-class bootstrap rather than a normal
-  interval over classes.
+- AP is not an average of independent per-image AP values. Resample independent images/scenes or
+  whole sequences with their predictions and ground truth, then recompute the official AP metric.
+- mAP averages a fixed benchmark class set. Bootstrap over classes only for a declared population-of-
+  classes estimand, not as a substitute for dataset uncertainty on that fixed set. Report training-
+  seed uncertainty separately; do not silently change the estimand when estimating an interval.
 - Small-object AP has far higher variance than large-object AP, so do not compare `AP_S` across arms
   without dispersion.
 - When an evaluation server returns only a scalar, dispersion across seeds is the only available
@@ -162,18 +166,18 @@ who recomputes the second one rejects the paper.
 
 ### `filt`
 
-- `NEES` is a chi-square variable with `n_x` degrees of freedom per run and time step. `ANEES`
-  averages it, and the averaging changes both the degrees of freedom and the interval, so state how
-  many samples were averaged and which degrees of freedom the bounds used.
-- With `N` runs and `T` time steps the average is over `N*T` samples, so the bounds are the
-  chi-square quantiles at `N*T*n_x` degrees of freedom divided by `N*T`, and they centre on `n_x`.
-  Report the numeric bounds, the confidence level, and whether the test is one-sided or two-sided.
-  Quantiles taken at `N*T` degrees of freedom centre the bounds near 1 instead and flag a consistent
-  filter as inconsistent. The convention is normative in
+- A chi-square reference for `NEES` assumes zero-mean Gaussian errors with the recorded covariance;
+  name approximations for nonlinear/non-Gaussian estimators and the assessed state dimension.
+- Default to `ANEES_k` over `N` independent runs **at one time step**: reference degrees of freedom
+  `N*n_x`, chi-square quantiles divided by `N`. Record the numeric bounds and confidence level.
+  Consecutive time steps are generally correlated. Use `N*T*n_x` divided by `N*T` only with justified
+  independence of all pooled samples; otherwise use correlation-aware calibration or whole-trajectory
+  resampling. The normative assumptions and formula are in
   [terminology-and-notation.md](../../ctrl-shared/core/terminology-and-notation.md).
-- An optimistic filter, meaning `ANEES` above the upper bound, is inconsistent and its reported
-  covariance cannot be trusted. A pessimistic filter has an `ANEES` below the lower bound. Both are
-  findings and both must be reported.
+- Above-upper-bound values indicate overconfident covariance, and below-lower-bound values indicate
+  conservative covariance under the reference assumptions. Isolated pointwise violations are expected
+  at the test's nominal rate; do not pronounce a filter inconsistent from one crossing. Report the
+  violation fraction, pattern, uncertainty and any simultaneous-test treatment.
 - Never retune `Q_k` or `R_k` after seeing `ANEES` and then report the tuned filter's consistency as
   evidence of consistency. That is fitting the test to the result.
 - Report RMSE and consistency together, because a filter can have low RMSE and be inconsistent,

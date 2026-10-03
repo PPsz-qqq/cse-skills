@@ -16,6 +16,13 @@ description: >-
 
 Build the evidence base a claim will stand on, and stop at a declared point instead of at exhaustion.
 
+## Start here
+
+Read [execution-contract.md](../ctrl-shared/core/execution-contract.md) first. Select the smallest
+useful mode, confirm the inputs and available tools, and load only the references needed by the
+current step. Use only the output sections relevant to this request; a diagnostic or draft is not
+a gate-passed final artifact.
+
 ## Default stance
 
 - A search result is a candidate, not a source. Nothing enters an artifact until it has been read to

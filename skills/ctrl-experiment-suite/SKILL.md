@@ -16,6 +16,13 @@ description: >-
 Design, audit, and report experiments for the five `ctrl-*` axes so that every reported number is a
 measurement with a named instrument and a stated uncertainty.
 
+## Start here
+
+Read [execution-contract.md](../ctrl-shared/core/execution-contract.md) first. Select the smallest
+useful mode, confirm the inputs and available tools, and load only the references needed by the
+current step. Use only the output sections relevant to this request; a diagnostic or draft is not
+a gate-passed final artifact.
+
 ## Default stance
 
 - A delta is a measurement claim. It needs a protocol block, a run count, and a dispersion before

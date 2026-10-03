@@ -30,9 +30,12 @@ Label every quantitative statement with its tier.
 | `reported` | stated by a citable source | cite it and state whether you read the primary source |
 | `assumed` | a working assumption or a design target | state the assumption and its sensitivity |
 
-A value copied from another paper into a comparison table stays `reported` and must carry the
-protocol differences that make it `not comparable` where they exist. Do not silently promote a
-`reported` number into your own results table as if you had run it.
+A value copied from another paper into a comparison table stays `reported` and carries protocol
+differences and a per-pair comparability verdict. A re-implemented baseline is `measured` with
+`Provenance: re-implemented`, not a fourth tier. Record setting (`benchmark` / `simulation` /
+`field`) and verification status separately. A measured simulation is not field evidence.
+A user-supplied value can be quoted as supplied; without checking the underlying artifact, mark
+its verification `UNVERIFIED` and do not grant an independently verified G2 PASS.
 
 ## Rule 3. Protocol-matched comparison
 

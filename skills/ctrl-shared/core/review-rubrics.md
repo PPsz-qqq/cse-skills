@@ -59,7 +59,10 @@ this tie-break in order, and state which row or tie-break you used:
    established strength to recommend.
 3. A vector where the lowest dimension is 3 and at least one other reaches 4 is
    `Minor revision`, not `Major revision`, because the concern is local rather than structural.
-4. When the vector satisfies two rows, take the harsher recommendation and record why.
+4. If the Accept row applies, use `Accept`; it is the more specific case of the overlapping
+   Minor-revision row. Otherwise any unresolved Blocking concern or dimension below 3 is at
+   least `Major revision` unless a Reject rule applies. Thus vectors with several dimensions
+   at 2 or D5 at 1 are not unmapped. State the rule and grounded concerns that determine it.
 
 A midpoint draft scoring 3 on every dimension is therefore `Major revision`, which is the
 expected starting point before any artifact has been strengthened.

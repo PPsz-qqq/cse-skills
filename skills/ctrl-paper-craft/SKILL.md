@@ -16,6 +16,17 @@ description: >-
 Write and revise the manuscript for the five `ctrl-*` axes so that every claim is framed at the
 strength its evidence supports, and every number survives a reconciliation pass.
 
+## Start here
+
+Read [execution-contract.md](../ctrl-shared/core/execution-contract.md) first. Select the smallest
+useful mode, confirm the inputs and available tools, and load only the references needed by the
+current step. Use only the output sections relevant to this request; a diagnostic or draft is not
+a gate-passed final artifact.
+
+For a `local-edit`, preserve the supplied claims, citations and numbers; check the changed passage
+and report that no full-paper audit was performed. Start the full workflow below only when its
+scope is requested. New or strengthened result claims require the applicable evidence checks.
+
 ## Default stance
 
 - The claim type decides the framing. An empirical delta, a mechanism, a theory result, a system

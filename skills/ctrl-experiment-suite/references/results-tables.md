@@ -94,9 +94,10 @@ parameters varied, and whether the result is simulation or field.
 | Estimator | Q, R policy | Init. error | N | RMSE (pos) | RMSE (att) | ANEES | chi2 lower | chi2 upper | Verdict |
 ```
 
-Caption must state `n_x`, the confidence level, whether the test is one-sided or two-sided, the
-number of samples averaged into ANEES, the degrees of freedom the bounds were taken at (`N * T * n_x`
-for an average over `N` runs and `T` time steps), and that the bounds were pre-declared.
+Caption states `n_x`, confidence level, aggregation, distribution/independence assumptions and
+numeric bounds. Default: ANEES at each k over N independent runs, df `N*n_x`, quantiles divided by N.
+A time-averaged scalar needs justified temporal independence or correlation-aware calibration, not
+unconditional df `N*T*n_x`. Distinguish pointwise from simultaneous bounds and state pre-declaration.
 
 ## Table 3 shape, ablation
 

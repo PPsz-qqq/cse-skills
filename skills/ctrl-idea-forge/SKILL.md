@@ -15,6 +15,13 @@ description: >-
 
 Convert a pain point into a claim that can fail, and fix in writing what failure will look like.
 
+## Start here
+
+Read [execution-contract.md](../ctrl-shared/core/execution-contract.md) first. Select the smallest
+useful mode, confirm the inputs and available tools, and load only the references needed by the
+current step. Use only the output sections relevant to this request; a diagnostic or draft is not
+a gate-passed final artifact.
+
 ## Default stance
 
 - An idea is not a contribution until it is stated as a hypothesis with a refutation rule. Anything

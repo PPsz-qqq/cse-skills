@@ -23,14 +23,15 @@ reported as `PASS` to keep a pipeline moving.
 
 ## Audited input and staleness
 
-When a step validates an artifact, record the artifact's content hash and modification time
-alongside the verdict. If the artifact changes afterwards, every verdict derived from it becomes
-`STALE` and must be recomputed. A verdict is only valid for the exact revision it was computed
-from.
+When validating an artifact, record its content hash and modification time, or an immutable
+source version where hashing is unavailable. Do not invent a hash. Record a missing hash/check
+as unverified and use a bounded diagnostic rather than claiming a fully frozen audit.
 
-Apply this rule without exception to gate verdicts, review reports, and claim ledgers. A
-revision after a pass invalidates the pass; a claim in the abstract whose ledger row is `STALE`
-is unsourced, so G2 reverts to `FAIL`.
+Freshness (`current` / `STALE`) is a separate field, not a seventh verdict. If an input changes,
+retain the historical verdict but mark all dependent evaluations `STALE` and recompute them
+before use. Compare content/version, not modification time alone. A stale PASS is unusable;
+its pending re-evaluation is `BLOCKED`, not an automatic scientific `FAIL`. Gates, reports and
+ledgers all follow this rule. A new revision resolves through the artifact index.
 
 ## Iteration loops and stop rules
 

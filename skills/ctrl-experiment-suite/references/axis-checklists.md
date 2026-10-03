@@ -162,16 +162,16 @@ Before running
 [ ] Linearization region stated, and positive definiteness of P_k asserted at every step
 
 [ ] Per-run, per-step errors retained so NEES and ANEES can be recomputed
-[ ] P_k retained or its diagonal logged per run and step, for the consistency computation
-[ ] ANEES computed over runs and time with the sample count recorded
+[ ] Full P_k or a sufficient factorization retained per run/step; diagonal-only logs are insufficient for NEES unless P_k is actually diagonal
+[ ] ANEES_k computed across independent runs at each time step; any temporal summary records correlation-aware calibration
 [ ] RMSE computed per state component and for the full state, with the convention stated
 [ ] Outlier and divergence events logged with their run id, not silently dropped
 [ ] Parameter sensitivity sweeps run as separate experiments under their own protocol blocks
 [ ] Single-trajectory illustrations generated from a recorded run id, labeled illustrative
 
 [ ] Monte Carlo count stated for every arm and identical across arms
-[ ] NEES or ANEES reported with n_x, the confidence level, the numeric chi-square bounds, and the
-    degrees of freedom the bounds were taken at (N*T*n_x divided by N*T over N runs and T steps)
+[ ] NEES/ANEES states n_x, confidence level, distribution assumptions, aggregation and numeric bounds
+[ ] Default pointwise ANEES bounds use N*n_x divided by N; pooling time requires independence or calibrated correlation handling
 [ ] The bound actually plotted is given as a number, with the sample count it was averaged over
 [ ] RMSE and consistency reported together for every arm
 [ ] A filter outside the bounds is reported as inconsistent, with the direction stated

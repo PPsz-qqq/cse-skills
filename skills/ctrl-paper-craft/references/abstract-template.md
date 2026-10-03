@@ -82,10 +82,11 @@ covariance is wrong can appear superior, and the bound that would reveal it is n
 <M> We present <estimator>, which <mechanism>, and we evaluate it for both accuracy and consistency.
 
 <E> Over <N = ...> Monte Carlo runs on <the trajectory protocol>, <estimator> reaches
-<RMSE> <units> with <ANEES> against chi-square bounds taken at <N * T * n_x> degrees of freedom and
-divided by <N * T>, while <baseline> reaches <RMSE> with <ANEES>, which <is inside | exceeds> those
-bounds; <the ablation with the component removed> reaches <RMSE> and <ANEES>. State `n_x`, the
-confidence level, and the degrees of freedom used, per
+<RMSE> <units> and <pointwise ANEES summary across independent runs>, against <confidence level>
+chi-square reference bounds with <N*n_x> degrees of freedom divided by <N>, while <baseline>
+reaches <RMSE> with <consistency summary>; <applicable ablation result>. State `n_x`, the
+aggregation and reference assumptions. For correlated time-averaged statistics name the calibrated
+method instead of substituting N*T as an independent sample count, per
 [terminology-and-notation.md](../../ctrl-shared/core/terminology-and-notation.md).
 
 <B> Consistency holds for <the noise regime and linearization region>; outside <the condition> the

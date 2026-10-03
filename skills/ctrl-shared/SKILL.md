@@ -70,6 +70,7 @@ relative to this skill's base directory, which the `skill` tool reported.
 
 | File | Open when |
 |---|---|
+| [core/execution-contract.md](core/execution-contract.md) | Start a task, select a scoped mode, check capabilities, or hand off current revisions |
 | [core/gate-contract.md](core/gate-contract.md) | You need the gate definitions, pass criteria, artifacts, or blocking semantics |
 | [core/evidence-integrity.md](core/evidence-integrity.md) | You are auditing numbers, comparisons, ablations, seeds, or provenance |
 | [core/venue-matrix.md](core/venue-matrix.md) | You are choosing or justifying a target venue, or need its review criteria |

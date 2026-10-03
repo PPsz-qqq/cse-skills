@@ -105,12 +105,13 @@ table, not once in the protocol section. The two labels travel with the number.
 | `Trajectory protocol` | trajectory count, duration, timestep, process model, and the ground-truth generator | a single trajectory is not a statistical result |
 | `Linearization regime` | where the model is nonlinear, the operating region, and whether the covariance stays positive definite | a consistency claim in a strongly nonlinear regime without a stated region is not falsifiable |
 
-The degrees of freedom follow what is being averaged, and the convention is normative in
-`../../ctrl-shared/core/terminology-and-notation.md`. A single time step of one run has `n_x`. An
-average over `N` runs at one time step has `N * n_x`, with the bound taken as that chi-square quantile
-divided by `N`. `ANEES` averaged over `N` runs and `T` time steps has `N * T * n_x`, with the bound
-taken as that chi-square quantile divided by `N * T`, and the expected value is `n_x` in every case.
-Too few degrees of freedom centres the bounds near 1 and flags a consistent filter as inconsistent.
+Use the distribution and independence assumptions in
+[terminology-and-notation.md](../../ctrl-shared/core/terminology-and-notation.md). Default to ANEES
+at each time step across independent runs: `N*n_x` degrees of freedom, chi-square quantiles divided
+by `N`, expected value `n_x`. Temporal pooling uses `N*T*n_x` divided by `N*T` only when **all pooled
+samples are independent** under the chi-square model; normal filtering trajectories do not guarantee
+this. Otherwise specify a correlation-aware calibration. Record aggregation and assumptions in
+`Consistency metric` and `Chi-square bounds`, and label pointwise versus simultaneous assessment.
 
 ## Comparability verdict rules
 
@@ -158,9 +159,9 @@ Two filled blocks, abbreviated to the fields that carry the argument. Real block
 - Seeds and runs: 200 Monte Carlo runs per arm, identical seed list shared across arms
 - Hardware and environment: CPU only, NumPy recorded version, no GPU nondeterminism
 - Monte Carlo count: 200 per arm, identical for all arms
-- Consistency metric: ANEES from the filter's own P_k, n_x = 6
-- Chi-square bounds: two-sided 95 percent, quantiles 0.025 and 0.975, at df = N*T*n_x = 120000
-- Bound used for comparison: chi2 quantile at df 120000 divided by N*T = 20000, giving 5.95 and 6.05
+- Consistency metric: ANEES_k across 200 independent runs at each k, from each filter's own P_k, n_x = 6; chi-square reference assumes Gaussian errors with the stated covariance
+- Chi-square bounds: pointwise two-sided 95 percent, quantiles 0.025 and 0.975, df = N*n_x = 1200
+- Bound used for comparison: chi2(0.025,1200)/200 and chi2(0.975,1200)/200; compute numeric bounds with the recorded statistics library before plotting, never use T as extra independent replicates
 - Initialization error: consistent with P_0 for every arm, drawn from the same generator
 - Noise covariance policy: true Q_k and R_k given to all arms, no per-arm tuning
 - Estimator settings: 2n+1 sigma points, systematic resampling at 1000 particles for the particle arm
@@ -194,7 +195,8 @@ A deviation is admissible and concealing it is not. State in the revision which 
 [ ] Seeds are listed, not summarized as "several runs"
 [ ] Hardware is exact, including the GPU model for every throughput number
 [ ] Comparability verdict is written per arm pair, and the block id appears in every dependent row
-[ ] The filt degrees of freedom follow N*T*n_x divided by N*T, not N*T
+[ ] Filt bounds state aggregation/distribution/independence; default is N*n_x divided by N at each k
+[ ] Temporal pooling is justified or uses correlation-aware calibration; pointwise violations are not an all-time guarantee
 [ ] The block was committed before the numbers were read
 [ ] Every result carries a confirmatory or exploratory label, and every post-hoc deviation is dated
 ```

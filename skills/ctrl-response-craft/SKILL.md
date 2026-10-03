@@ -17,6 +17,16 @@ description: >-
 Answer reviewer comments with evidence, in the reviewer's own order, without ever leaking one
 review into another.
 
+## Start here
+
+Read [execution-contract.md](../ctrl-shared/core/execution-contract.md) first. Select the smallest
+useful mode, confirm the inputs and available tools, and load only the references needed by the
+current step. Use only the output sections relevant to this request; a diagnostic or draft is not
+a gate-passed final artifact.
+
+Triage and provisional replies are allowed before new experiments finish. Label those replies
+`draft: pending evidence`; final letters cannot report unfinished runs as completed changes.
+
 ## Default stance
 
 The letter is a claim about the manuscript. If the manuscript does not contain the change, the

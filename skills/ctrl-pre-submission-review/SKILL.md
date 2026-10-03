@@ -17,6 +17,17 @@ description: >-
 Referee-side review of a manuscript before it is submitted, producing frozen reviewer reports and
 a separately held synthesis so the authors learn what a real panel would find.
 
+## Start here
+
+Read [execution-contract.md](../ctrl-shared/core/execution-contract.md) first. Select the smallest
+useful mode, confirm the inputs and available tools, and load only the references needed by the
+current step. Use only the output sections relevant to this request; a diagnostic or draft is not
+a gate-passed final artifact.
+
+Diagnostic review does not require G2 PASS. Missing evidence is something to review, not a reason
+to refuse the review. For an excerpt or quick check, produce one bounded report by default; do not
+infer whole-paper readiness from an excerpt.
+
 ## Default stance
 
 Review the artifact, not the author. Every concern carries a claim pointer and an evidence

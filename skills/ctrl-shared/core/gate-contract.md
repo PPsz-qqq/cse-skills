@@ -1,124 +1,139 @@
 # Gate contract
 
-A gate is a checkpoint that a workflow cannot pass on assertion alone. Each gate names the
-artifact that proves it, the criteria that artifact is checked against, and what happens when
-it fails. Report a failed gate with the failing criterion and the smallest change that would
-clear it. Never report a gate as passed because the user is in a hurry, and never downgrade a
-failed integrity criterion to an advisory note.
+A gate is passed by a checked artifact, never by assertion. Report an unmet criterion and the
+smallest clearing change. Deadline pressure cannot change an evidence requirement.
 
-Gate IDs are stable across the pack: `G0` scope, `G1` proposal freeze, `G2` evidence freeze,
-`G3` submission readiness.
+Gate IDs are stable: `G0` scope, `G1` proposal freeze, `G2` evidence freeze, `G3` submission
+readiness. Apply them to dependent actions, not to every conversation. See
+[execution-contract.md](execution-contract.md) for task modes and capability limits.
+
+## Applicability and precedence
+
+- Literature discovery, draft planning, local editing and diagnostic review may proceed without
+  passed gates. They must not promote unverified results, call a draft frozen, or declare readiness.
+  In particular, diagnostic review does not require G2 PASS: missing evidence is a review finding.
+- Check only criteria applicable to the claim type and active axes. For theory, inspect assumptions,
+  proof and counterexamples; for systems, integration evidence; for surveys, search and synthesis.
+  Record inapplicable experimental fields as `NOT_APPLICABLE` with a reason, not invented runs.
+- Missing required inputs are `BLOCKED`, evaluated unmet criteria are `FAIL`, and a failed
+  evaluation tool is `ERROR`. These are not interchangeable and none is a pass.
+- G1 applies prospectively to confirmatory experiments. Existing unregistered work can be audited
+  and reported as exploratory; never invent a past freeze date.
+- A gate verdict is valid only for its recorded scope and input revisions. A scoped G2 PASS for C1
+  does not clear C2 or grant whole-manuscript G2 PASS. Downstream work uses only checked claims.
+- Explicit user waivers are allowed only for G0 and G3. Log the action, scope and residual risk,
+  but keep the original verdict; `waived` is not a seventh verdict or fabricated PASS. A G3 waiver
+  cannot make a failed G2 claim final. G1 and G2 have no waiver path.
 
 ## G0 Scope gate
 
-**Question.** What is being claimed, against what, and for whom?
+**Question.** What is claimed, against what, and for whom?
 
-**Required artifact.** A scope block of at most 12 lines containing: the research question in
-one sentence; the primary axis (`det` / `track` / `reid` / `cnav` / `filt`); the claim type
-(empirical delta, mechanism explanation, theoretical result, system demonstration, or survey);
-the target venue or venue class; and the validity boundary.
+**Required artifact.** A scope block of at most 12 lines: research question, primary and
+secondary axes (`det` / `track` / `reid` / `cnav` / `filt`), claim type (empirical delta, mechanism,
+theory, system or survey), target venue/class, nearest competitors when relevant, available and
+obtainable evidence, and validity boundary.
 
-**Passes when.** The claim type matches the evidence the user actually has or can obtain. A
-"mechanism explanation" claim needs an ablation chain, not just a leaderboard number. A
-"theoretical result" claim needs a proof, not a benchmark. A "system demonstration" claim
-needs an integration that runs, not a block diagram.
+**Passes when.** The claim type matches the evidence available or realistically obtainable.
+A mechanism needs an isolating ablation chain, a theory result a proof, and a system demonstration
+an integration that runs rather than just a diagram.
 
-**Fails when.** The stated claim type exceeds the available evidence class. Emit the specific
-downgrade: for example, "claim type is mechanism explanation but no ablation exists; either
-downgrade to empirical delta or add the ablation in `ctrl-experiment-suite`".
+**Fails when.** The claim exceeds its obtainable evidence class. State the specific downgrade,
+for example mechanism to empirical delta, or the evidence that would clear the mismatch.
 
-**Blocks.** All downstream work. An unresolved G0 wastes the entire pipeline.
+**Blocks.** Promotion of that claim into downstream scientific conclusions. It does not block
+work to define the scope, find evidence, diagnose the mismatch or edit unchanged prose.
 
 ## G1 Proposal freeze gate
 
-**Question.** Is the plan specific enough to fail?
+**Question.** Is the confirmatory plan specific enough to fail?
 
-**Required artifact.** A frozen plan containing: the hypothesis in falsifiable form, the
-independent and dependent variables, the datasets and splits with the exact evaluation
-protocol, the baseline list with the reason each baseline is included, the ablation list, the
-metrics with their definitions, the compute budget, and the pre-declared decision rule
-(what result would refute the hypothesis).
+**Required artifact.** A dated frozen plan: falsifiable hypothesis, variables, named datasets
+and splits, complete protocol blocks, baselines and inclusion reasons, applicable ablations,
+metric definitions, seed/sample policy, statistical treatment, compute budget and decision rule.
 
-**Passes when.** Every element is named specifically. "Compare with several state-of-the-art
-methods" fails; "compare with ByteTrack, OC-SORT, and BoT-SORT under the private-detection
-MOT17 protocol with identical detections" passes. The pre-declared refutation rule must be
-written before results are seen, and it must be possible for the rule to fail.
+**Passes when.** Every applicable element is specific and the decision rule was fixed before
+confirmatory results were inspected. Named trackers under identical detections can satisfy the
+baseline criterion; this alone is not a pass for the whole plan.
 
-**Fails when.** Any element is a placeholder, a TBD, or a category rather than a name. Also
-fails when the decision rule is unfalsifiable, such as "if results are promising".
+**Fails when.** A required element is a placeholder or category, the rule cannot fail, or it was
+adjusted using confirmatory outcomes and still described as pre-declared.
 
-**Blocks.** Experiment execution and drafting. Freeze the plan in a file so that later
-deviations are visible.
+**Blocks.** Confirmatory execution under that plan and claims of pre-registration. Exploratory
+pilots are permitted before G1 only with a recorded question, budget and stop mechanism; retain
+their influence on the final plan. They cannot be relabelled confirmatory after inspection.
 
 ## G2 Evidence freeze gate
 
-**Question.** Does every reported number exist, and does every comparison hold?
+**Question.** Does each in-scope claim have evidence, and does each comparison hold?
 
-**Required artifact.** A claim-to-evidence ledger plus a protocol-matched comparison table.
-Each row of the ledger carries a claim ID, the tier (`measured` / `reported` / `assumed`), the
-source artifact path or citation, the exact value with units, and the validity boundary.
+**Required artifact.** Claim-to-evidence ledger with exact source revisions and applicable
+protocol blocks/comparison tables, following [artifact-contract.md](artifact-contract.md).
 
-**Passes when.** All of the following hold.
+**Passes when.** All applicable checks hold:
 
-- Every quantitative claim has a ledger row with a resolvable source.
-- Every reported delta was produced under a matched protocol. Where the protocol could not be
-  matched, the delta is reported as `not comparable` with the reason.
-- Every headline number agrees with the artifact it came from, and aggregate numbers
-  reconcile with the per-item numbers they summarize.
-- Seed count, variance, and selection rule are stated for any stochastic result.
-- Each axis-specific evidence rule is satisfied for the active axes.
+- Every in-scope quantitative or substantive scientific claim resolves to checked evidence.
+  Assumptions are documented as assumptions, not promoted into demonstrated outcomes.
+- Every claimed performance delta uses a matched protocol. Unmatched rows may be reported
+  separately with their values and differences, but not as an improvement or delta claim.
+- Headline values agree with raw artifacts or primary sources; aggregates reproduce under the
+  declared aggregation rule. User-supplied values alone are not independently verified artifacts.
+- Stochastic results state run count, dispersion, seed/sample policy and selection rule.
+- Active-axis evidence obligations are satisfied where applicable to the claims.
 
-**Fails when.** Any claim is unsourced, any comparison is protocol-mismatched and still
-presented as a delta, any number fails reconciliation, or any axis rule is unmet. A failed G2
-is blocking and cannot be waived; the remedy is to remove the claim or produce the evidence.
+**Fails when.** A checked source contradicts a claim, an unmatched comparison is presented as a
+win, reconciliation fails, or an applicable evidence requirement is unmet. If the necessary source
+is unavailable, record `BLOCKED` instead of inventing its contents. No waiver is possible: obtain
+evidence or withdraw/narrow the claim, retaining the historical ledger row and reason.
 
-**Blocks.** Manuscript drafting, review, rebuttal, and slide generation.
+**Blocks.** Promotion of unverified claims as established results in manuscripts, final letters
+or quantitative slides. Does not block a diagnostic review, provisional response, outline or
+clearly marked draft with missing evidence exposed.
 
 ## G3 Submission readiness gate
 
-**Question.** Would this survive its own reviewer?
+**Question.** Is the exact submission package ready under the venue's current requirements?
 
-**Required artifact.** A readiness record containing: the venue fit statement mapping the
-contribution to that venue's stated criteria; the anonymization and formatting check; the
-reproducibility package inventory (code, configs, seeds, dataset instructions, license
-compatibility); the limitations section; the ethics and dual-use statement where applicable;
-and a resolved list of every blocking concern raised by `ctrl-pre-submission-review`.
+**Required artifact.** Readiness record: verified venue fit/guidelines, anonymization/formatting,
+applicable reproducibility inventory, limitations, ethics/dual-use where relevant, and resolution
+records for blocking concerns. A full-paper decision requires full-paper assessment.
 
-**Passes when.** No unresolved blocking concern remains, the contribution maps to the venue's
-criteria in the venue's own terms, and every claim in the abstract is supported by a G2-passed
-ledger row.
+**Passes when.** No unresolved blocking concern remains, venue criteria are met, and every
+abstract/final-result claim is supported by current G2-checked evidence for that claim.
 
-**Fails when.** Any blocking concern is open, the abstract contains a claim absent from the
-ledger, or the reproducibility package cannot reproduce a headline number on the authors'
-own hardware.
+**Fails when.** Blocking concerns remain, abstract claims lack evidence, formatting/anonymity
+requirements are unmet, or an applicable headline result cannot be reproduced from the inventory.
 
-**Blocks.** Submission. Also blocks `ctrl-paper-to-slides` from presenting unready results as
-final.
+**Blocks.** Declaring the package ready for submission. A slide deck may be built before G3 but
+cannot present the package as ready; preliminary results are explicitly labelled. Submission or
+external sending always needs the user's authorization; a skill gate is not permission to send.
 
 ## Gate reporting format
 
-Use this block whenever reporting gate status, in any skill.
+Use the six verdicts from [verdicts-and-loops.md](verdicts-and-loops.md). `WARN` means a met
+criterion with a non-blocking defect; it cannot replace an integrity failure.
 
 ```text
-Gate <ID> <name>: PASS | FAIL | BLOCKED
-- Checked: <criteria evaluated>
-- Artifact: <path or inline block>
-- Failing criterion: <one line, only when not PASS>
-- Smallest clearing change: <one line, only when not PASS>
-- Waiver: none | <explicit user decision with scope and residual risk>
+Gate <ID> <name>: PASS | WARN | FAIL | BLOCKED | ERROR | NOT_APPLICABLE
+- Scope: <claims, comparisons or package evaluated>
+- Checked: <criteria actually evaluated>
+- Artifact: <path or inline block, exact revision/hash>
+- Freshness: current | STALE
+- Failing criterion or missing input: <when not PASS, or reason for NOT_APPLICABLE>
+- Smallest clearing change: <action, when needed>
+- Waiver: none | <explicit user decision, scope and residual risk; verdict unchanged>
 ```
 
-A waiver is permitted only for G0 and G3, only on explicit user instruction, and must be
-recorded with its residual risk. G2 has no waiver path.
+Append historical entries; do not rewrite a past verdict after the source changes.
 
-## Axis-specific gate addenda
+## Axis-specific G2 addenda
 
-These extend G2. Run the addendum for each active axis.
+Apply these to relevant empirical claims, not mechanically to a proof-only or survey claim.
 
-| Axis | Additional G2 requirement |
+| Axis | Additional evidence requirement |
 |---|---|
-| `det` | Comparison protocol block: backbone, pretraining data, input resolution, augmentation, training schedule, test-time augmentation, single or multi-scale inference, NMS or NMS-free, and evaluation server versus local split |
-| `track` | Detector provenance for tracking-by-detection, public versus private detection protocol, online versus offline setting, and reported FPS with the exact GPU |
-| `reid` | Evaluation protocol block: backbone and pretraining, image resolution and crop policy, re-ranking on or off, query/gallery construction, and single-query versus multi-query |
-| `cnav` | Distribution proof: which nodes compute, what is exchanged, and whether any central node or global state exists; plus communication model with delay and loss |
-| `filt` | Consistency evidence: Monte Carlo count, NEES or ANEES against its chi-square bounds, and the bound used for comparison |
+| `det` | Backbone, pretraining, resolution, augmentation, training schedule, TTA, inference scales, NMS/NMS-free and evaluation split; isolate the claimed intervention |
+| `track` | Detector provenance for tracking-by-detection, public/private and online/offline setting; throughput scope and exact hardware for FPS claims |
+| `reid` | Backbone/pretraining, resolution/crop, re-ranking, query/gallery construction and query mode |
+| `cnav` | Which nodes compute/exchange what, any central/global state, communication delay/loss and simulation/field setting |
+| `filt` | Monte Carlo count and applicable covariance consistency evidence; NEES/ANEES with distribution/independence assumptions, confidence level and correctly scaled bounds |

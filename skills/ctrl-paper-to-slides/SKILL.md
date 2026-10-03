@@ -17,6 +17,17 @@ description: >-
 Turn a paper into a talk whose every spoken number can be traced to an artifact, and whose slides
 are legible from the back of the room.
 
+## Start here
+
+Read [execution-contract.md](../ctrl-shared/core/execution-contract.md) first. Select the smallest
+useful mode, confirm the inputs and available tools, and load only the references needed by the
+current step. Use only the output sections relevant to this request; a diagnostic or draft is not
+a gate-passed final artifact.
+
+For a literature or lab talk without this pack's ledger, build a scoped source ledger from the
+paper and label external numbers `reported`; do not invent G2/G3 history. An outline or qualitative
+method deck can proceed without result verification. Final quantitative slides need checked rows.
+
 ## Default stance
 
 The outline is the source of truth. The deck is a rendering of the outline, regenerable from it.

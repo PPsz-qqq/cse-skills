@@ -94,20 +94,27 @@ notation mid-manuscript.
 | `N` | number of Monte Carlo runs |
 | `epsilon_k` | state estimation error |
 
-Report consistency with NEES `epsilon_k^T P_k^{-1} epsilon_k` against its chi-square bounds with
-`n_x` degrees of freedom, and ANEES as the average over runs and time. The degrees of freedom
-depend on what is being averaged, and getting this wrong invalidates the whole claim:
+NEES is `epsilon_k^T P_k^{-1} epsilon_k`. Its chi-square reference with `n_x` degrees of freedom
+requires zero-mean Gaussian estimation errors with the stated covariance and a valid covariance
+inverse on the assessed state/subspace. Nonlinear or non-Gaussian filters may only satisfy this
+approximately; name the approximation or use a calibrated alternative, not an exact guarantee.
 
-- a single time step of a single run has `n_x` degrees of freedom;
-- an average over `N` runs at one time step has `N * n_x` degrees of freedom, and the bound is
-  that chi-square quantile divided by `N`;
-- the ANEES averaged over `N` runs and `T` time steps has `N * T * n_x` degrees of freedom, and
-  the bound is that chi-square quantile divided by `N * T`.
+Default: evaluate ANEES **at each time step across independent Monte Carlo runs**. At time `k`,
+`ANEES_k = (1/N) sum_i NEES_{i,k}`. For a two-sided level `1-alpha`, the reference acceptance bounds
+are `chi2(alpha/2, N*n_x)/N` and `chi2(1-alpha/2, N*n_x)/N`. The expected value is `n_x`.
+A single-run, single-step NEES uses `n_x` degrees of freedom without the `/N` scaling.
 
-The expected value of ANEES is `n_x` in every case. Bounds computed with too few degrees of
-freedom cluster near 1 rather than near `n_x`, which makes a consistent filter look inconsistent.
-State the run count, the time-step count, `n_x`, the confidence level, and the degrees of freedom
-you used. An ANEES claim without those is not evidence.
+Pooling `N` runs and `T` time steps permits `N*T*n_x` degrees of freedom divided by `N*T` **only
+when all pooled errors meet the distribution assumptions and are independent**. Consecutive filter
+errors are generally temporally correlated; do not treat trajectory length as extra independent
+replicates. For a time-averaged summary, use a justified correlation-aware calibration or resample
+independent whole trajectories, and record the method. Never infer an effective sample size or
+numeric bounds from `N*T` alone. Do not confuse an acceptance region for NEES with a confidence
+interval for RMSE or a method-comparison delta.
+
+State `N`, `T`, `n_x`, confidence level, aggregation, assumptions and numeric bounds. Pointwise
+95-percent bounds do not promise all time steps lie inside; report the violation fraction and
+address multiplicity/simultaneous calibration when claiming a trajectory-wide guarantee.
 
 ### Detection
 

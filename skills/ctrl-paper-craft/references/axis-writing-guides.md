@@ -142,9 +142,9 @@ bound checks are first-class evidence, not supplementary material.
 identified and the linearization region stated. `Q_k` and `R_k` per arm, with how they were obtained
 and no per-arm hand tuning that favors the proposed estimator. The Monte Carlo count, identical
 across arms, and the trajectory protocol. `NEES` or `ANEES` against explicit chi-square bounds, with
-`n_x`, the confidence level, whether the test is one-sided or two-sided, the number of samples
-averaged, and the degrees of freedom the bounds were taken at, which is `N * T * n_x` for an average
-over `N` runs and `T` time steps, per
+`n_x`, confidence level, distribution/independence assumptions and aggregation. Default pointwise
+ANEES uses `N*n_x` degrees of freedom with quantiles divided by `N`; time pooling requires justified
+independence or correlation-aware calibration, per
 [terminology-and-notation.md](../../ctrl-shared/core/terminology-and-notation.md). `RMSE` and
 consistency reported together, since a filter can be accurate and inconsistent. A `CRLB` or posterior
 `CRLB` plotted as a bound and never entered as a baseline. Sensitivity to covariance
