@@ -27,11 +27,11 @@ claim the evidence cannot support wastes every later pass.
 ```text
 [ ] Every `outperforms` has a protocol-matched comparison against that specific baseline
 [ ] Every `significantly` has a named test and its result
-[ ] Every `first to` has a two-cycle search record with near misses, or is narrowed
+[ ] Novelty uses a bounded search finding, with recent/foundational work and near misses; two cycles do not prove first
 [ ] Every `in the field` or hardware claim traces to field or hardware data
 [ ] Every `the gain comes from` traces to a singleton ablation arm
 [ ] Every `robust` names the perturbation class
-[ ] Every `generalizes` has at least two datasets with complete protocol blocks
+[ ] Every `generalizes` has a defined transfer/domain-shift test and no target-test leakage, not just two trained datasets
 [ ] No claim was strengthened between rounds without new evidence
 [ ] No hedge was added to keep a stronger wording alive
 ```
@@ -107,7 +107,7 @@ Run the full procedure in `references/reconciliation-and-notation.md` for a subm
 
 ```text
 [ ] Every figure and table is cited in the text, in numerical order
-[ ] Every figure has its generating script
+[ ] Generated figures have generators/data; reused figures have source/version/credit; schematics have editable sources
 [ ] Captions are self-contained and state the protocol
 [ ] Axis labels carry units and the frame where one applies
 [ ] Figures survive greyscale and common color-vision deficiency

@@ -11,9 +11,11 @@ Run this on the frozen draft. Every line is a check with a verdict, not a readin
 
 ### 1.1 Build the number inventory
 
-Extract every number that appears anywhere in the manuscript into one table. Do not sample. A
-sampled audit is honest only when the sample size and the sampling rule are stated, and the
-false-positive target in `../../ctrl-shared/core/verdicts-and-loops.md` is below 0.10.
+For a full freeze, inventory every scientific quantity in the manuscript, not section numbers,
+reference indices or page labels. For a scoped edit, inventory the changed passage and dependencies
+and report that limit. A sampled diagnostic is honest only when size/rule are stated; no evaluator
+false-positive rate can be estimated without adjudicated ground truth, per
+[verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md).
 
 ```text
 | Number ID | Value | Units | Where it appears | Precision | Ledger row | Protocol ID | Source artifact |
@@ -54,7 +56,7 @@ number, at the same precision, in the same units.
 ```text
 [ ] Every `outperforms` has a protocol-matched comparison for that specific baseline
 [ ] Every `significantly` has a test, named, with its result
-[ ] Every `first to` has a two-cycle search record with near misses listed
+[ ] Novelty is bounded by recorded recent/foundational search, near misses and coverage limits; no two-cycle first proof
 [ ] Every field or hardware claim traces to field or hardware data
 [ ] Every mechanism sentence traces to a singleton ablation arm
 [ ] No claim in the abstract is missing from the ledger, and no ledger row is `STALE`
@@ -156,7 +158,7 @@ bibliography assembled from recall fails `G2` on the same footing as an invented
 
 ```text
 [ ] Every figure and table is cited in the text, in numerical order
-[ ] Every figure has its generating script beside it, per ctrl-shared artifact-contract
+[ ] Generated figures keep generators/data; reused figures keep source/version and credit; schematics keep editable source
 [ ] Axis labels carry units, and the frame is stated where a frame applies
 [ ] Color choices survive greyscale printing and the common forms of color-vision deficiency
 [ ] Font sizes in figures match the body text after scaling to the column width

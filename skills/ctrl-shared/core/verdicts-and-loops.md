@@ -100,11 +100,11 @@ promotion condition for its tier. This is the mechanism that keeps drafts honest
 | Statement | May be written as | Promotion condition |
 |---|---|---|
 | an observation from one run | "in our experiments" / "we observed" | the run exists and is recorded |
-| a claim across runs | "our method achieves X" | at least 3 runs, dispersion reported, protocol block complete |
-| a claim across datasets | "generalizes to" | at least 2 datasets, both protocol blocks complete |
+| a claim across runs | "our method achieves X" | justified sample size (at least the axis default unless a recorded rationale overrides it), dispersion and complete protocol; 3 runs alone never prove stability |
+| a claim across datasets | "evaluated on A and B" | at least 2 named datasets with complete protocols; "generalizes" additionally requires a defined transfer/domain-shift test and no target-test leakage |
 | a mechanism claim | "the gain comes from" | an ablation isolating that component under one protocol |
 | a superiority claim | "outperforms" | a protocol-matched comparison against that specific baseline |
-| a novelty claim | "the first to" | a documented search of the last two venue cycles, with the near misses listed |
+| a novelty claim | "no directly overlapping work retrieved within <scope>" | documented recent cycles plus foundational prior work and near misses; never treat a two-cycle window as proof of an unbounded "first to" |
 | a field-deployment claim | "in the field" | field data, not simulation, with the platform and conditions stated |
 
 If the promotion condition is unmet, write the weaker true statement. Never keep the stronger

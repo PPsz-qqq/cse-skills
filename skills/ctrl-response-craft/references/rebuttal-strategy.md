@@ -106,9 +106,9 @@ The mirror of the reviewer's calibration rule applies to the author's own side. 
 tempted to concede to end the argument, or to press a rebuttal because the deadline is near, apply
 the evidence score.
 
-- Score the authors' own counter-argument 1 to 5 on evidence quality before sending it. 1 is an
-  assertion, 3 is a pointer to material that already existed, 5 is new evidence that directly
-  tests the concern's resolution test.
+- Score counter-arguments 1 to 5 by directness and sufficiency: 1 is an assertion, 3 is incomplete
+  support, 4 or 5 directly closes the resolution test. Existing evidence overlooked by the reviewer
+  can score 4 or 5; newness alone is not evidence quality.
 - Send a rebuttal only at 4 or above. Below 4, the honest options are accept, partial accept, or
   defer. A weak rebuttal spends credibility that a later strong response needs.
 - Never concede a concern that the evidence supports simply because the reviewer was emphatic.

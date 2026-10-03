@@ -46,6 +46,13 @@ Unmatched arms must be presented in one of three honest ways: as a separate row 
 difference declared; with the difference corrected by a control run you performed (for example
 re-training the baseline under your protocol); or omitted.
 
+Match controlled conditions, not the intervention being tested. An architecture, covariance
+estimator or NMS change may be the declared treatment; record it and choose the relevant equal-
+data, compute or deployment-cost estimand. It is not automatically a nuisance confound. For a
+component-attribution claim isolate that treatment; for a whole-system benchmark disclose resource
+trade-offs. The numeric thresholds below are heuristic red flags, not safe harbours below them:
+any unaccounted protocol difference may confound a claimed gain.
+
 ### Calibration thresholds for common unfair comparisons
 
 These are the differences that most often invalidate a delta in practice. Treat any of them as

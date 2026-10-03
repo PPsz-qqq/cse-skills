@@ -32,7 +32,8 @@ self-contained block that a reader can act on without the paper.
 **Acceptance criteria.**
 - Every number in the abstract appears identically in the body, at the same precision
   (`references/reconciliation-and-notation.md`).
-- Every abstract number has a `G2`-passed ledger row whose comparability verdict is `comparable`.
+- Every abstract result number has a checked G2 ledger row; comparative claims are `comparable`,
+  and absolute non-comparative values use `NOT_APPLICABLE` with a reason.
 - The contribution is stated as what was done, not as what was avoided.
 - The boundary is present: dataset, scenario, or run count sufficient to prevent over-reading.
 - One claim per sentence. The last sentence states the consequence or the boundary, not a

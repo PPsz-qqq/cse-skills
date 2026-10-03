@@ -69,7 +69,8 @@ scope is requested. New or strengthened result claims require the applicable evi
 4. **Frame each contribution at its permitted strength.** Use the escalation ladder and the framing
    templates in `references/contribution-framing.md`. A `outperforms` needs a protocol-matched
    comparison; a `the gain comes from` needs a singleton ablation arm under one protocol; a
-   `first to` needs a documented two-cycle search with the near misses listed.
+   novelty needs a documented scoped search including recent and foundational work; a two-cycle
+   window alone never proves historical priority.
 
 5. **Position against the nearest competitors.** Write one positioning unit per nearest competitor
    from `references/related-work.md`, with the precise difference stated so a reader can check it
@@ -84,7 +85,8 @@ scope is requested. New or strengthened result claims require the applicable evi
 
 7. **Write the abstract last, against the six slots.** Problem, gap, idea, method, evidence,
    boundary, in that order, using `references/abstract-template.md`. Every abstract number must have
-   a ledger row whose comparability verdict is `comparable`, at the precision the tables use.
+   a checked ledger row at the tables' precision. Comparative numbers need `comparable`; an
+   absolute, non-comparative value uses `NOT_APPLICABLE` with a reason, not a fabricated baseline.
 
 8. **Run the number-reconciliation pass.** Build the complete number inventory and check the
    abstract, tables, captions, and conclusion against it, then check aggregates, claim strength, and
@@ -154,8 +156,8 @@ Counts: <blocking>, <major>, <minor>, <question>. Recommendation: <derived, not 
 
 - Never write `outperforms` without a protocol-matched comparison against that specific baseline,
   and never carry a `not comparable` value into an abstract or a conclusion.
-- Never write `first to` without a documented two-cycle search with the near misses listed. Narrow
-  the claim instead.
+- Never treat a recent two-cycle search as proof of `first to`. Prefer a bounded search finding
+  with sources, window, foundational prior work, near misses and coverage limits.
 - Never present a simulation result as a field result, and never write a field or hardware claim
   without field or hardware data.
 - Never present a delta as a mechanism. A mechanism sentence requires an ablation that isolates the

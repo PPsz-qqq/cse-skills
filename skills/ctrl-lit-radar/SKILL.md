@@ -129,7 +129,7 @@ Gaps the corpus supports
 Unresolved
 - <item>: [UNVERIFIED] <what would resolve it, and roughly what it costs>
 
-Gate G0 scope: PASS | FAIL | BLOCKED
+Gate G0 scope: PASS | WARN | FAIL | BLOCKED | ERROR | NOT_APPLICABLE
 - Checked: <criteria evaluated>
 - Artifact: <path>
 - Failing criterion: <one line, only when not PASS>

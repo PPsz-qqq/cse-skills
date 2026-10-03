@@ -120,8 +120,9 @@ Rules.
 | Configuration | A | B | Metric | Delta from A-off | Delta from B-off | Interaction | Interval |
 ```
 
-State the interaction definition, `delta(A | B on) minus delta(A | B off)`, in the caption. Three
-rows are the minimum: `A only`, `B only`, `A and B`.
+State the interaction definition, `delta(A | B on) minus delta(A | B off)`, in the caption. Four
+configurations are required: `neither`, `A only`, `B only`, `A and B`, all under one protocol.
+The `neither` row may be a linked baseline already in the main table; it must still exist.
 
 ## Table 5 shape, scaling and robustness
 
@@ -157,7 +158,7 @@ Rules.
 ## Self-check before a table is frozen
 
 ```text
-[ ] Every value in the table resolves to a run directory under exp/
+[ ] Measured values resolve to run artifacts; reported values to checked primary sources; assumptions to configs/plans
 [ ] The caption carries the protocol labels the axis requires
 [ ] The run count, seed policy, and dispersion statistic are in the caption
 [ ] Every non-measured row states reported or re-implemented, with the published value shown

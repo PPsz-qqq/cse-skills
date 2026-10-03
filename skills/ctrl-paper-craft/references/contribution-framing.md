@@ -50,8 +50,8 @@ Escalation ladder for an empirical claim. Move up only when the condition is met
 | 1 | `in our experiments, <value>` | one recorded run exists |
 | 2 | `our method reaches <value> +- <dispersion>` | at least 3 runs, seeds listed, dispersion reported |
 | 3 | `our method outperforms <baseline>` | the baseline comparison is protocol-matched |
-| 4 | `our method generalizes to <other dataset>` | at least 2 datasets, both protocol blocks complete |
-| 5 | `our method is the first to <specific claim>` | a documented two-cycle venue search with near misses listed |
+| 4 | `evaluated on <named datasets>` | both protocols complete; a generalization claim additionally needs a defined transfer/domain-shift test |
+| 5 | `no directly overlapping work retrieved within <search scope>` | recorded recent and foundational search, near misses and coverage limits; not an unbounded first claim |
 
 Never skip a rung. `Outperforms` at rung 3 with a single seed is a rung-1 result with rung-3
 wording, and it is the defect that turns a minor revision into a rejection.

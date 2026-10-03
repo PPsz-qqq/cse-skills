@@ -112,9 +112,9 @@ because it is what makes multi-reviewer review informative rather than ornamenta
    or to manufacture disagreement.
 5. Compare only after all reports are frozen. Label a point `consensus` only when at least two
    reports independently raised the same underlying concern.
-6. If contexts cannot be isolated, generate one report per invocation or state explicitly that
-   mutual blindness cannot be guaranteed. Never present shared-context drafting as independent
-   peer review.
+6. If contexts cannot be isolated, generate one report per fresh invocation or declare non-blindness.
+   Isolated contexts reduce leaks, not model correlation: label the output simulated reviews and
+   never infer real-peer agreement or acceptance probabilities from report overlap.
 
 ## Anti-sycophancy calibration
 

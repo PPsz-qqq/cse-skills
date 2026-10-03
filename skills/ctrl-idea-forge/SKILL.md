@@ -154,14 +154,14 @@ Pre-commitment
 - Compute budget: <GPU-hours and wall-clock, matching the pilot budget>
 - Decision rule: <the exact result pattern that changes the plan>
 
-Gate G0 scope: PASS | FAIL | BLOCKED
+Gate G0 scope: PASS | WARN | FAIL | BLOCKED | ERROR | NOT_APPLICABLE
 - Checked: <criteria evaluated>
 - Artifact: ctrl-scope.md
 - Failing criterion: <one line, only when not PASS>
 - Smallest clearing change: <one line, only when not PASS>
 - Waiver: none
 
-Gate G1 proposal freeze: PASS | FAIL | BLOCKED
+Gate G1 proposal freeze: PASS | WARN | FAIL | BLOCKED | ERROR | NOT_APPLICABLE
 - Checked: <criteria evaluated>
 - Artifact: ctrl-plan.md
 - Failing criterion: <one line, only when not PASS>

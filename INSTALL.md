@@ -1,115 +1,94 @@
 # Install the ctrl-* skill pack
 
-The pack is a directory of skill bundles. Each bundle is `<name>/SKILL.md`, which is exactly
-what DSH's filesystem skill provider discovers at the top level of a scanned root.
+The installable root is this package's `skills/` directory: eight bundles at
+`<root>/<name>/SKILL.md`. Installing files and enabling a provider are separate operations.
 
-## Where DSH looks
+## DSH roots and prerequisites
 
-Scanned roots, in priority order:
+Enable/configure `@deepseek-ai/dsh-skill-filesystem` in the intended DSH profile before expecting
+live discovery. With default roots enabled, lower ranks take priority:
 
 | Rank | Source | Path |
 |---|---|---|
-| 100 | `project-dsh` | `<projectRoot>/.dsh/skills` |
-| 200 | `project-agents` | `<projectRoot>/.agents/skills` |
-| 300 | `custom` | the provider's configured `customSkillDirs` |
-| 400 | `user-dsh` | `<DSH_HOME>/skills`, default `~/.dsh/skills` |
-| 500 | `user-agents` | `<DSH_AGENTS_HOME>/skills`, default `~/.agents/skills` |
-| 600 | `bundled` | the configured bundled root |
+| 100 | project-dsh | `<projectRoot>/.dsh/skills` |
+| 200 | project-agents | `<projectRoot>/.agents/skills` |
+| 300 | custom | configured `customSkillDirs` |
+| 400 | user-dsh | `<DSH_HOME>/skills`, default `~/.dsh/skills` |
+| 500 | user-agents | `<DSH_AGENTS_HOME>/skills`, default `~/.agents/skills` |
+| 600 | bundled | configured bundled root |
 
-`<projectRoot>` is the nearest ancestor containing `.git`. In this session the working
-directory has no `.git` ancestor at `F:\dsh-test`, so the project rows do not apply and the user
-root at `%USERPROFILE%\.dsh\skills` is the correct destination.
+The local runtime reference finds the nearest ancestor containing `.git`; when none exists it
+uses the session cwd as project root. Project rows do **not** disappear merely because `.git` is
+absent. Check current provider settings and name collisions before selecting a destination.
 
-## Install
+Simplest maintenance setup: add the absolute path of this package's `skills/` to
+`customSkillDirs`. No copying or junction is then required. This document does not change profile
+configuration automatically.
 
-From the `ctrl-skills` package root:
+## Installer
+
+From the package root, with PowerShell 5.1 or PowerShell 7:
 
 ```powershell
 powershell -File tools/install.ps1
-```
-
-The scripts default to the sibling skill root `../skills/`, which is where the eight bundles
-live, and fall back to the package root if the bundles are stored inline. The default mode
-creates a directory junction per bundle under `~/.dsh/skills`. A junction needs no elevation on
-Windows, and because it points at `skills/`, edits there are live and DSH's watcher picks them up.
-
-Other forms:
-
-```powershell
-# install from an explicit skill root
-powershell -File tools/install.ps1 -Source ..\skills
-
-# install a copied snapshot into a different root
-powershell -File tools/install.ps1 -Mode copy -Target D:\skills
-
-# remove only the links this script created
-powershell -File tools/install.ps1 -Remove
-
-# replace an existing non-linked destination
-powershell -File tools/install.ps1 -Force
-```
-
-Note that `pwsh` is not present on every Windows install. Use `powershell` when only Windows
-PowerShell 5.1 is available; the script is written to work on both.
-
-Safety properties, which the script enforces rather than documents:
-
-- it refuses to operate when the skill root resolves to the repository itself;
-- it never deletes a destination unless the destination is a link whose target resolves inside
-  this repository, or unless `-Force` is passed explicitly;
-- a failure on one bundle does not abort the rest, and the script exits non-zero if any failed.
-
-## Verify discovery
-
-The provider watches its roots, so no restart is needed. Confirm the pack is live:
-
-1. Check the links exist:
-
-   ```powershell
-   Get-ChildItem $env:USERPROFILE\.dsh\skills -Directory | Where-Object Name -like 'ctrl-*'
-   ```
-
-2. In a DSH session, load one skill through the skill tool. `ctrl-shared` is a safe probe; it is
-   the shared contract and is also a usable standalone entry point.
-
-3. If a bundle is missing from the catalog, the cause is almost always frontmatter. DSH skips a
-   file whose `name` is not kebab-case, whose `description` is empty, or whose invocation key has
-   an invalid boolean spelling, and it reports no per-skill diagnostic to the model. Run the
-   validator to find it:
-
-   ```powershell
-   node tools/validate-skills.cjs
-   ```
-
-   With no argument it checks the sibling `../skills/` root. It exits non-zero if it finds no
-   bundles at all, so a mistyped root cannot look like a clean pack.
-
-## Uninstall
-
-```powershell
+powershell -File tools/install.ps1 -Source .\skills -Target D:\skills -Mode copy
 powershell -File tools/install.ps1 -Remove
 ```
 
-For a copy-mode install, pass the same `-Target` and `-Mode copy`. Deleting the links leaves
-`skills/` untouched.
+The default source is in-package `skills/`, then the legacy sibling layout, then inline bundles.
+The target honors `DSH_HOME`, falling back to the user home. Default mode creates Windows
+junctions; copy mode creates snapshots that need updating after source edits.
 
-## Manual install
+**Caution:** inspect the target first. The existing installer's `-Force` option can remove an
+existing destination, including a real directory. It is not a merge or backup operation. Do not
+use it on an unreviewed target. Removal without Force recognizes links, not copied ownership;
+copy-mode cleanup therefore needs a separately verified destination. Never delete source bundles.
 
-If you would rather not run the script, create one junction or copy per bundle. Each command
-below is equivalent to one line of the script's output:
+## Offline checks versus live availability
 
 ```powershell
-$src = Join-Path (Split-Path -Parent $PSScriptRoot) 'skills'
-$dst = Join-Path $env:USERPROFILE '.dsh\skills'
-Get-ChildItem $src -Directory |
-  Where-Object { $_.Name -like 'ctrl-*' -and (Test-Path (Join-Path $_.FullName 'SKILL.md')) } |
+node tools/validate-skills.cjs
+node tools/check-dsh-discovery.cjs .\skills
+node --test tools/skill-tools.test.cjs
+```
+
+The shared parser needs the local `yaml` package. Existing runtime-reference lookup works here;
+on another machine set `DSH_RUNTIME_REFERENCE` to the runtime's **node_modules directory containing
+`yaml`**, or `DSH_YAML_MODULE` to the yaml module path. Do not point it to the extracted-runtime
+parent. No network installation or simplified YAML fallback is performed by the checks.
+
+These commands check local files, parser compatibility and regression fixtures. They do not
+prove a live provider is enabled, roots are configured, or the session catalog contains this pack.
+
+To confirm live availability:
+
+1. Inspect the intended profile's skill provider activation and configured roots.
+2. Confirm a direct child bundle exists under a scanned root and its name is not shadowed.
+3. Ask the skill tool to load `ctrl-shared` explicitly to inspect the contract, or a user-facing
+   skill matching your task. A successful load, not an offline parse, is the live probe.
+4. Check provider logs for skipped frontmatter, filesystem/watch failures and duplicate names.
+
+When the provider is active and its watcher enabled/healthy, file changes invalidate the catalog
+without a restart. Do not promise immediate visibility if the provider is inactive or watch is off.
+
+## Manual junctions
+
+From the package root; inspect the resolved source/target before running:
+
+```powershell
+$src = (Resolve-Path -LiteralPath '.\skills').Path
+$dshBase = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $HOME '.dsh' }
+$dst = Join-Path $dshBase 'skills'
+New-Item -ItemType Directory -Path $dst -Force | Out-Null
+Get-ChildItem -LiteralPath $src -Directory |
+  Where-Object { $_.Name -like 'ctrl-*' -and (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')) } |
   ForEach-Object { New-Item -ItemType Junction -Path (Join-Path $dst $_.Name) -Target $_.FullName }
 ```
 
-## Coexistence with other installed packs
+This does not replace existing destinations. A direct custom root is preferable when possible.
 
-This pack does not modify, depend on, or shadow any other installed skill. It is designed to sit
-alongside the existing `nature-*` and `academic-*` packs, which serve the natural sciences and
-general academic writing. If both packs cover a request, prefer this one for the five control
-axes and delegate general scientific-writing polish to the other pack, since its style rules are
-tuned for the natural-science literature rather than for engineering venues.
+## Using the pack
+
+See [QUICKSTART.zh-CN.md](docs/QUICKSTART.zh-CN.md) for Chinese examples and the distinction between
+local editing, diagnosis, planning and finalization. Other packs may coexist; this one specializes
+in the five control/vision axes and does not authorize training or submission by itself.

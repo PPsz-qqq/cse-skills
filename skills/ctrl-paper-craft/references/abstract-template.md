@@ -124,7 +124,7 @@ provenance, public or private detection, and online or offline.
 ## Number discipline in the abstract
 
 ```text
-[ ] Every number has a ledger row whose comparability verdict is comparable
+[ ] Every scientific quantity has a checked row; comparisons are comparable, absolute values use NOT_APPLICABLE with reason
 [ ] Every number states its units and its dataset
 [ ] Every delta states absolute or relative
 [ ] Every stochastic number states its run count and dispersion, or is labeled single seed
@@ -144,7 +144,7 @@ supported by a `G2`-passed ledger row.
 |---|---|---|
 | `state-of-the-art` | unsupported without a matched comparison, and dated on arrival | the value with its protocol, and the named baseline |
 | `significantly better` | `significantly` is a statistical term | `higher by <delta>, <interval> excluding zero` or the null statement |
-| `the first to` | requires a two-cycle search record | the narrow scoped claim, or the measurement gap |
+| `the first to` | recent cycles cannot prove historical priority | bounded search finding with recent/foundational work, near misses and limits |
 | `novel framework` | `novel` is a reviewer's verdict, not the authors' | name what is new, mechanically |
 | `extensive experiments` | a claim about effort, not evidence | name the datasets and the run count |
 | `effectively handles` | unfalsifiable | the measured behaviour and the condition |

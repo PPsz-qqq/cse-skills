@@ -96,9 +96,9 @@ paper its credibility with the reviewer who wrote it.
 
 ## Novelty claims
 
-A `first to` claim requires a documented search of the last two venue cycles, with the near misses
-listed (`../../ctrl-shared/core/verdicts-and-loops.md`). Without that record, the claim is not
-available at any venue.
+A novelty claim needs a documented scope, queries, recent cycles **and foundational prior work**,
+with near misses and coverage limits. A recent two-cycle window cannot establish historical priority.
+Prefer the bounded claim in [verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md).
 
 ```text
 Novelty claim: <the exact sentence, scoped as narrowly as it can honestly be>
@@ -109,14 +109,11 @@ localization under time-varying topology">
 Verdict: <supported | narrowed to <scope> | withdrawn>
 ```
 
-Narrowing the claim is almost always correct. `The first distributed estimator for range-only
-cooperative localization with time-varying topology` is defensible and checkable.
-`The first cooperative navigation framework` is neither.
-
-If the search cannot be run, the sentence becomes `to our knowledge, no prior work reports <the
-specific missing measurement>`, and the search record is marked `[UNVERIFIED: novelty search not
-performed, claim narrowed to a measurement gap]`. That formulation is honest because it claims a
-gap in reported evidence rather than in existence.
+Narrow to what the search actually established: `No directly overlapping work was retrieved under
+<recorded queries, sources and window>`. Even a narrowly worded `first` is not proved by retrieval
+absence alone. If search cannot run, mark the novelty assertion `[UNVERIFIED: search unavailable]`
+and omit it from final prose; describe the planned contribution without asserting an absence of
+prior work. `To our knowledge` is not a substitute for a search.
 
 ## Common related-work failures
 

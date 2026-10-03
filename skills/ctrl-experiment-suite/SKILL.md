@@ -139,7 +139,7 @@ Code commit: <hash and dirty status> | Config: <path> | Data: <version, split id
 Command: <the exact invocation> | Environment: <device, driver, library versions>
 
 ### Gate status
-Gate G2 evidence freeze: PASS | FAIL | BLOCKED
+Gate G2 evidence freeze: PASS | WARN | FAIL | BLOCKED | ERROR | NOT_APPLICABLE
 - Checked: <criteria evaluated>
 - Artifact: ctrl-claims.md, ctrl-protocol.md
 - Failing criterion: <one line, when not PASS>

@@ -114,8 +114,9 @@ actions, recorded in `ctrl-plan.md`:
 
 Scoring a rebuttal uses the anti-sycophancy mechanism from
 [../../ctrl-shared/core/review-rubrics.md](../../ctrl-shared/core/review-rubrics.md). Score the
-response 1 to 5 on evidence quality, where 1 is an assertion, 3 is a pointer to existing material, and
-5 is new evidence that directly tests the point's resolution test. Concede only at 4 or above.
+response 1 to 5 by relevance and sufficiency: 1 is an assertion, 3 incomplete support, and 4 or 5
+directly closes the resolution test, whether the evidence is new or previously overlooked. Concede
+at 4 or above.
 Otherwise the point stays still_unresolved and the resolution test is restated.
 
 ## Loop budget

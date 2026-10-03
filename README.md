@@ -30,6 +30,13 @@ is a measurement, and it inherits every obligation of a measurement: a defined i
 declared protocol, a stated number of trials, and honest uncertainty. Nearly every rule in the
 shared contract follows from that one commitment.
 
+## Scoped use
+
+See [中文快速使用](docs/QUICKSTART.zh-CN.md). Local edits, diagnostic review and draft planning
+can run independently without rebuilding the entire research pipeline. Final scientific claims
+require the applicable evidence gates. All entries use the
+[execution contract](skills/ctrl-shared/core/execution-contract.md) for capability limits and handoff.
+
 ## The skills
 
 Eight bundles, in `skills/`. `ctrl-shared` is the contract the other seven obey; the rest form
@@ -37,7 +44,7 @@ a pipeline.
 
 | Skill | Use it for | Trigger examples |
 |---|---|---|
-| [ctrl-shared](skills/ctrl-shared/SKILL.md) | the shared contract: gates, evidence rules, venue matrix, review rubrics, verdicts, terminology, artifact formats. Other skills load it; it is also a usable standalone entry point | "what does this pack require", gate and ledger definitions |
+| [ctrl-shared](skills/ctrl-shared/SKILL.md) | the shared contract: gates, evidence rules, venue matrix, review rubrics, verdicts, terminology, artifact formats. Other skills load it; explicit questions about the contract can load it directly | "what does this pack require", gate and ledger definitions |
 | [ctrl-lit-radar](skills/ctrl-lit-radar/SKILL.md) | literature search, venue-cycle tracking, benchmark atlas, nearest-competitor ledger | 文献综述, 相关工作, 找论文, literature review, 文献调研 |
 | [ctrl-idea-forge](skills/ctrl-idea-forge/SKILL.md) | turn a gap into a falsifiable, budgeted research idea; G0 scope and G1 frozen plan | 选题, 开题, 创新点, research idea, hypothesis |
 | [ctrl-experiment-suite](skills/ctrl-experiment-suite/SKILL.md) | design, audit, and report experiments; per-axis protocol blocks, statistics, ablations, reproducibility | 实验设计, 消融实验, 结果分析, ablation, protocol |
@@ -74,9 +81,9 @@ assertion.
 
 | Gate | Question | Blocks |
 |---|---|---|
-| `G0` scope | What is claimed, against what, for whom? Is the claim type matched to the evidence class? | all downstream work |
-| `G1` proposal freeze | Is the plan specific enough to fail? Is the refutation rule pre-declared? | experiments and drafting |
-| `G2` evidence freeze | Does every number exist, and does every comparison hold? | drafting, review, rebuttal, slides |
+| `G0` scope | Is the claim type matched to obtainable evidence? | promotion of that scientific claim |
+| `G1` proposal freeze | Is the confirmatory plan specific and pre-declared? | confirmatory execution, not exploratory planning |
+| `G2` evidence freeze | Does each in-scope claim resolve and each comparison hold? | unverified final claims, not diagnostic review or local editing |
 | `G3` submission readiness | Would this survive its own reviewer? | submission |
 
 `G2` has no waiver path. `G0` and `G3` may be waived only on explicit user instruction, with the
@@ -125,7 +132,8 @@ General academic-writing advice does not cover the things that actually decide t
 ## Install
 
 Skills are plain `SKILL.md` bundles. DSH discovers them from `<root>/<name>/SKILL.md` at the top
-level of a scanned root, watches the roots, and needs no restart.
+level of a scanned root when the filesystem provider is enabled. Healthy enabled watchers pick
+up file changes without a restart; inactive or misconfigured providers do not.
 
 The eight bundles live in the `skills/` directory of this repository, which contains nothing but
 skills, so it can be handed to DSH directly or copied elsewhere as-is.
@@ -144,7 +152,8 @@ are stored inline. Full options, root priority, verification steps, and a manual
 ```powershell
 node tools/validate-skills.cjs              # defaults to skills/
 node tools/validate-skills.cjs --fix-bom    # also repair a UTF-8 BOM in place
-node tools/check-dsh-discovery.cjs          # run DSH's own parser over the installed root
+node tools/check-dsh-discovery.cjs skills   # offline compatibility, not live activation
+node --test tools/skill-tools.test.cjs      # structural/discovery regression fixtures
 ```
 
 The validator checks frontmatter presence and keys, kebab-case `name` matching the directory
@@ -155,14 +164,13 @@ inline path that is correct in `SKILL.md` resolves one level too high inside `re
 nothing else reports it. If it finds no bundles at all it exits non-zero rather than reporting a
 clean pack, so a mistyped root cannot look like success.
 
-`check-dsh-discovery.cjs` is the acceptance test that matters: it replicates the provider's own
-parse path with the same `yaml` version DSH depends on, so it reports what the Harness will
-actually see rather than what this repository believes. Run it after any frontmatter or layout
-change. See [tools/README.md](tools/README.md) for the failure modes both tools exist to catch.
+`check-dsh-discovery.cjs` uses real YAML parsing and the inspected invocation contract, checking
+all eight distinct expected names rather than just a count. This is an offline compatibility
+check, not live provider activation or session visibility. Run it after frontmatter/layout changes. See [tools/README.md](tools/README.md) for the failure modes both tools exist to catch.
 
 ## Evaluate
 
-[evals/evals.json](evals/evals.json) holds 14 behavioural cases, one or more per skill. Each case
+[evals/evals.json](evals/evals.json) holds 26 behavioural cases, one or more per skill. Each case
 targets a contract rule and asserts on behaviour rather than wording, for example refusing an
 unmatched comparison, refusing a single-seed state-of-the-art claim, refusing to alter a number
 for a slide, and refusing to report a gate as passed without its artifact.
@@ -175,9 +183,9 @@ to landed mechanism is in [docs/INTEGRATION.md](docs/INTEGRATION.md), including 
 repository identities, licences, star counts, and the fork traps to avoid.
 
 Upstream collections cover the natural sciences, so their domain content was dropped and only
-their workflow machinery was reused. Where a mechanism was ported, its threshold was kept
-exactly, for example the midpoint-start calibration rule, the loop round cap, the pilot budget
-caps, and the top-score condition.
+their workflow machinery was reused. Thresholds are pack defaults, not externally validated laws.
+Later maintenance corrected statistical assumptions, scoped gates and budget semantics while
+retaining evidence integrity. See [improvement notes](docs/IMPROVEMENTS.zh-CN.md) for this review.
 
 ## Layout
 

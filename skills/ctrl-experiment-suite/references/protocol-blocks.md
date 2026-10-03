@@ -120,7 +120,7 @@ Write one verdict per arm pair, not one per table.
 | Verdict | Condition | How the number may appear |
 |---|---|---|
 | `comparable` | every required field matches, or differs only in ways justified by a control run | as a delta in the main table |
-| `partially comparable` | one declared difference whose direction of bias is known | in the main table with the difference in a footnote, and in the text as an upper or lower bound on the true delta |
+| `partially comparable` | a declared unresolved difference with incomplete control | observational rows with the difference exposed, not a superiority delta; a quantitative bound requires an actual justified bound, not merely a presumed bias direction |
 | `not comparable` | any break in `ctrl-shared` `core/evidence-integrity.md` Rule 3 for the axis, or an unknown difference | as a separate row or a separate table, with `not comparable` written next to it |
 
 The calibration thresholds that most often flip a verdict are resolution above 1.3x, extra

@@ -20,13 +20,19 @@
 
 本包正是围绕这个问题构建的。它的组织原则只有一句：**定量比较就是一次测量**。既然是测量，就必须满足测量的全部义务：明确的测量仪器、事先声明的协议、说明试验次数、如实给出不确定度。共享契约中几乎每一条规则都由此推出。
 
+## 按任务使用
+
+先看 [中文快速使用](docs/QUICKSTART.zh-CN.md)。局部编辑、诊断和设计不必重跑整条流水线；
+最终科学主张必须检查适用门禁。各入口共用
+[执行约定](skills/ctrl-shared/core/execution-contract.md)，规定工具不可用时的降级和新版产物交接。
+
 ## 八个技能
 
 全部位于 `skills/` 目录。`ctrl-shared` 是其余七个共同遵守的契约，其余七个构成一条流水线。
 
 | 技能 | 用途 | 触发词示例 |
 |---|---|---|
-| [ctrl-shared](skills/ctrl-shared/SKILL.md) | 共享契约：关卡、证据规则、期刊矩阵、审稿评分表、裁决枚举、术语规范、产物格式。其他技能会加载它，它本身也可独立使用 | 这个包有什么要求、关卡与台账定义 |
+| [ctrl-shared](skills/ctrl-shared/SKILL.md) | 共享契约：关卡、证据规则、期刊矩阵、审稿评分表、裁决枚举、术语规范、产物格式。其他技能按需读取；显式询问共享规范时可直接加载，不作为独立研究流程 | 这个包有什么要求、关卡与台账定义 |
 | [ctrl-lit-radar](skills/ctrl-lit-radar/SKILL.md) | 文献检索、会议周期跟踪、基准数据集图谱、最接近竞品台账 | 文献综述, 相关工作, 找论文, 文献调研, literature review |
 | [ctrl-idea-forge](skills/ctrl-idea-forge/SKILL.md) | 把研究缺口变成可证伪、有预算的研究构想；产出 G0 范围与 G1 冻结方案 | 选题, 开题, 创新点, research idea, hypothesis |
 | [ctrl-experiment-suite](skills/ctrl-experiment-suite/SKILL.md) | 实验设计、审计与结果报告；各方向协议块、统计处理、消融实验、可复现性 | 实验设计, 消融实验, 结果分析, ablation, protocol |
@@ -61,9 +67,9 @@ ctrl-paper-to-slides    面向听众的报告
 
 | 关卡 | 回答的问题 | 阻塞范围 |
 |---|---|---|
-| `G0` 范围 | 要主张什么、与谁对比、给谁看？主张类型是否与证据等级匹配？ | 全部后续工作 |
-| `G1` 方案冻结 | 方案是否具体到「可能被推翻」？证伪规则是否事先声明？ | 实验与写作 |
-| `G2` 证据冻结 | 每个数字是否真实存在？每个对比是否成立？ | 写作、审稿、回复、幻灯 |
+| `G0` 范围 | 主张类型是否匹配可获得的证据？ | 提升该科学主张，不阻塞诊断或局部编辑 |
+| `G1` 方案冻结 | 确认性方案是否具体且事先声明？ | 确认性执行，不阻塞探索性设计 |
+| `G2` 证据冻结 | 范围内的主张是否有真实来源、比较是否成立？ | 未核验的最终主张，不阻塞诊断或草稿 |
 | `G3` 投稿就绪 | 这篇稿子能否扛住自己的审稿人？ | 投稿 |
 
 `G2` 不可豁免。`G0` 与 `G3` 仅在用户明确指示时可豁免，且必须记录残余风险。定义与通过标准见 [ctrl-shared/core/gate-contract.md](skills/ctrl-shared/core/gate-contract.md)。
@@ -90,7 +96,8 @@ ctrl-paper-to-slides    面向听众的报告
 
 ## 安装
 
-技能就是普通的 `SKILL.md` 目录包。DSH 在被扫描根目录的顶层按 `<root>/<name>/SKILL.md` 发现技能，并监视这些根目录，**无需重启**。
+技能是普通的 `SKILL.md` 目录包。启用文件系统技能插件后，DSH 按 `<root>/<name>/SKILL.md` 发现技能。
+只有已启用且健康的 watcher 才能无重启更新；离线校验通过不等于当前会话已加载。
 
 八个技能位于本仓库的 `skills/` 目录，该目录只有技能、没有别的东西，因此可直接交给 DSH，或整体拷到其他机器。
 
@@ -106,24 +113,28 @@ powershell -File tools/install.ps1 -Remove   # 仅删除由安装器创建的内
 ```powershell
 node tools/validate-skills.cjs              # 默认检查 skills/
 node tools/validate-skills.cjs --fix-bom    # 同时就地修复 UTF-8 BOM
-node tools/check-dsh-discovery.cjs          # 用 DSH 自身解析器检查已安装的根目录
+node tools/check-dsh-discovery.cjs skills   # 离线兼容检查，不是实时启用检测
+node --test tools/skill-tools.test.cjs      # 结构和发现逻辑的回归测试
 ```
 
 校验器检查：frontmatter 是否存在及字段是否合法、`name` 是否为 kebab-case 且与目录名一致、调用开关的布尔拼写、description 长度、frontmatter 是否闭合、是否存在 UTF-8 BOM、是否有未处理的 `TODO`/`TBD` 标记、每一条相对 Markdown 链接，以及每一条行内代码路径（例如 [gate-contract.md](skills/ctrl-shared/core/gate-contract.md)）。
 
 最后一项尤其重要：在 `SKILL.md` 中写法正确的行内路径，放进 `references/` 后会多解析一层，而**没有其他工具会报告这个问题**。此外，若一个技能都没扫到，校验器会以非零码退出，而不是报告「通过」——避免根目录写错却看起来像成功。
 
-`check-dsh-discovery.cjs` 是真正有决定性的验收测试：它用 DSH 所依赖的同版本 `yaml` 复刻其解析流程，报告的是 **Harness 实际看到的结果**，而不是本仓库的自认为。任何 frontmatter 或目录结构调整后都应运行它。两个工具要防范的失效模式见 [tools/README.md](tools/README.md)。
+[发现检查](tools/check-dsh-discovery.cjs) 使用真实 YAML 解析和核查过的调用字段约定，检查八个不同的预期技能名称。
+这只是离线兼容检查；运行时插件启用、扫描目录及会话可见性需单独核实。结构修改后应运行它。
+工具说明见 [tools/README.md](tools/README.md)。
 
 ## 评测
 
-[evals/evals.json](evals/evals.json) 包含 14 条行为评测，覆盖全部八个技能。每条针对一条契约规则，断言的是**行为**而非措辞。例如：拒绝未对齐协议的对比、拒绝由单次随机种子得出「达到最优」、拒绝为幻灯修改数字、拒绝在缺产物时报告关卡通过。
+[evals/evals.json](evals/evals.json) 包含 26 条行为评测，覆盖全部八个技能。每条针对一条契约规则，断言的是**行为**而非措辞。例如：拒绝未对齐协议的对比、拒绝由单次随机种子得出「达到最优」、拒绝为幻灯修改数字、拒绝在缺产物时报告关卡通过。
 
 ## 来源与移植
 
 本包的构建方式是：盘点现有学术技能集合，提取其中可迁移的机制，再针对这五个方向重写。来源项目到落地机制的映射见 [docs/INTEGRATION.md](docs/INTEGRATION.md)，其中包含经核实的仓库身份、许可证、星标数，以及需要避开的 fork 陷阱。
 
-上游集合面向自然科学，因此其领域内容已全部弃用，只沿用其工作流机制。凡移植的机制，均**原样保留其数值阈值**，例如：从中位数起步的校准规则、评审循环轮次上限、试错预算上限、高分条件。
+上游集合的工作流机制被适配到这些领域；数值阈值只是本包默认值，不是已经验证的科学定律。
+本轮维护修正统计假设、门禁适用范围、预算量纲与工具限制，详见 [完善记录](docs/IMPROVEMENTS.zh-CN.md)。
 
 ## 目录结构
 

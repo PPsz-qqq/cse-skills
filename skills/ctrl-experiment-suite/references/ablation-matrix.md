@@ -86,8 +86,9 @@ interaction      = delta(A | B on) - delta(A | B off)
 ```
 
 Write the interaction with its dispersion, and state whether the interval contains zero. Three
-outcomes are reportable and all three are useful. An **additive** interaction interval contains
-zero, so the components contribute independently and no synergy may be claimed. A
+outcomes are reportable and all three are useful. An interaction interval containing zero is
+**inconclusive**, not proof of additivity or independence; additivity needs a pre-declared margin
+and a sufficiently narrow equivalence interval. No synergy is established by a null test. A
 **super-additive** interaction is positive with an interval excluding zero, and it is the only
 evidence that supports a complementarity claim. A **sub-additive or antagonistic** interaction
 means one component's gain shrinks or reverses when the other is present; report it, because it is

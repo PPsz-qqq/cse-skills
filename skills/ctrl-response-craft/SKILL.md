@@ -81,8 +81,8 @@ letter does not report it.
    strengthened, check the promotion condition for that statement in
    [verdicts-and-loops.md](../ctrl-shared/core/verdicts-and-loops.md). A superiority claim needs a
    protocol-matched comparison against that specific baseline, a mechanism claim needs an ablation
-   isolating the component under one protocol, and a claim across runs needs at least three runs
-   with dispersion. Where the condition is unmet, write the weaker true statement rather than the
+   isolating the component under one protocol, and a claim across runs needs a justified sample
+   size under the active axis default plus dispersion. Where the condition is unmet, write the weaker true statement rather than the
    stronger wording plus a hedge. A run that fails is reported as a failure with its reason, never
    as silence and never as a deferral without a reason.
 

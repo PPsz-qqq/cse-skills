@@ -126,9 +126,9 @@ pointer, or it is dropped.
     evaluated because an artifact is missing is `BLOCKED`, and names the missing input.
 
 11. **Apply the anti-sycophancy rule to push-back.** When the authors contest a finding, score
-    their counter-argument 1 to 5 on evidence quality. Concede only at 4 or above, meaning new
-    evidence that directly tests the concern's resolution test. Score 1 is an assertion, 3 is a
-    pointer to material that already existed. Never move a severity tier because the user is
+    their counter-argument 1 to 5 by relevance and sufficiency. Concede at 4 or above when evidence
+    directly closes the resolution test, including existing material the review missed. A bare
+    assertion is 1 and incomplete support is 3. Never move a severity tier because the user is
     displeased or the deadline is near, and never move one to sound rigorous.
 
 12. **Deliver, then report the loop outcome.** State `converged`, `budget exhausted with residual
