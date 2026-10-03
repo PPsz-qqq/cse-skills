@@ -1,0 +1,19 @@
+# Normalize line endings so the repository behaves the same on every platform.
+# Without this, Git on Windows rewrites every text file to CRLF on checkout, which shows up as
+# spurious diffs and can alter how scripts and generated files compare.
+* text=auto eol=lf
+
+# Explicit, so a checkout is byte-identical regardless of the host platform.
+*.md      text eol=lf
+*.json    text eol=lf
+*.cjs     text eol=lf
+*.js      text eol=lf
+*.ps1     text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+
+# Binary, never normalized.
+*.png     binary
+*.jpg     binary
+*.pdf     binary
+*.tgz     binary
