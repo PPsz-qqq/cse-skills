@@ -129,14 +129,17 @@ Cannot complete <request> as specified.
 
 ## Citation audit thresholds
 
-When auditing whether cited claims are supported by their sources, track two rates and report
-them with the audit:
+A citation audit directly reports support classifications and coverage, not its own accuracy.
+State the population, sample size/rule, locations read, inaccessible items and counts of
+`supported`, `overstated`, `unsupported`, `misattributed`, and `inaccessible`. Exclude inaccessible
+items from adjudicated denominators and expose their count; never silently count them as supported.
 
-- false negative rate, a supported claim wrongly flagged, target below 0.15;
-- false positive rate, an unsupported claim wrongly passed, target below 0.10.
-
-Sampling a subset and reporting the rate is honest. Claiming a full audit when a sample was
-checked is not. State the sample size and the sampling rule.
+False-negative and false-positive rates require **independent adjudicated ground truth**. Only
+then compute FNR = FN/(TP+FN) and FPR = FP/(TN+FP), with supported as the positive class. Keep the
+pack's heuristic targets below 0.15 and 0.10 respectively as calibration goals, not guarantees.
+Report counts and uncertainty; a zero denominator means `not estimable`. Without ground truth,
+write `FNR/FPR not estimable` rather than inventing rates or treating unsupported fraction as FPR.
+A sampled audit is never a full audit.
 
 ## Anti-patterns
 

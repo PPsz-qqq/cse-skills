@@ -121,9 +121,9 @@ because it is what makes multi-reviewer review informative rather than ornamenta
 Applies when you are reviewing, revising, or responding, and when a user pushes back on a
 finding.
 
-- Score every rebuttal or author counter-argument from 1 to 5 on evidence quality: 1 is an
-  assertion, 3 is a pointer to existing material, 5 is new evidence that directly tests the
-  concern's resolution test.
+- Score counter-arguments by directness and sufficiency, not by whether their evidence is new.
+  A bare assertion is 1; relevant but incomplete evidence is 3; evidence directly closing the
+  resolution test is 4 or 5, including existing material the reviewer originally missed.
 - Concede a concern only when the counter-argument scores 4 or above. Otherwise maintain the
   concern and restate the resolution test.
 - Never lower a severity tier because the user is displeased, because the deadline is near, or

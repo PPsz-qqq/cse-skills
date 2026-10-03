@@ -36,10 +36,11 @@ a gate-passed final artifact.
 - A null ablation is a result. Keep it in the table and discuss it; `ctrl-shared`
   `core/evidence-integrity.md` Rule 9 makes removing it a misconduct issue rather than a style
   choice.
-- Simulation and field evidence are different tiers. Label them wherever the number appears,
-  including table captions and the abstract.
-- Every number traces to a run directory. If it does not, the value is `[MISSING: <need>]` and the
-  claim is withdrawn from the manuscript.
+- Setting (`simulation` / `field` / `benchmark`), evidence tier and baseline provenance are
+  separate fields. Label the setting wherever results appear, including captions and the abstract.
+- Measured results resolve to checked run artifacts; reported results resolve to primary sources;
+  assumptions resolve to the plan/config. Mark missing or unchecked sources rather than treating
+  every external number as if it came from your own run directory.
 
 ## Workflow
 

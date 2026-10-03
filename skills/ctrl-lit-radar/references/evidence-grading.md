@@ -74,11 +74,11 @@ Procedure.
 4. Classify: `supported`, `overstated` (true but weaker in the source), `unsupported` (not in the
    source), `misattributed` (in another source), `inaccessible` (could not retrieve).
 
-Report both rates against the targets in
-[../../ctrl-shared/core/verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md). The false
-negative rate, meaning a supported claim wrongly flagged, has a target below 0.15. The false positive
-rate, meaning an unsupported claim wrongly passed, has a target below 0.10. State the sample size.
-Claiming a full audit after checking a sample is itself a false claim.
+Report classifications, coverage and inaccessible count. FNR/FPR require independent adjudicated
+ground truth and the denominators defined in
+[verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md); without it write `not estimable`.
+Do not turn the fraction of unsupported citations into the evaluator's FPR, or report target
+thresholds as measured accuracy. A sampled audit is not a full audit.
 
 ## Claim strength calibration ladder
 

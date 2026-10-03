@@ -136,9 +136,9 @@ Killer objection loop: converged | budget exhausted with residual defects | stop
 
 - **The soft memo.** A memo that reads like a review with suggestions is not an attack and finds
   nothing. It must name a rejection reason.
-- **The defender adjudicator.** An adjudicator that explains why each point is already handled has
-  been replaced by the author, and the mechanism is dead. Check that at least one point came back
-  `still_unresolved`; if none did, the adjudication was not independent.
+- **The defender adjudicator.** An adjudicator that declares every point handled without evidence
+  is acting as a defender. Check the pointers, not a quota: all points may genuinely be answered.
+  Zero `still_unresolved` findings is not proof of contamination and never licenses inventing one.
 - **The severity downgrade.** A point that challenges the central case is never `Minor`, however
   easy it is to describe. See the severity tiers in
   [../../ctrl-shared/core/review-rubrics.md](../../ctrl-shared/core/review-rubrics.md).

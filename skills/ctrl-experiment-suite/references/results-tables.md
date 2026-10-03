@@ -22,7 +22,7 @@ forgotten.
 | Method | Tier | Protocol labels | Metric A | Metric B | Cost | Notes |
 |--------|------|-----------------|----------|----------|------|-------|
 | Baseline X (reported) | reported | <its own protocol> | <value> | <value> | <value> | not comparable, <difference> |
-| Baseline Y (re-implemented) | re-implemented | <our protocol> | <mean> +- <sd> | <mean> +- <sd> | <value> | 3 seeds |
+| Baseline Y (re-implemented) | measured | <our protocol> | <mean> +- <sd> | <mean> +- <sd> | <value> | 3 seeds |
 | Ours (component off) | measured | <our protocol> | <mean> +- <sd> | <mean> +- <sd> | <value> | 3 seeds |
 | Ours | measured | <our protocol> | <mean> +- <sd> | <mean> +- <sd> | <value> | 3 seeds |
 ```

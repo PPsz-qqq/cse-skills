@@ -30,8 +30,9 @@ Report the loop outcome in exactly one of these forms.
 Loop outcome: converged - expansion <n> added <k> new distinct relevant items, below the declared
 threshold of <t>, so the loop stopped by rule after <n> expansion(s).
 
-Loop outcome: budget exhausted with residual defects - three expansions run, marginal yield still at
-<k> new distinct relevant items, and the following areas remain under-covered: <list>.
+Loop outcome: budget exhausted with residual defects - <n> of <declared tier budget> expansions
+run; saturation was not demonstrated, with these residual coverage gaps: <list>. A one-pass sketch
+is budget-limited, not proof of saturation. Corpus/deep-read targets are planning guides, never quotas.
 
 Loop outcome: stopped by user - the user ended the search at expansion <n>, with these residual
 coverage gaps: <list>.

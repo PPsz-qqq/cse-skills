@@ -1,5 +1,7 @@
 # ctrl-skills
 
+English | [中文](README.zh.md)
+
 An agent-skill pack for research and publication in 控制科学与工程 (Control Science and
 Engineering), covering five application axes.
 
@@ -92,7 +94,9 @@ General academic-writing advice does not cover the things that actually decide t
 - **Axis-specific evidence obligations.** Tracking numbers require detector provenance and the
   public-versus-private detection label. Cooperative navigation requires a distribution proof
   and a communication model with delay and loss. Filtering requires Monte Carlo consistency
-  evidence, NEES or ANEES against chi-square bounds with `N * T * n_x` degrees of freedom.
+  evidence, NEES or ANEES against chi-square bounds. The default is a per-time-step evaluation
+  with `N * n_x` degrees of freedom; pooling over `N * T * n_x` is permitted only when
+  independence holds or the correlation has been handled by a calibrated method.
 - **Metric precision.** `mAP` is meaningless without its averaging convention; `MOTA` without the
   detection protocol is not comparable to anything; `FPPI` is an operating rate while `LAMR` is
   the summary metric. Conventions are pinned in
@@ -180,6 +184,7 @@ caps, and the top-score condition.
 ```text
 ctrl-skills/                 the repository root
   README.md             this file
+  README.zh.md          中文说明
   INSTALL.md            install, verification, and uninstall
   skills/               the skill root: exactly the eight bundles, nothing else
     ctrl-shared/          the shared contract

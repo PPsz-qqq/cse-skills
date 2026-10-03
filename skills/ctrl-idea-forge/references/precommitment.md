@@ -10,9 +10,12 @@ describable in a way that sounds reasonable. Written first, the same threshold i
 
 ## When to freeze
 
-Freeze before the first run whose result could change the plan. A pilot run is permitted before the
-freeze, because a pilot exists to decide whether to freeze at all, but the pilot ledger is carried
-into the frozen plan so its influence is visible.
+Freeze before the first **confirmatory** run or inspection of confirmatory outcomes. Exploratory
+pilots may precede it and inform hypotheses, practical margins and sample-size estimates; retain
+the pilot ledger and state every influenced choice. Pilot data must not be relabelled confirmatory
+or reused as independent confirmation of choices selected from those data. If confirmatory outcomes
+already exist, report the analysis as exploratory and freeze a new plan for independent validation;
+a later timestamp cannot make the original study pre-registered.
 
 Freeze happens once per plan revision. If the plan changes materially, re-freeze with a new date and
 keep the previous frozen version. The artifact contract requires that a frozen artifact is never
@@ -105,7 +108,7 @@ Weak and strong forms.
 | Weak, fails G1 | Strong, passes G1 |
 |---|---|
 | "if the results support the hypothesis, proceed" | "if the mean delta over 3 seeds exceeds X on the primary metric with matched protocol, proceed to the full evaluation; report the per-seed values and dispersion regardless" |
-| "if not, reconsider" | "if the mean delta is within one standard deviation of zero, the hypothesis is inconclusive; run 3 additional seeds once, and if the pooled result remains within one standard deviation of zero, report the null result under the fallback claim" |
+| "if not, reconsider" | "if the pre-declared interval on the difference crosses the practical decision margin, report an inconclusive result; any extension follows the pre-specified sequential design with error control, or uses a new independent confirmatory phase" |
 | "if reviewers object, revise" | "if the killer objection's primary reason is still_unresolved at round 2, narrow the claim to the tested regime before drafting" |
 
 ## Deviations

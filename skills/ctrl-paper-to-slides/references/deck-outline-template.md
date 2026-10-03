@@ -26,7 +26,13 @@ built, but the outline records the gate state and the results slides carry the `
 
 ## Slide list
 
-Each entry is a slide. Keep the sequence and delete the ones that do not apply.
+Each entry is a candidate slide, not a mandatory fourteen-slide deck. The example timings below
+sum to 670 seconds and are illustrative, not a complete 15-minute budget. Allocate actual timings
+from the speaking slot (excluding questions); move unnecessary detail to backup slides.
+
+For 3 minutes, use title/problem (12 s), gap/idea (35 s), method (50 s), one result (50 s),
+boundary/contact (15 s): 162 s, with 18 s reserve. For 5 minutes, use 6 slides timed
+15/40/65/65/55/30 s: 270 s, with 30 s reserve. Do not force the full architecture into a teaser.
 
 ```markdown
 ## S1. Title
@@ -147,9 +153,11 @@ the slides, and check it after.
 
 Rules that keep the budget honest.
 
-- The per-slide numbers in the outline must sum to the talk length minus 10 percent. The remainder
-  is the overrun every talk experiences.
-- A slide at 90 seconds is a slide the presenter talks over. Reduce its content or split it.
+- Sum main-body timing only, excluding backups and questions. Plan at most 90 percent of available
+  speaking time; record the exact sum and reserve. Underfilling is acceptable for a concise talk,
+  but label the difference rather than claiming an exact 90-percent allocation.
+- A 90-second slide may be appropriate for a key method figure; rehearse it. Split or simplify it
+  when it carries multiple messages, not merely because of its duration.
 - Never plan to speak at the slide count the venue's template implies. Venue templates run long.
 - If the sum exceeds the slot, cut a slide rather than speeding up. Speaking faster is how a
   method slide becomes incomprehensible.

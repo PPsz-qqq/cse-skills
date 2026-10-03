@@ -79,12 +79,14 @@ produces them.
 Set the threshold from the smallest difference that would matter, not from the largest difference you
 hope for.
 
-1. Find the seed-to-seed or run-to-run spread for the metric on the chosen benchmark, from the
-   literature if it is reported, otherwise from a pilot. If nothing is available, mark the threshold
-   as provisional and say it will be fixed after the first three-seed run.
-2. Set the threshold above that spread. A threshold inside the noise band will refute the hypothesis
-   randomly.
-3. Ask what decision changes at the threshold. If no decision changes, the threshold is decorative.
+1. Choose a practical margin from the task's decision cost or an external requirement, and record
+   its rationale before confirmatory outcomes. A provisional margin means G1 cannot yet freeze.
+2. Estimate variance from verified literature or a labelled exploratory pilot for power/sample-size
+   planning. Do not require the practical margin to exceed an individual arm's standard deviation;
+   uncertainty belongs in the interval/test on the difference. If a pilot informs the margin, retain
+   that influence and validate on independent confirmatory data under a fresh freeze.
+3. State the support, refutation and inconclusive regions and their statistical treatment. Do not
+   set the margin after the first confirmatory three-seed run or repeatedly add seeds until it passes.
 
 For `filt`, the threshold should be stated for both accuracy and consistency. An RMSE threshold plus
 an ANEES-within-bounds condition, because a filter that is accurate and inconsistent is broken.

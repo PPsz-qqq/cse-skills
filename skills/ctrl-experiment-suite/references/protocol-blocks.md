@@ -14,7 +14,7 @@ not rename fields, because a renamed field cannot be reconciled later.
 - Axis: det | track | reid | cnav | filt
 - Dataset and split: <dataset, version, split id, and how the split was built>
 - Task and metric definitions: <metric names with their exact convention>
-- Arms: <arm name (measured | re-implemented | reported) with per-arm deviations>
+- Arms: <arm name; tier measured/reported/assumed; provenance original/re-implemented/copied; setting; per-arm deviations>
 - Seeds and runs: <count, exact seed list or policy, dispersion reported where>
 - Hardware and environment: <device, count, framework and version, determinism flags>
 - <per-axis fields, in the order given for the active axis>

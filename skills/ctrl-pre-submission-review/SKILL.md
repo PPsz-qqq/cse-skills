@@ -36,8 +36,10 @@ pointer, or it is dropped.
 - Read [review-rubrics.md](../ctrl-shared/core/review-rubrics.md) first. It holds the normative
   eight dimensions, severity tiers, concern record format, and the two rules that precede any score.
 - A review is itself a claim. Apply the self-audit obligation before delivering it.
-- Independent review means independent context. Three reports written in one context are one
-  review written three times. Produce them in separate contexts, or say plainly that they were not.
+- Multiple simulated reports require isolated contexts to avoid leakage. Isolation is not proof
+  of cognitive or statistical independence, especially with the same model and prompt. Label the
+  reports `context-isolated simulated reviews`; agreement is not an estimate of real reviewers'
+  acceptance probability. Shared-context drafts are non-blind, not an independent panel.
 - Never invent a concern to look balanced, and never suppress one to be agreeable. If a severity
   level has no grounded concern, write that sentence.
 - Assume the user will show the review to a co-author. Write findings that survive being checked

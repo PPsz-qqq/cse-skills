@@ -27,8 +27,9 @@ a gate-passed final artifact.
 
 - A search result is a candidate, not a source. Nothing enters an artifact until it has been read to
   the depth its role requires.
-- Cite the depth you actually reached. "Read in full", "abstract only" and "title only" are three
-  different grades and only the first may carry a numeric claim. See
+- Cite the depth actually reached: `full`, `methods`, `abstract`, `title` or `secondary`.
+  Numeric use needs the primary table/method and protocol (`methods` or `full`), not an abstract.
+  `full` means the claim-relevant material was read; do not imply the whole paper was read. See
   [references/evidence-grading.md](references/evidence-grading.md).
 - An empty result is a result. "No directly overlapping work was retrieved under these keywords"
   is an honest and publishable statement. "First to do X" is not, unless the search that supports it
@@ -61,10 +62,10 @@ a gate-passed final artifact.
    lowercase, then a title key. A near-identical title is a match candidate, not a match. Cross-index
    triangulation rules are in [references/evidence-grading.md](references/evidence-grading.md).
 
-5. **Run expansions 2 and 3.** Expansion 2 is backward citation of the strongest hits. Expansion 3 is
-   forward citation plus the adjacent-subcommunity source the first two missed (for example a control
-   venue for a `track` paper, or a remote-sensing venue for a `det` paper). Record the marginal yield
-   of each expansion as new distinct relevant items.
+5. **Run only the expansions allowed by the declared tier and stop rule.** Expansion 2 is backward
+   citation; expansion 3 is forward citation plus an adjacent-subcommunity sweep. A `sketch` runs
+   one expansion, `standard` at most two, and deeper tiers at most three. Apply the stop check after
+   reading/classifying each expansion; never claim later yields for unrun expansions.
 
 6. **Read to the required depth.** For each item that will carry a claim, open the primary source and
    read the specific table, section or figure the claim needs. Record the location. If the full text
@@ -72,8 +73,9 @@ a gate-passed final artifact.
    `[UNVERIFIED]`.
 
 7. **Grade every source.** Assign the read depth and the tier (`measured` / `reported` / `assumed`).
-   Apply the citation audit rate targets (false negative below 0.15, false positive below 0.10) to a
-   stated sample, and report the sample size and the sampling rule. See
+   Report the citation-support classifications, sample size/rule and inaccessible items. Estimate
+   false-negative/positive rates only against independent adjudicated truth; otherwise report
+   `FNR/FPR not estimable`. See
    [references/evidence-grading.md](references/evidence-grading.md).
 
 8. **Build the nearest-competitor ledger.** For each of the three to five closest works, record the
@@ -111,7 +113,7 @@ Literature radar report
 
 | # | Work (author year, venue) | Identifier | Read depth | Tier | What it establishes | Where we differ |
 |---|---------------------------|------------|------------|------|---------------------|-----------------|
-| 1 | | arXiv: / DOI: | full / abstract / title | measured / reported / assumed | | |
+| 1 | | arXiv: / DOI: | full / methods / abstract / title / secondary | measured / reported / assumed | | |
 
 Nearest competitors, strongest first
 - <work>: differs on <axis>; evidence <location in the primary source>

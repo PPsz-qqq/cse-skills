@@ -5,9 +5,11 @@ post-freeze synthesis. This file is normative for `ctrl-pre-submission-review`. 
 in [review-rubrics.md](../../ctrl-shared/core/review-rubrics.md) under `Reviewer independence`, and
 the procedure below is the operational expansion.
 
-The premise is simple. Three opinions produced in one context are one opinion with three
-signatures. Isolation is the only thing that makes agreement informative, so the protocol spends
-its effort on keeping contexts apart and on never repairing that separation after the fact.
+Context isolation limits direct information leakage; shared-context drafts do not form a blind
+panel. Isolation does not guarantee statistical or cognitive independence, especially for repeated
+runs of the same model. Label output `context-isolated simulated reviews`, record model routes when
+known, and never interpret overlap as the probability that real reviewers would agree. `consensus`
+below is only a post-freeze label for concerns separately raised in at least two isolated reports.
 
 ## Artifact inventory
 
@@ -40,8 +42,9 @@ The packet is the only manuscript-derived material a reviewer sees. Build it onc
 - Severity tiers: Blocking, Major, Minor, Question
 - Active axes: <primary and secondary>
 - Rules: evidence pointer or drop, no concern quota, no invented locations
-## Reviewer briefs
-- R1 <path>  R2 <path>  R3 <path>
+## Brief access
+- Each invocation receives only its own brief path outside this common packet.
+- The full brief inventory is kept author-side, not in the reviewer-visible packet.
 ```
 
 Forbidden packet contents, without exception:
@@ -108,8 +111,11 @@ Rules that hold on every path:
   used to estimate how many real reviewers would raise a given concern.
 - Context compaction does not restore isolation. If a reviewer's context later receives another
   report, the round is `NON-BLIND` from that point.
-- Cross-model dispatch is a bonus when available, never a substitute for context separation. The
-  same model in two isolated contexts is a valid panel. Two models in one context are not.
+- Use fresh minimal contexts, not a fork inheriting prior reports. Shared files still permit leaks:
+  explicitly restrict reviewers to the packet artifacts and their own brief, never sibling reports.
+- Cross-model dispatch can diversify perspectives but does not guarantee independence. Same-model
+  isolated reports are useful simulated views, not independent human peer reviews. Two models in one
+  shared context do not restore blindness.
 
 ## Step 4, the reviewer instruction block
 

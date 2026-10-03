@@ -88,10 +88,10 @@ Run the decision as a table, one row per request, and put it in the revision pla
 
 | Question | If yes | If no |
 |---|---|---|
-| Is the requested comparison actually comparable under our protocol? | run it | rebut with the protocol difference and offer the control run |
+| Is the requested comparison actually comparable under our protocol? | continue to the remaining checks, not an automatic run decision | explain the mismatch and assess a matched control instead |
 | Is the missing artifact already obtainable from runs we have? | produce it from existing logs, no new compute | estimate the new compute cost |
 | Does the cost fit inside the remaining days at the stated budget? | run it | decline or defer, and say so plainly |
-| Does the result, whatever it shows, strengthen or weaken our claim? | run it. A negative result reported honestly strengthens the paper | run it anyway and report both outcomes. Pre-committing to report either outcome is what makes running it honest |
+| Have we committed to retaining both positive and negative outcomes? | record that reporting commitment; other checks decide whether to run | resolve the reporting commitment before any run; never select whether to report after seeing results |
 | Would the result change a reader's decision? | run it | decline, and say the request would not change the conclusion |
 | Is the request within the paper's stated scope? | run it | restate the scope, and offer a limitation entry instead |
 
@@ -141,7 +141,9 @@ report non-convergence to the user rather than to run another round.
 
 ## Multi-round stop rule
 
-The review-and-revise loop has a budget of four rounds. Stop when the weighted score is at least 6
-of 10 and the verdict is `ready` or `almost`, or earlier on a `PASS` with no blocking concern. If the
-fourth round has not converged, report non-convergence and name the unrepaired defect. Do not run a
-fifth round to look responsive.
+Use the shared stop rule in
+[verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md): at most four rounds, readiness
+at least 6/10 and recommendation `Accept` or `Minor revision`, with no unresolved Blocking concern;
+stop earlier on an applicable `PASS` with none open. Missing inputs remain `BLOCKED`, evaluated
+unmet criteria `FAIL`. At the cap report `budget exhausted with residual defects` and name them;
+never introduce `ready`/`almost` verdicts or run a fifth round silently.

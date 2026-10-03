@@ -33,9 +33,10 @@ a gate-passed final artifact.
   needs an ablation chain; a theory claim needs a proof; a system claim needs an integration that
   runs. Never let the ambition of the claim outrun the evidence class. See
   [references/contribution-typing.md](references/contribution-typing.md).
-- Pilot work is capped, and the cap is not a suggestion. The budget is 2 hours per pilot idea, a
-  3-hour hard timeout, at most 3 pilot ideas, and 8 GPU-hours in total. A pilot that exceeds the
-  estimate is skipped and flagged, not extended. See [references/pilot-budget.md](references/pilot-budget.md).
+- Pilot work uses a recorded budget. The standard limits are 2 estimated wall-clock hours per
+  idea, a 3-hour enforced ceiling, at most 3 ideas and 8 total GPU-hours. Read the chosen tier,
+  reservation and executor rules in [references/pilot-budget.md](references/pilot-budget.md).
+  A higher effort tier alone never authorizes more compute or guarantees timeout enforcement.
 - Novelty is bounded by the recorded search, never asserted. The nearest-competitor ledger from
   `ctrl-lit-radar` is the input, and the novelty promotion condition in
   [../ctrl-shared/core/verdicts-and-loops.md](../ctrl-shared/core/verdicts-and-loops.md) is the gate.
@@ -74,10 +75,11 @@ a gate-passed final artifact.
    needs a fallback contribution declared in advance, namely the weaker true claim that survives if
    the main hypothesis is refuted.
 
-7. **Run the pilot under the hard budget.** Maximum 2 hours per idea, 3-hour timeout, at most 3
-   ideas, 8 GPU-hours total. Record the estimate before the run, the actual after, and whether the
-   budget stopped it. A pilot that exceeds the estimate is skipped and flagged as needing a manual
-   pilot. See [references/pilot-budget.md](references/pilot-budget.md).
+7. **Plan an exploratory pilot under the chosen budget.** Record its question, wall-clock cap,
+   GPU reservation and enforceable cancellation mechanism before any launch. Execute only with an
+   authorized tool and user-approved resources; otherwise deliver the plan as `not run`. Retain
+   outcomes and influenced choices, never promote the pilot into confirmatory evidence. See
+   [references/pilot-budget.md](references/pilot-budget.md).
 
 8. **Produce the killer objection.** Write the strongest 200-word rejection memo a hostile area chair
    would write, then have it adjudicated by an independent pass that is not a defender. Classify each
@@ -173,9 +175,11 @@ Gate G1 proposal freeze: PASS | FAIL | BLOCKED
   Reopen the gate instead and record the reason.
 - Never state a hypothesis that no experiment could refute. "The method will perform well" is not a
   hypothesis.
-- Never let a pilot exceed 2 hours of estimated work or 3 hours of wall clock. Skip it and flag it.
-- Never run more than 3 pilot ideas or exceed 8 total GPU-hours without reopening G1 as a new,
-  dated decision.
+- Never exceed the chosen pilot limits or start an unreserved/uncontrolled run. Standard limits
+  are 2 estimated wall-clock hours, a 3-hour ceiling, 3 ideas and 8 total GPU-hours; other limits
+  require the decisions in the pilot-budget reference.
+- Never call a post-hoc rule pre-declared for already inspected outcomes. Keep pilot influence
+  visible and freeze before independent confirmatory evaluation.
 - Never claim novelty beyond what the recorded search supports, and never treat a near-miss title as
   proof of duplication or a different title as proof of novelty.
 - Never invent a baseline, a dataset split, a hardware fact, or a preliminary result. Mark it

@@ -53,8 +53,8 @@ The outline is the source of truth. The deck is a rendering of the outline, rege
 
 2. **Build the timing budget before the slides.** Use the slot table in
    [references/deck-outline-template.md](references/deck-outline-template.md). Fix the slide count
-   from the budget, not the other way round. The per-slide seconds must sum to the talk length minus
-   ten percent.
+   from the available speaking time, excluding questions and backups. Plan at most 90 percent of
+   that time and report the exact sum/reserve; template times are examples, not a promised fit.
 
 3. **Draft the outline sequence.** Use the standard architecture: title, problem, motivation, gap,
    contributions, method overview with the one key figure, method detail, experiment setup, main
