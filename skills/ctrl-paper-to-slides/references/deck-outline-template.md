@@ -14,15 +14,21 @@ Name the outline `slides/<venue>-<year>-<slug>-outline.md` and the deck
 - Venue and slot: <venue> <year>, <oral | spotlight | poster teaser | defense | group meeting>
 - Talk length: <n> minutes plus <n> minutes of questions
 - Presenter: <name>
-- Paper revision presented: <path> hash <sha256 prefix>
-- Ledger: ctrl-claims.md, rows presented: <C1, C3, C7, ...>
-- Gate status at build time: G2 <pass | fail>, G3 <pass | fail | waived>
+- Paper revision presented: <path> hash <sha256 prefix | not computed, with version and date>
+- Ledger: ctrl-claims.md, rows presented: <C1, C3, C7, ...>, or the scoped source ledger
+- Gate status at build time: G2 <PASS | WARN | FAIL | BLOCKED | ERROR | NOT_APPLICABLE>,
+  G3 <same six verdicts>, waiver <none | G3 waiver: user decision, scope, residual risk>
 - Build date: <date>
 ```
 
 `Paper revision presented` matters. A deck built from a preprint and presented after a revision is
-a mismatch, and the hash is what makes it visible. If G3 has not passed, the deck may still be
-built, but the outline records the gate state and the results slides carry the `preliminary` marker.
+a mismatch, and the hash is what makes it visible; without a hashing tool, record the file version
+and date and write `hash not computed` rather than inventing one. If G3 has not passed, the deck may
+still be built, but the outline records the gate state and the results slides carry the
+`preliminary` marker. A G3 waiver is recorded beside the verdict; it never turns the verdict into a
+pass. For a talk on another group's paper, or a lab talk without this pack's ledger, use the scoped
+source ledger described in the skill: every number is `reported` with its source table or figure,
+and no G2 or G3 history is invented.
 
 ## Slide list
 
@@ -142,22 +148,27 @@ B8 is allowed to be dense. It exists to settle a dispute, not to be read from th
 The talk length sets the slide count and the seconds per slide. Build the budget before building
 the slides, and check it after.
 
-| Slot | Slides | Main-body seconds | Notes |
-|---|---|---|---|
-| 5-minute lightning | 6 to 8 | about 40 s per slide | two results slides maximum, no ablation slide |
-| 10-minute spotlight | 10 to 12 | about 45 s per slide | one ablation slide |
-| 15-minute oral | 14 to 16 | about 50 s per slide | the sequence above fits with room for one extra results slide |
-| 20-minute oral | 18 to 22 | about 55 s per slide | add a related-work slide and a second ablation slide |
-| 45-minute defense | 35 to 45 | about 60 s per slide | add the full related-work and methodology walkthrough |
-| 3-minute poster teaser | 4 to 5 | about 35 s per slide | problem, gap, contribution, one result, contact |
+| Slot | Slides | Typical seconds per slide | Main-body cap at 90 percent | Notes |
+|---|---|---|---|---|
+| 3-minute poster teaser | 4 to 5 | about 32 | 162 s | problem, gap, contribution, one result, contact |
+| 5-minute lightning | 5 to 6 | about 45 | 270 s | two results slides maximum, no ablation slide |
+| 10-minute spotlight | 10 to 12 | about 45 | 540 s | one ablation slide |
+| 15-minute oral | 14 to 16 | about 50 | 810 s | the sequence above fits with room for one extra results slide |
+| 20-minute oral | 16 to 19 | about 55 | 1080 s | add a related-work slide and a second ablation slide |
+| 45-minute defense | 32 to 40 | about 60 | 2430 s | add the full related-work and methodology walkthrough |
+
+The ranges are chosen so that the largest slide count multiplied by the typical seconds per slide
+stays inside the cap. The cap, not the slide count, is the binding constraint.
 
 Rules that keep the budget honest.
 
 - Sum main-body timing only, excluding backups and questions. Plan at most 90 percent of available
   speaking time; record the exact sum and reserve. Underfilling is acceptable for a concise talk,
   but label the difference rather than claiming an exact 90-percent allocation.
-- A 90-second slide may be appropriate for a key method figure; rehearse it. Split or simplify it
-  when it carries multiple messages, not merely because of its duration.
+- A 90-second slide may be appropriate for a key method figure; the presenter should rehearse it.
+  Split or simplify it when it carries multiple messages, not merely because of its duration.
+- An agent cannot rehearse a talk. Unless the user reports a timed run, the build report says
+  `rehearsal: not performed`, and timing is a planned budget rather than a verified delivery time.
 - Never plan to speak at the slide count the venue's template implies. Venue templates run long.
 - If the sum exceeds the slot, cut a slide rather than speeding up. Speaking faster is how a
   method slide becomes incomprehensible.
@@ -168,13 +179,13 @@ Every number that appears on a slide or in the speaker notes carries its ledger 
 outline. Before the deck is used, check the annotation.
 
 ```text
-[ ] Every number on a slide appears in a ledger row with Gate = G2 pass
+[ ] Every number on a slide appears in a ledger row with Gate = G2 PASS, or in the scoped source ledger as `reported` with its location
 [ ] No number on a slide differs from the manuscript at the same precision
 [ ] Every percentage states absolute or relative, on the slide itself
 [ ] Every comparison on a slide names the protocol qualifier, at least in the notes
 [ ] No number was recomputed for the slide
 [ ] No number appears on a slide that is absent from the manuscript
-[ ] Each result slide records the revision hash it was built from
+[ ] Each result slide records the revision it was built from (hash when computable)
 ```
 
 If a number the audience will ask about is not in the ledger, the slide does not show it. The

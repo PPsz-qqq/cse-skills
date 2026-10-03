@@ -1,15 +1,11 @@
 ---
 name: ctrl-paper-to-slides
 description: >-
-  Convert an accepted or submitted control-science-and-engineering paper into a conference, oral,
-  or defense deck across object detection (目标检测), tracking (目标跟踪), re-identification
-  (重识别), cooperative navigation (协同导航), and filtering or state estimation (滤波). Builds a
-  Markdown outline as the source of truth, chooses and regenerates figures, enforces a per-minute
-  timing budget, traces every number on a slide to a G2-passed ledger row, and prepares the
-  anticipated-question bank with backup slides. Use it when the user asks for 论文做PPT, 学术汇报,
-  组会汇报, 答辩PPT, 会议报告, 幻灯片, paper to slides, conference talk, oral presentation deck,
-  defense slides, or a poster teaser for CVPR, ICCV, ECCV, TAC, T-RO, ICRA, TGRS, 自动化学报, or a
-  comparable venue.
+  Use when turning a paper on detection, tracking, re-ID, cooperative navigation or filtering
+  (目标检测, 跟踪, 重识别, 协同导航, 滤波) into a talk: 论文做PPT, 学术汇报, 组会汇报, 答辩PPT,
+  会议报告, 幻灯片, conference or oral talk, defense deck, poster teaser. Builds a Markdown outline
+  first, then a timing budget, figure reuse plan, backup Q&A slides and speaker notes; every slide
+  number traces to a checked source, and .pptx or PDF export is claimed only when tools exist.
 ---
 
 # CTRL paper to slides
@@ -49,7 +45,9 @@ The outline is the source of truth. The deck is a rendering of the outline, rege
 1. **Fix the slot and the gate state.** Record the venue, the talk length, the question time, the
    audience, the language, and whether the paper's G2 and G3 have passed. If G3 has not passed, the
    deck may still be built, but every results slide carries a `preliminary` marker and the outline
-   records the gate state.
+   records the gate state. For a paper already accepted by a venue, record the acceptance (venue,
+   decision date, camera-ready revision) instead: G3 is `NOT_APPLICABLE`, no `preliminary` marker
+   is needed, and every number still traces to the accepted version.
 
 2. **Build the timing budget before the slides.** Use the slot table in
    [references/deck-outline-template.md](references/deck-outline-template.md). Fix the slide count
@@ -98,11 +96,15 @@ The outline is the source of truth. The deck is a rendering of the outline, rege
 11. **Run the rendered check on the exported artifact.** Every slide legible at 50 percent zoom, no
     overlap, no stretched figure, no missing font or glyph, the timing budget recomputed from the
     actual slides, and every number traceable. The checklist is at the end of
-    [references/slide-design-rules.md](references/slide-design-rules.md).
+    [references/slide-design-rules.md](references/slide-design-rules.md). Visual items need a
+    renderer you can inspect; without one, report `rendered check: not performed` and list what
+    stayed unchecked.
 
-12. **Rehearse against the clock once and report the result.** A deck that has never been timed is
-    an untested artifact. If the rehearsal overruns, cut slides rather than speeding up. Record the
-    question log after the talk, since a question asked twice is a finding about the paper.
+12. **Hand the timing check to the presenter.** A deck that has never been timed is an untested
+    artifact, and an agent cannot rehearse it. Ask the presenter for one timed run; record its
+    result if reported, otherwise `rehearsal: not performed`. If a run overruns, cut slides rather
+    than speeding up. Record the question log after the talk, since a question asked twice is a
+    finding about the paper.
 
 ## Output format
 
@@ -112,9 +114,10 @@ Outline, at `slides/<venue>-<year>-<slug>-outline.md`. Full template in
 ```text
 # <paper title>
 - Venue and slot: <venue> <year>, <oral | spotlight | defense>, <n> min plus <n> min questions
-- Paper revision presented: <path> hash <sha256 prefix>
-- Gate status at build time: G2 <pass | fail>, G3 <pass | fail | waived>
-- Ledger rows presented: <C1, C3, C7>
+- Paper revision presented: <path> hash <sha256 prefix | not computed, with version and date>
+- Gate status at build time: G2 <one of the six verdicts>, G3 <one of the six verdicts>
+- G3 waiver: <none | explicit user decision, scope, residual risk; the verdict is unchanged>
+- Ledger rows presented: <C1, C3, C7, or scoped source-ledger IDs>
 
 ## S1. Title
 - One line: <the title exactly as submitted>
@@ -153,8 +156,9 @@ Deck build report
 - Numbers presented: <n> claims, all G2 pass | <n> rows not at G2 pass, listed
 - Figures: <n> reused, <n> regenerated, scripts present for all regenerated
 - Export: <format produced, tool and version used, date checked>
-- Rendered check: <pass | the specific defect found>
-- Not done: <rehearsal not timed, PDF not produced, fonts not embedded, or none>
+- Rendered check: <pass | the specific defect found | not performed, no renderer>
+- Rehearsal: <timed by the presenter at n s | not performed>
+- Not done: <PDF not produced, fonts not embedded, or none>
 ```
 
 ## Export
@@ -199,7 +203,9 @@ Rules for the export step.
   revised, and then the ledger and the manuscript change together.
 - Never present simulation as field data, in the body or in the notes. State it on the slide.
 - Never claim an exported file that does not exist, and never describe a Markdown outline as a deck.
-- Never present results as final when G3 has not passed. Mark them `preliminary` on the slide.
+- Never present results of an unaccepted paper as final when G3 has not passed. Mark them
+  `preliminary` on the slide. A recorded G3 waiver does not change this marker, because a waiver is
+  not a pass.
 - Never carry a validity boundary in the notes alone when the results slide could mislead without
   it. The boundary that matters goes on the slide.
 - Never invent a number in the speaker notes, and never round a remembered value into one.

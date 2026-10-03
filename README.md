@@ -86,8 +86,9 @@ assertion.
 | `G2` evidence freeze | Does each in-scope claim resolve and each comparison hold? | unverified final claims, not diagnostic review or local editing |
 | `G3` submission readiness | Would this survive its own reviewer? | submission |
 
-`G2` has no waiver path. `G0` and `G3` may be waived only on explicit user instruction, with the
-residual risk recorded. Definitions and pass criteria are in
+`G1` and `G2` have no waiver path. `G0` and `G3` may be waived only on explicit user instruction,
+with the residual risk recorded; the waiver is logged beside the unchanged verdict and is never a
+pass. Definitions and pass criteria are in
 [ctrl-shared/core/gate-contract.md](skills/ctrl-shared/core/gate-contract.md).
 
 ## What makes it domain-specific
@@ -112,7 +113,8 @@ General academic-writing advice does not cover the things that actually decide t
   TAC reviewer rejects on. See
   [ctrl-shared/core/venue-matrix.md](skills/ctrl-shared/core/venue-matrix.md).
 - **Chinese-language venue requirements.** 创新点 stated as explicit points, a real Chinese
-  abstract rather than a translation, 基金项目 and 中图分类号 fields, GB/T 7714 references.
+  abstract rather than a translation, 基金项目 and 中图分类号 fields, references in the GB/T 7714
+  edition the journal names (GB/T 7714-2025 replaced the 2015 edition on 2026-07-01).
 
 ## Design rules the pack enforces on itself
 
@@ -139,13 +141,16 @@ The eight bundles live in the `skills/` directory of this repository, which cont
 skills, so it can be handed to DSH directly or copied elsewhere as-is.
 
 ```powershell
+powershell -File tools/install.ps1 -WhatIf   # preview the plan, change nothing
 powershell -File tools/install.ps1           # junction into ~/.dsh/skills
-powershell -File tools/install.ps1 -Remove   # remove only what was installed
+powershell -File tools/install.ps1 -Remove   # remove only what this installer owns
 ```
 
 The installer finds `skills/` automatically and falls back to the repository root if the bundles
-are stored inline. Full options, root priority, verification steps, and a manual fallback are in
-[INSTALL.md](INSTALL.md).
+are stored inline. It never deletes data it does not own: links are removed without touching their
+targets, copies carry an ownership record, and `-Force` moves unowned directories to a backup folder
+instead of deleting them. Full options, root priority, verification steps, and a manual fallback are
+in [INSTALL.md](INSTALL.md).
 
 ## Validate
 
@@ -154,15 +159,19 @@ node tools/validate-skills.cjs              # defaults to skills/
 node tools/validate-skills.cjs --fix-bom    # also repair a UTF-8 BOM in place
 node tools/check-dsh-discovery.cjs skills   # offline compatibility, not live activation
 node --test tools/skill-tools.test.cjs      # structural/discovery regression fixtures
+node --test tools/install.test.cjs          # installer ownership rules, Windows, temp dirs only
 ```
 
 The validator checks frontmatter presence and keys, kebab-case `name` matching the directory
-name, boolean spelling of invocation keys, description length, frontmatter closure, a UTF-8 BOM,
-unresolved `TODO`/`TBD` markers, every relative markdown link, and every inline-code path such as
-[gate-contract.md](skills/ctrl-shared/core/gate-contract.md). That last check matters because an
-inline path that is correct in `SKILL.md` resolves one level too high inside `references/`, and
-nothing else reports it. If it finds no bundles at all it exits non-zero rather than reporting a
-clean pack, so a mistyped root cannot look like success.
+name, boolean spelling of invocation keys, frontmatter closure, a UTF-8 BOM, unresolved
+`TODO`/`TBD` markers, every relative markdown link, and every inline-code path such as
+[gate-contract.md](skills/ctrl-shared/core/gate-contract.md). Inline paths are checked in both
+directions: a `../` path that is right in `SKILL.md` resolves one level too high inside
+`references/`, and a bundle-root path such as `references/x.md` resolves one level too deep there.
+It also fails any description longer than 500 characters, because DSH's skill catalog cuts
+descriptions at that default length and the trigger phrases at the end would never reach the model.
+If it finds no bundles at all it exits non-zero rather than reporting a clean pack, so a mistyped
+root cannot look like success.
 
 `check-dsh-discovery.cjs` uses real YAML parsing and the inspected invocation contract, checking
 all eight distinct expected names rather than just a count. This is an offline compatibility
@@ -170,7 +179,7 @@ check, not live provider activation or session visibility. Run it after frontmat
 
 ## Evaluate
 
-[evals/evals.json](evals/evals.json) holds 26 behavioural cases, one or more per skill. Each case
+[evals/evals.json](evals/evals.json) holds 33 behavioural cases, one or more per skill. Each case
 targets a contract rule and asserts on behaviour rather than wording, for example refusing an
 unmatched comparison, refusing a single-seed state-of-the-art claim, refusing to alter a number
 for a slide, and refusing to report a gate as passed without its artifact.
@@ -184,8 +193,9 @@ repository identities, licences, star counts, and the fork traps to avoid.
 
 Upstream collections cover the natural sciences, so their domain content was dropped and only
 their workflow machinery was reused. Thresholds are pack defaults, not externally validated laws.
-Later maintenance corrected statistical assumptions, scoped gates and budget semantics while
-retaining evidence integrity. See [improvement notes](docs/IMPROVEMENTS.zh-CN.md) for this review.
+Later maintenance corrected statistical assumptions, scoped gates and budget semantics, fitted the
+descriptions to the DSH catalog limit, verified benchmark and venue facts against primary sources,
+and made the installer non-destructive. See [improvement notes](docs/IMPROVEMENTS.zh-CN.md).
 
 ## Layout
 
@@ -203,9 +213,9 @@ ctrl-skills/                 the repository root
     ctrl-pre-submission-review/  referee-side review
     ctrl-response-craft/  revision correspondence
     ctrl-paper-to-slides/ decks
-  tools/                validator, DSH discovery check, installer
+  tools/                validator, DSH discovery check, installer and their tests
   evals/                behavioural eval cases
-  docs/                 INTEGRATION.md, the source-to-mechanism mapping
+  docs/                 source-to-mechanism mapping, Chinese quick start, improvement notes
   _research/            the research reports the pack was built from
 ```
 

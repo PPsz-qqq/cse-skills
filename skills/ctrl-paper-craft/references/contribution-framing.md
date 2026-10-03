@@ -133,7 +133,7 @@ Summarized mapping, with the weightings from `../../ctrl-shared/core/review-rubr
 | Simulation dressed as field | `achieves 0.3 m positioning accuracy` with no platform | add the simulation label and the gap statement, or change venue |
 | System claim without integration | a block diagram and per-module evaluations | add the integrated run, or reframe as a method paper |
 | Theory claim without a closing proof | assumptions in words, the hard case deferred | close the proof or state the result as the case that is proved |
-| Novelty claim without a search | `the first framework to` with no near misses | document the two-cycle search or delete the claim |
+| Novelty claim without a search | `the first framework to` with no near misses | document recent cycles, foundational work, near misses, queries and coverage limits, then write only `no directly overlapping work retrieved within <scope>`; otherwise delete the claim |
 | Post-hoc metric substitution | a metric introduced in the experiments section with no justification | report both metrics and state why the second was added |
 | Borrowed baseline number | a competitor's published value inside the main table | mark it `reported`, show the protocol difference, and keep it out of the headline delta |
 

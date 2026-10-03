@@ -91,7 +91,8 @@ comparison is visible.
 
 - Verify the current 投稿指南 for: the 中英文摘要 requirement, the 创新点 statement requirement, the
   基金项目 acknowledgment format, the 中图分类号 and 文献标识码 fields, and the GB/T 7714 reference
-  format version.
+  format edition. GB/T 7714-2025 replaced GB/T 7714-2015 on 2026-07-01; a journal may still name the
+  older edition during transition, and its own instruction wins.
 - Verify the review cycle length. Domestic venues often publish an expected 审稿周期, and it may
   exceed an English venue's full cycle.
 - Check whether the venue requires a 保密审查 or a 单位介绍信 for certain topics, which is a real
@@ -115,7 +116,7 @@ Re-verify a venue fact when any of these occurs, rather than on a fixed schedule
 |---|---|---|
 | the call for papers page is not reachable | the cycle may not be open, or the site moved | check the parent society or publisher page, and mark the venue `[UNVERIFIED]` until confirmed |
 | two documents give different page limits | an outdated page is live, or the template and the call disagree | use the most recently dated official document, record both, and ask the venue if the difference is material |
-| the deadline time zone is unstated | a real risk of a missed deadline by hours | assume the venue's local time zone only provisionally, and record the assumption |
+| the deadline time zone is unstated | a real risk of a missed deadline by hours | plan against the earliest plausible instant, such as the venue's local time or UTC rather than Anywhere on Earth (UTC-12), ask the venue, and record the assumption |
 | the venue has moved to a new submission system | the account and the previous submission history may not carry over | create the account early, and treat the deadline as earlier than stated |
 | the preprint policy is unclear | cannot be resolved by reading | state the limit, do not post, and record the open question |
 

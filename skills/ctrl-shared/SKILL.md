@@ -1,13 +1,11 @@
 ---
 name: ctrl-shared
 description: >-
-  Internal shared reference contract for the ctrl-* control-science-and-engineering skill pack,
-  covering object detection (目标检测), tracking (目标跟踪), re-identification (重识别),
-  cooperative navigation (协同导航), and filtering / state estimation (滤波). Do not invoke it as a
-  standalone user workflow. Another ctrl skill loads only the exact file it names, such as the venue
-  and review-criteria matrix, the research-integrity and gate contract, the evidence and verification
-  rules, the terminology and notation conventions, or the artifact contract. Load directly only when
-  the user explicitly asks for this pack's shared contract itself.
+  Internal shared contract of the ctrl-* pack for control science and engineering (目标检测, 目标跟踪,
+  重识别, 协同导航, 滤波). Other ctrl skills read its files by path: gates G0-G3, the six verdicts,
+  evidence and protocol-matching rules, venue matrix, review rubrics, terminology, artifact names.
+  Load it directly only when the user asks about this pack's rules themselves, such as what G2
+  requires or how claims are tiered (门禁, 证据规则); never as a standalone research workflow.
 ---
 
 # CTRL shared contract

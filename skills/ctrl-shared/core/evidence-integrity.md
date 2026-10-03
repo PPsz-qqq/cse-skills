@@ -40,7 +40,9 @@ its verification `UNVERIFIED` and do not grant an independently verified G2 PASS
 ## Rule 3. Protocol-matched comparison
 
 A performance delta is a measurement claim. Before reporting any delta, fill the comparison
-protocol block for the active axis from `core/gate-contract.md` and confirm the arms match.
+protocol block for the active axis from
+[protocol-blocks.md](../../ctrl-experiment-suite/references/protocol-blocks.md), check the axis
+addenda in [gate-contract.md](gate-contract.md), and confirm the arms match.
 
 Unmatched arms must be presented in one of three honest ways: as a separate row with the
 difference declared; with the difference corrected by a control run you performed (for example
@@ -78,8 +80,11 @@ Before freezing results, reconcile:
   protocol;
 - any improvement expressed in percent must state whether it is absolute or relative.
 
-A number that appears at two precisions, or a superlative contradicted by the paper's own
-table, is a blocking integrity failure, not a copy-editing issue.
+A value that differs between locations beyond rounding, an aggregate that does not reproduce
+under its stated aggregation rule, or a superlative contradicted by the paper's own table is a
+blocking integrity failure, not a copy-editing issue. The same value printed at two precisions or in two units (78.4 in the
+abstract, 78.42 in a table) is a consistency defect: fix it before any freeze, and rate it `Minor`
+unless the rounding changes a comparison, a ranking or a claimed threshold.
 
 ## Rule 5. Stochastic results
 
@@ -135,7 +140,7 @@ When citing, distinguish: read in full, read in abstract only, or known only by 
 attribute a specific numeric result to a source you have not read at first hand; cite the
 secondary source or mark it `[UNVERIFIED]`. For venue requirements and author guidelines, the
 official call for papers wins over any summary, including this pack's own
-`core/venue-matrix.md`.
+[venue-matrix.md](venue-matrix.md).
 
 ## Quick integrity audit
 

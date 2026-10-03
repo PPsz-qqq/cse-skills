@@ -95,7 +95,7 @@ Common downgrades in this pack, with the reason they are usually correct.
 | theory | empirical delta | the proof depends on an assumption that the target scenario violates, and the paper does not test that |
 | system | empirical delta with a system section | the integration is simulated, or the hardware detail is insufficient to reproduce the timing |
 | survey | annotated bibliography | the output is organized but takes no positions |
-| empirical delta | a negative or null result | the matched comparison does not favour the method; this is still publishable, and the framing must change to the mechanism of the failure |
+| empirical delta | a negative or inconclusive result | the matched comparison does not favour the method; this is still publishable as a negative or inconclusive empirical finding, and it becomes a "mechanism of failure" only when a separate measurement isolates that mechanism |
 
 The last row is the one most often mishandled. A refuted hypothesis with a clean, well-controlled
 comparison is a finding. Reporting it as a finding in the limitations section, while the abstract

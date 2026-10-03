@@ -3,7 +3,7 @@
 // Offline structural validator. Scientific/behavioral quality requires separate evaluation.
 const fs = require('node:fs');
 const path = require('node:path');
-const { parseSkillText } = require('./skill-contract.cjs');
+const { parseSkillText, catalogProblem } = require('./skill-contract.cjs');
 const VALID_KEYS = new Set(['name', 'description', 'whenToUse', 'metadata', 'license',
   'disable-model-invocation', 'user-invocable', 'allowed-tools']);
 const NON_SKILL_DIRS = new Set(['tools', 'docs', 'scripts', 'evals', '_research', 'node_modules', '.git']);
@@ -72,13 +72,33 @@ function validateRoot(rootInput, options = {}) {
     if (!fs.existsSync(full)) fail(file, `broken ${type} -> ${target}`);
     return full;
   }
-  function checkText(file, text) {
+  // Inline paths such as `references/x.md` or `core/x.md` are bundle-root relative by convention.
+  // Inside a resource file they resolve one level too deep, so they must be written as links
+  // relative to that file. A preceding skill qualifier, as in `ctrl-shared` `core/x.md`, names
+  // another bundle and is checked against that bundle instead.
+  function checkBundlePaths(file, text, bundleDir) {
+    const re = /(?:`(ctrl-[a-z0-9-]+)`\s+)?`((?:references|core|assets|scripts|templates)\/[^`\s]+?\.(?:md|json|cjs|py|ps1|txt))`/g;
+    let match;
+    const body = withoutFences(text);
+    while ((match = re.exec(body))) {
+      const [, qualifier, rel] = match;
+      if (qualifier) {
+        if (!fs.existsSync(path.join(root, qualifier, rel))) fail(file, `broken cross-skill path -> ${qualifier}/${rel}`);
+        continue;
+      }
+      if (fs.existsSync(path.resolve(path.dirname(file), rel))) continue;
+      if (fs.existsSync(path.join(bundleDir, rel))) fail(file, `bundle-root path \`${rel}\` inside a resource file; write a link relative to this file`);
+      else fail(file, `broken inline path -> ${rel}`);
+    }
+  }
+  function checkText(file, text, bundleDir) {
     if (checkedFiles.has(file)) return;
     checkedFiles.add(file);
     for (const target of markdownTargets(text)) resolveTarget(file, target, 'relative link');
     const re = /`([^`\n]*?(?:\.\.\/|\.\/)[^`\n]*?\.(?:md|py|json|csv|tex|ya?ml|sh|cjs|mjs|ps1|txt))`/g;
     let match;
     while ((match = re.exec(withoutFences(text)))) resolveTarget(file, match[1].trim(), 'inline-code path');
+    if (bundleDir) checkBundlePaths(file, text, bundleDir);
     if (!text.trim()) fail(file, 'file is empty');
     if (/(^|\s)(TODO|TBD|FIXME|XXX)[:!]|\[(TODO|TBD|FIXME|XXX)\]/.test(text)) warn(file, 'unresolved TODO/TBD/FIXME/XXX marker');
   }
@@ -109,7 +129,9 @@ function validateRoot(rootInput, options = {}) {
       for (const key of Object.keys(data)) if (!VALID_KEYS.has(key)) fail(file, `unknown frontmatter key "${key}"`);
       if (!description.trim()) fail(file, 'description is blank');
       if (!body) fail(file, 'skill body is empty');
-      if (description.length < 80 || description.length > 1400) warn(file, `description length ${description.length} outside advisory 80..1400`);
+      const truncated = catalogProblem(description);
+      if (truncated) fail(file, truncated);
+      else if (description.trim().length < 80) warn(file, `description length ${description.trim().length} is below the advisory minimum of 80`);
       if (data.metadata !== undefined && (data.metadata === null || typeof data.metadata !== 'object' || Array.isArray(data.metadata))) fail(file, 'metadata must be a mapping');
       for (const key of ['license', 'whenToUse']) {
         if (data[key] !== undefined && typeof data[key] !== 'string') fail(file, `${key} must be a string`);
@@ -125,9 +147,9 @@ function validateRoot(rootInput, options = {}) {
         }
       }
     }
-    checkText(file, text);
+    checkText(file, text, info.isDirectory() ? full : undefined);
     if (info.isDirectory()) for (const resource of markdownFiles(full)) {
-      if (resource !== file) checkText(resource, readText(resource, false));
+      if (resource !== file) checkText(resource, readText(resource, false), full);
     }
   }
   if (!skills.length) problems.push('no valid skill bundles found; nothing can be declared validated');

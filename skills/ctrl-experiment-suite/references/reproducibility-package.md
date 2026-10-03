@@ -64,9 +64,16 @@ hardware, from the recorded material only.
 6. Record the outcome in `ctrl-gates.md`: reproduced exactly, reproduced within dispersion, or not
    reproduced.
 
-A number that reproduces within its own seed dispersion passes. A number that reproduces exactly
-is better but is not required, and an exact match on a stochastic pipeline is often a sign that
-the randomness was accidentally frozen to one path.
+The test needs an authorized executor, the recorded hardware class and the data. When any of them
+is unavailable to you, record the test as `not performed` (or `BLOCKED` with the missing
+dependency named), hand the user the exact steps above, and never report a reproduction that did
+not run.
+
+A number that reproduces within its own seed dispersion passes. An exact match is expected when
+the recorded seed and a deterministic pipeline are replayed; it is not evidence of a defect. Check
+separately that the declared seed variation actually occurred across the runs that make up the
+dispersion, because identical values across supposedly different seeds do indicate frozen
+randomness.
 
 A number that does not reproduce is a finding to report, not a defect to hide. State what
 differs, in what direction, and whether the manuscript's claim survives the difference.

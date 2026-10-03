@@ -58,14 +58,14 @@ Before running
 [ ] Timing protocol written: timed region, detection included or excluded, batch size, repeats
 [ ] Exact GPU named, with memory and power mode
 [ ] Seed list fixed, identical across arms; 3 to 5 runs minimum
-
+During running
 [ ] Detection files retained per arm with checksums, when public detections are used
 [ ] Per-sequence metrics retained, not only the aggregate over sequences
 [ ] AssA and DetA retained per sequence so an association claim can be separated from detection
 [ ] IDSW and Frag counts retained with their per-sequence breakdown
 [ ] Timing repeats recorded, with warm-up handling and the spread across repeats
 [ ] Frame-level outputs retained for at least one sequence per arm for qualitative figures
-
+Before reporting
 [ ] online or offline and public or private appear next to every tracking number in every table
 [ ] HOTA is reported with DetA and AssA, never alone
 [ ] The detector is identical for every re-implemented arm, or the change is declared as protocol
@@ -92,18 +92,18 @@ Before running
 [ ] Test-time protocol recorded separately from training, including flip and multi-crop features
 [ ] Evaluation script and its version recorded; mAP convention stated
 [ ] Seed list fixed, identical across arms; 3 runs minimum
-
-[ ] Per-query scores retained so a bootstrap interval over queries is possible
+During running
+[ ] Per-query scores retained with their identity labels, so an identity-level bootstrap is possible
 [ ] CMC curve retained, not only Rank-1, so the ranking depth is visible
 [ ] mINP retained when the paper uses it, with its definition stated
 [ ] Distance matrix or feature files retained for at least one arm for the qualitative figure
 [ ] Results logged for both mAP and Rank-1 at every evaluation point, not only at the end
-
+Before reporting
 [ ] Re-ranking status appears in the table header or the protocol block, identical for every row
 [ ] mAP and Rank-1 reported together for every arm
 [ ] Single-query or multi-query stated next to the numbers
 [ ] Query count stated, so the reader can judge the resolution of a Rank-1 difference
-[ ] The interval's resampling unit is the query, and the training-seed spread is reported too
+[ ] The interval resamples identities (all queries of one identity together), and the training-seed spread is reported too
 [ ] Retrieval examples show failures as well as successes, with the rank of the true match
 [ ] External-data arms are marked not comparable and kept out of the headline delta
 [ ] Re-ranking is never presented as a model component in an ablation table
@@ -126,14 +126,14 @@ Before running
 [ ] Same ranging model for every arm, or the difference declared as a comparability break
 [ ] Scenario count at least 30, with the seed list and the varied-parameter list recorded
 [ ] Dead-reckoning arm and centralized upper-bound arm included
-
+During running
 [ ] Per-node, per-run errors retained for every arm, not only the fleet average
 [ ] Convergence time or consensus residual retained per run
 [ ] Message counts and bytes per agent per step logged by the same rule for every arm
 [ ] Topology realization and its algebraic connectivity lambda_2 recorded per run
 [ ] Divergence and failure runs retained and labeled, including any run that violated a bound
 [ ] Scaling runs over N recorded with the same scenario generator and the same seed list
-
+Before reporting
 [ ] Position metrics state 2D or 3D and the frame, ENU, NED, or world
 [ ] Per-node RMSE reported with the worst node visible
 [ ] The 95th percentile of position error and the fraction of runs exceeding the operational bound
@@ -159,8 +159,8 @@ Before running
 [ ] Chi-square bounds chosen before running: confidence level, quantiles, one-sided or two-sided
 [ ] Bound used for comparison computed including the number of samples averaged
 [ ] CRLB or posterior CRLB computed where a bound exists, to be plotted as a bound
-[ ] Linearization region stated, and positive definiteness of P_k asserted at every step
-
+[ ] Linearization region stated, and positive definiteness of P_k checked at every step
+During running
 [ ] Per-run, per-step errors retained so NEES and ANEES can be recomputed
 [ ] Full P_k or a sufficient factorization retained per run/step; diagonal-only logs are insufficient for NEES unless P_k is actually diagonal
 [ ] ANEES_k computed across independent runs at each time step; any temporal summary records correlation-aware calibration
@@ -168,13 +168,13 @@ Before running
 [ ] Outlier and divergence events logged with their run id, not silently dropped
 [ ] Parameter sensitivity sweeps run as separate experiments under their own protocol blocks
 [ ] Single-trajectory illustrations generated from a recorded run id, labeled illustrative
-
+Before reporting
 [ ] Monte Carlo count stated for every arm and identical across arms
 [ ] NEES/ANEES states n_x, confidence level, distribution assumptions, aggregation and numeric bounds
 [ ] Default pointwise ANEES bounds use N*n_x divided by N; pooling time requires independence or calibrated correlation handling
 [ ] The bound actually plotted is given as a number, with the sample count it was averaged over
 [ ] RMSE and consistency reported together for every arm
-[ ] A filter outside the bounds is reported as inconsistent, with the direction stated
+[ ] A filter whose violation fraction or pattern exceeds the nominal rate, or whose calibrated summary falls outside its bounds, is reported as inconsistent, with the direction stated; isolated pointwise crossings at the nominal rate are not
 [ ] No covariance was retuned after seeing the consistency result, or the sequence is disclosed
 [ ] CRLB appears as a bound on the axes, not as a baseline in the comparison table
 [ ] A single trajectory is never presented as a statistical result

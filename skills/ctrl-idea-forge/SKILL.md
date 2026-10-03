@@ -1,14 +1,12 @@
 ---
 name: ctrl-idea-forge
 description: >-
-  Turn an axis and a pain point into a falsifiable, fundable research idea for control science and
-  engineering, covering object detection (目标检测), tracking (目标跟踪), re-identification (重识别),
-  cooperative navigation (协同导航) and filtering or state estimation (滤波). Use it for topic
-  selection and proposal writing (选题, 开题), innovation-point formulation (创新点), literature-gap
-  analysis, hypothesis building, feasibility and pilot scoping, novelty-versus-risk scoring, killer
-  objections, and the pre-commitment contract that fixes the refutation rule before any result
-  exists. It emits ctrl-scope.md for G0 and ctrl-plan.md for G1, enforces a hard pilot budget, and
-  refuses to draft a proposal whose claim type exceeds the evidence that can be obtained.
+  Use when turning a pain point into a research idea or proposal on detection, tracking, re-ID,
+  cooperative navigation or filtering (目标检测, 跟踪, 重识别, 协同导航, 滤波): 选题, 开题报告,
+  创新点提炼, research idea, hypothesis, feasibility or pilot scoping, novelty-versus-risk ranking,
+  killer objections. Produces a falsifiable hypothesis with a pre-declared refutation rule,
+  ctrl-scope.md (G0), ctrl-plan.md (G1) and a bounded pilot budget; downgrades claims that exceed
+  obtainable evidence.
 ---
 
 # CTRL idea forge
@@ -92,14 +90,18 @@ a gate-passed final artifact.
    each is included, the ablation list, the metrics with definitions, the compute budget, and the
    decision rule. Sign and date it. See [references/precommitment.md](references/precommitment.md).
 
-10. **Emit `ctrl-scope.md` at G0.** At most 12 lines, using the format in
+10. **Emit `ctrl-scope.md` at G0.** At most 12 lines, using the template in
+    [references/precommitment.md](references/precommitment.md) and the G0 criteria in
     [../ctrl-shared/core/gate-contract.md](../ctrl-shared/core/gate-contract.md). Run the G0 check
     honestly, including the case where the claim type exceeds the evidence class.
 
-11. **Emit `ctrl-plan.md` at G1.** Use the frozen-plan format in
-    [../ctrl-shared/core/artifact-contract.md](../ctrl-shared/core/artifact-contract.md) and the
-    protocol-block format for the axis. Every element is a name, not a category. "Compare with
-    several state-of-the-art methods" fails; named baselines with a stated reason each pass.
+11. **Emit `ctrl-plan.md` at G1.** Use the plan template in
+    [references/precommitment.md](references/precommitment.md) ("Writing ctrl-plan.md for G1"), the
+    per-axis protocol blocks in
+    [protocol-blocks.md](../ctrl-experiment-suite/references/protocol-blocks.md), and the naming and
+    revision rules in [../ctrl-shared/core/artifact-contract.md](../ctrl-shared/core/artifact-contract.md).
+    Every element is a name, not a category. "Compare with several state-of-the-art methods" fails;
+    named baselines with a stated reason each pass.
 
 12. **Record the gate status** using the reporting block in
     [../ctrl-shared/core/gate-contract.md](../ctrl-shared/core/gate-contract.md), and append it to

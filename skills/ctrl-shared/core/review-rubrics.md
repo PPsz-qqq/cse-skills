@@ -44,7 +44,7 @@ Derive the recommendation from the scores; do not choose it first and back-fill.
 
 | Condition | Recommendation |
 |---|---|
-| Any of D1, D3, D4 at 1, or any blocking integrity failure | Reject |
+| Any of D1, D3, D4 at 1, or a confirmed integrity failure listed below | Reject |
 | D2 at 1 or 2 with D4 at 1 or 2 | Reject as incremental and under-evidenced |
 | One dimension at 2 with the rest at 3 or above, no blocking concern | Major revision |
 | No dimension below 3, at least one at 4 or above, no blocking concern | Minor revision |
@@ -67,8 +67,13 @@ this tie-break in order, and state which row or tie-break you used:
 A midpoint draft scoring 3 on every dimension is therefore `Major revision`, which is the
 expected starting point before any artifact has been strengthened.
 
-Any integrity failure under `ctrl-shared` `core/evidence-integrity.md` rules 1, 2, 4, or 10
-forces Reject regardless of scores.
+A confirmed integrity failure under [evidence-integrity.md](evidence-integrity.md) rules 1, 2 or
+10 (fabrication, tier or setting misrepresented, a number attributed to an unread or wrong source)
+forces Reject regardless of scores. A rule 4 value conflict, meaning a number that differs between
+locations beyond rounding or a superlative contradicted by the paper's own table, is a `Blocking`
+concern: at least `Major revision`, and `Reject` when it carries the central claim. The same value
+printed at two precisions or in two units is `Minor` unless the rounding changes a comparison.
+"Confirmed" requires the contradicting artifact or the arithmetic, never a suspicion.
 
 ## Severity tiers
 

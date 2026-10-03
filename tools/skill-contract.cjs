@@ -8,6 +8,22 @@ const EXPECTED_SKILLS = Object.freeze([
   'ctrl-paper-craft', 'ctrl-pre-submission-review', 'ctrl-response-craft', 'ctrl-paper-to-slides',
 ]);
 
+// DSH's model-facing catalog (@deepseek-ai/dsh-tool-skill) shows each skill as its
+// whitespace-normalized description, cut to catalogDescriptionMaxLength characters (default 500)
+// with "..." appended. Anything beyond the limit, typically the trigger phrases, never reaches
+// the model, so descriptions must fit the default limit.
+const DSH_CATALOG_DESCRIPTION_MAX_LENGTH = 500;
+function catalogDescription(value, maxLength = DSH_CATALOG_DESCRIPTION_MAX_LENGTH) {
+  const normalized = value.replace(/\s+/g, ' ').trim();
+  return normalized.length <= maxLength ? normalized : `${normalized.slice(0, maxLength - 3)}...`;
+}
+function catalogProblem(description, maxLength = DSH_CATALOG_DESCRIPTION_MAX_LENGTH) {
+  const normalized = description.replace(/\s+/g, ' ').trim();
+  if (normalized.length <= maxLength) return undefined;
+  return `description is ${normalized.length} characters after whitespace normalization; the DSH skill `
+    + `catalog truncates it to ${maxLength} and drops: "${normalized.slice(maxLength - 3)}"`;
+}
+
 function loadYaml() {
   const candidates = [];
   // Both overrides point to a node_modules directory, NOT the extracted-runtime parent.
@@ -131,6 +147,8 @@ function packProblems(result) {
     names.set(skill.name, skill.file);
     if (!EXPECTED_SKILLS.includes(skill.name)) problems.push(`unexpected ctrl-* skill: ${skill.name}`);
     if (!skill.body) problems.push(`empty skill body: ${skill.name}`);
+    const truncated = typeof skill.description === 'string' ? catalogProblem(skill.description) : undefined;
+    if (truncated) problems.push(`${skill.name}: ${truncated}`);
   }
   for (const name of EXPECTED_SKILLS) if (!names.has(name)) problems.push(`missing expected skill: ${name}`);
   for (const skipped of result.skipped) {
@@ -140,5 +158,6 @@ function packProblems(result) {
   }
   return problems;
 }
-module.exports = { EXPECTED_SKILLS, yaml, parseFrontmatter, frontmatterBoolean, parseInvocationPolicy,
-  parseSkillText, parseSkillFile, discover, packProblems };
+module.exports = { EXPECTED_SKILLS, DSH_CATALOG_DESCRIPTION_MAX_LENGTH, catalogDescription, catalogProblem,
+  yaml, parseFrontmatter, frontmatterBoolean, parseInvocationPolicy, parseSkillText, parseSkillFile,
+  discover, packProblems };

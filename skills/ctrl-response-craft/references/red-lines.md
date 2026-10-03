@@ -6,30 +6,40 @@ artifact before the letter is sent.
 
 Read this file in full before drafting any response, and again before sending it.
 
-## 1. Never break reviewer isolation
+## 1. Follow the venue's response format, and never leak what it keeps private
 
-A mutually blind venue blindfolds the reviewers to each other. The response letter is the easiest
-place to break that blindfold, and breaking it damages every author on the paper, not only the one
-who wrote the sentence.
+Fix the response format from the current venue guidance or the decision letter before drafting,
+and record the document consulted with its date. Four formats occur in this field.
 
-Forbidden in any reviewer-facing file:
+| Format | Typical venues (verify every cycle) | Referring to another reviewer |
+|---|---|---|
+| `shared-rebuttal` | CVPR, ICCV, ECCV: one anonymous one-page PDF that answers all reviews, read by the assigned reviewers and area chairs, with no external links | allowed by the reviewer IDs the venue assigned, for navigation |
+| `per-thread` | OpenReview venues such as ICLR and NeurIPS: replies posted under each review, visible according to the venue's reader settings | allowed only when that reply's readers include the reviewer referred to |
+| `combined-letter` | most journal revisions, for example IEEE Transactions and Automatica: one response document with a section per reviewer plus a cover letter; common practice, not a universal rule | allowed by reviewer and comment number, such as "see Response 2.3" |
+| `isolated` | the venue or editor asks for separate responses that the other reviewers will not see, or the format is still unknown | forbidden, in any wording |
+
+When the format is unknown, draft in the `isolated` format. Isolated sections can always be
+assembled into a combined document later, but a combined draft cannot be safely split.
+
+In the `isolated` format, forbidden in any reviewer-facing file:
 
 - naming or numbering another reviewer, in any wording. Not `Reviewer 2`, not `R2`, not `the second
   reviewer`, not `one of the reviewers`, not `another referee`;
-- reporting another reviewer's score, confidence rating, recommendation, or ranking;
-- reporting a meta-review sentence, an area-chair comment, or an editor's summary of the panel;
-- reporting what the authors told another reviewer, or that other reviewers were satisfied;
+- reporting what the authors told another reviewer;
 - copying a shared response table into a per-reviewer letter;
 - referring to reviews in the plural from inside a letter addressed to one reviewer.
 
-Correct practice when two reviewers raised the same defect. Write the response twice, once in each
-reviewer's own framing, and use the same evidence in both. The duplication is invisible and costs
-nothing. Naming the other reviewer costs the paper.
+In every format, forbidden:
 
-An exception exists in exactly one situation. A venue that explicitly publishes non-anonymous
-reviews or instructs authors to submit one combined letter, in which case the combined letter is the
-venue's own disclosure. State in the cover letter that the combined format follows the venue's
-guidance, and record the guidance version consulted.
+- reporting another reviewer's score, confidence rating, recommendation, or ranking;
+- quoting a confidential comment to the area chair or editor, or a meta-review sentence the venue
+  did not show to the reviewers;
+- arguing by headcount: another reviewer's agreement is not evidence for the point in dispute;
+- revealing author identity in a double-blind format, including through links or acknowledgments.
+
+Correct practice when two reviewers raised the same defect. In the `isolated` format, write the
+response twice, once in each reviewer's own framing, with the same evidence in both. In the shared
+formats, answer once in full and point the second reviewer to it by the venue's identifier.
 
 ## 2. Never claim a change that is not in the manuscript
 
@@ -137,7 +147,7 @@ is not sent while any of the following is true.
 [ ] A change is claimed but not present in the revised file
 [ ] A change is present but not reported in any letter or in the cover summary
 [ ] A number in a letter disagrees with the manuscript
-[ ] A per-reviewer letter contains another reviewer's designator or recommendation
+[ ] An isolated-format letter names another reviewer, or any letter quotes another reviewer's score, recommendation or confidential comment
 [ ] A deferral has no corresponding limitation entry
 [ ] An evidence pointer does not resolve
 [ ] The manuscript revision hash in the ledger does not match the file being sent

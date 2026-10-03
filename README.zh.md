@@ -72,7 +72,7 @@ ctrl-paper-to-slides    面向听众的报告
 | `G2` 证据冻结 | 范围内的主张是否有真实来源、比较是否成立？ | 未核验的最终主张，不阻塞诊断或草稿 |
 | `G3` 投稿就绪 | 这篇稿子能否扛住自己的审稿人？ | 投稿 |
 
-`G2` 不可豁免。`G0` 与 `G3` 仅在用户明确指示时可豁免，且必须记录残余风险。定义与通过标准见 [ctrl-shared/core/gate-contract.md](skills/ctrl-shared/core/gate-contract.md)。
+`G1` 与 `G2` 不可豁免。`G0` 与 `G3` 仅在用户明确指示时可豁免，且必须记录残余风险；豁免单独记录，原裁决不变，不是第七种裁决，也不等于 PASS。定义与通过标准见 [ctrl-shared/core/gate-contract.md](skills/ctrl-shared/core/gate-contract.md)。
 
 ## 领域专有之处
 
@@ -82,7 +82,7 @@ ctrl-paper-to-slides    面向听众的报告
 - **各方向专属的证据义务。** 跟踪指标必须标注检测器来源以及 public/private detection；协同导航必须给出分布性证明和含时延、丢包的通信模型；滤波必须给出蒙特卡洛一致性证据，即 NEES 或 ANEES 对卡方界的检验。默认在每个时刻独立评估，自由度为 `N * n_x`；只有在独立性成立或相关性已被标定处理时才允许按 `N * T * n_x` 池化。
 - **指标精度。** `mAP` 不写明平均方式就没有意义；`MOTA` 不写检测协议就无法与任何结果比较；`FPPI` 是工作点横轴，`LAMR` 才是汇总指标。相关规范固定在 [ctrl-shared/core/terminology-and-notation.md](skills/ctrl-shared/core/terminology-and-notation.md)。
 - **不同期刊层级的审稿行为。** CVPR 类审稿人与 TAC 审稿人拒稿的理由并不相同，见 [ctrl-shared/core/venue-matrix.md](skills/ctrl-shared/core/venue-matrix.md)。
-- **中文期刊要求。** 创新点要以条目形式明确列出；中文摘要必须是真正的中文摘要而不是英译；基金项目、中图分类号等字段齐备；参考文献遵循 GB/T 7714。
+- **中文期刊要求。** 创新点要以条目形式明确列出；中文摘要必须是真正的中文摘要而不是英译；基金项目、中图分类号等字段齐备；参考文献按期刊指定的 GB/T 7714 版本著录（GB/T 7714-2025 已于 2026-07-01 全部代替 2015 版，过渡期以期刊投稿指南为准）。
 
 ## 包对自身施加的规则
 
@@ -102,11 +102,14 @@ ctrl-paper-to-slides    面向听众的报告
 八个技能位于本仓库的 `skills/` 目录，该目录只有技能、没有别的东西，因此可直接交给 DSH，或整体拷到其他机器。
 
 ```powershell
+powershell -File tools/install.ps1 -WhatIf   # 只预览计划，不做任何改动
 powershell -File tools/install.ps1           # 以 junction 链接到 ~/.dsh/skills
-powershell -File tools/install.ps1 -Remove   # 仅删除由安装器创建的内容
+powershell -File tools/install.ps1 -Remove   # 只移除安装器自己拥有的内容
 ```
 
-安装器会自动定位 `skills/`；若技能改为内联存放，则回退到仓库根目录。完整参数、根目录优先级、验证步骤与手动安装方式见 [INSTALL.md](INSTALL.md)。
+安装器会自动定位 `skills/`；若技能改为内联存放，则回退到仓库根目录。它不会删除不属于自己的数据：
+移除链接时不触碰链接目标；复制模式写入所有权记录；`-Force` 只把不属于安装器的目录移到备份文件夹，
+而不是删除。完整参数、根目录优先级、验证步骤与手动安装方式见 [INSTALL.md](INSTALL.md)。
 
 ## 校验
 
@@ -115,11 +118,14 @@ node tools/validate-skills.cjs              # 默认检查 skills/
 node tools/validate-skills.cjs --fix-bom    # 同时就地修复 UTF-8 BOM
 node tools/check-dsh-discovery.cjs skills   # 离线兼容检查，不是实时启用检测
 node --test tools/skill-tools.test.cjs      # 结构和发现逻辑的回归测试
+node --test tools/install.test.cjs          # 安装器所有权规则（仅 Windows，只用临时目录）
 ```
 
-校验器检查：frontmatter 是否存在及字段是否合法、`name` 是否为 kebab-case 且与目录名一致、调用开关的布尔拼写、description 长度、frontmatter 是否闭合、是否存在 UTF-8 BOM、是否有未处理的 `TODO`/`TBD` 标记、每一条相对 Markdown 链接，以及每一条行内代码路径（例如 [gate-contract.md](skills/ctrl-shared/core/gate-contract.md)）。
+校验器检查：frontmatter 是否存在及字段是否合法、`name` 是否为 kebab-case 且与目录名一致、调用开关的布尔拼写、frontmatter 是否闭合、是否存在 UTF-8 BOM、是否有未处理的 `TODO`/`TBD` 标记、每一条相对 Markdown 链接，以及每一条行内代码路径（例如 [gate-contract.md](skills/ctrl-shared/core/gate-contract.md)）。
 
-最后一项尤其重要：在 `SKILL.md` 中写法正确的行内路径，放进 `references/` 后会多解析一层，而**没有其他工具会报告这个问题**。此外，若一个技能都没扫到，校验器会以非零码退出，而不是报告「通过」——避免根目录写错却看起来像成功。
+行内路径要双向检查：在 `SKILL.md` 中正确的 `../` 路径放进 `references/` 后会多上溯一层，而 `references/x.md` 这类相对技能根目录的写法放进 `references/` 后又会多下钻一层，**没有其他工具会报告这些问题**。
+
+description 超过 500 个字符（空白归一化后）会被判失败：DSH 的技能目录（catalog）默认在 500 字符处截断描述，末尾的触发词将永远到不了模型。此外，若一个技能都没扫到，校验器会以非零码退出，而不是报告「通过」——避免根目录写错却看起来像成功。
 
 [发现检查](tools/check-dsh-discovery.cjs) 使用真实 YAML 解析和核查过的调用字段约定，检查八个不同的预期技能名称。
 这只是离线兼容检查；运行时插件启用、扫描目录及会话可见性需单独核实。结构修改后应运行它。
@@ -127,14 +133,14 @@ node --test tools/skill-tools.test.cjs      # 结构和发现逻辑的回归测�
 
 ## 评测
 
-[evals/evals.json](evals/evals.json) 包含 26 条行为评测，覆盖全部八个技能。每条针对一条契约规则，断言的是**行为**而非措辞。例如：拒绝未对齐协议的对比、拒绝由单次随机种子得出「达到最优」、拒绝为幻灯修改数字、拒绝在缺产物时报告关卡通过。
+[evals/evals.json](evals/evals.json) 包含 33 条行为评测，覆盖全部八个技能。每条针对一条契约规则，断言的是**行为**而非措辞。例如：拒绝未对齐协议的对比、拒绝由单次随机种子得出「达到最优」、拒绝为幻灯修改数字、拒绝在缺产物时报告关卡通过。
 
 ## 来源与移植
 
 本包的构建方式是：盘点现有学术技能集合，提取其中可迁移的机制，再针对这五个方向重写。来源项目到落地机制的映射见 [docs/INTEGRATION.md](docs/INTEGRATION.md)，其中包含经核实的仓库身份、许可证、星标数，以及需要避开的 fork 陷阱。
 
 上游集合的工作流机制被适配到这些领域；数值阈值只是本包默认值，不是已经验证的科学定律。
-本轮维护修正统计假设、门禁适用范围、预算量纲与工具限制，详见 [完善记录](docs/IMPROVEMENTS.zh-CN.md)。
+后续维护修正了统计假设、门禁适用范围、预算量纲与工具限制，把描述压到 DSH 目录长度限制以内，按第一手来源核对了基准数据集与期刊事实，并让安装器不再有破坏性操作，详见 [完善记录](docs/IMPROVEMENTS.zh-CN.md)。
 
 ## 目录结构
 
@@ -152,9 +158,9 @@ ctrl-skills/                 仓库根目录
     ctrl-pre-submission-review/ 审稿人视角自审
     ctrl-response-craft/  修订往来
     ctrl-paper-to-slides/ 报告幻灯
-  tools/                校验器、DSH 发现检查、安装器
+  tools/                校验器、DSH 发现检查、安装器及其测试
   evals/                行为评测用例
-  docs/                 INTEGRATION.md，来源到机制的映射
+  docs/                 来源到机制的映射、中文快速使用、完善记录
   _research/            构建本包所依据的调研报告
 ```
 

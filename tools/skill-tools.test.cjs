@@ -4,7 +4,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { EXPECTED_SKILLS, parseSkillText, frontmatterBoolean, parseInvocationPolicy, discover, packProblems } = require('./skill-contract.cjs');
+const { EXPECTED_SKILLS, DSH_CATALOG_DESCRIPTION_MAX_LENGTH, catalogDescription, catalogProblem, parseSkillText,
+  frontmatterBoolean, parseInvocationPolicy, discover, packProblems } = require('./skill-contract.cjs');
 const { resolveDefaultRoot, markdownTargets, validateRoot } = require('./validate-skills.cjs');
 const description = 'An offline test skill with a sufficiently descriptive trigger and a bounded workflow for regression testing.';
 function text(name = 'ctrl-fixture', extra = '', body = '# Fixture\n\nA useful instruction.\n') {
@@ -131,6 +132,45 @@ test('actual pack has exact skill names, scoped execution links and valid struct
   assert.deepEqual(validateRoot(root, { packageRoot: path.join(__dirname, '..') }).problems, []);
   for (const name of EXPECTED_SKILLS.filter((n) => n !== 'ctrl-shared')) {
     assert.match(fs.readFileSync(path.join(root, name, 'SKILL.md'), 'utf8'), /execution-contract\.md/);
+  }
+});
+test('bundle-root inline paths fail inside resource files; qualified cross-skill paths are checked', (t) => {
+  const root = fixture(t);
+  const dir = put(root, 'ctrl-fixture', text('ctrl-fixture', '', '# Fixture\nSee `references/b.md`.\n[a](references/a.md) [b](references/b.md)\n'));
+  fs.mkdirSync(path.join(dir, 'references'));
+  fs.writeFileSync(path.join(dir, 'references', 'b.md'), '# B\n');
+  fs.writeFileSync(path.join(dir, 'references', 'a.md'),
+    '# A\nAmbiguous: `references/b.md`.\nQualified: `ctrl-other` `core/rules.md` and `ctrl-other`\n`core/missing.md`.\n```text\n`references/fenced.md`\n```\n');
+  const other = put(root, 'ctrl-other');
+  fs.mkdirSync(path.join(other, 'core'));
+  fs.writeFileSync(path.join(other, 'core', 'rules.md'), '# Rules\n');
+  const problems = validateRoot(root).problems;
+  assert.ok(problems.some((p) => p.includes('bundle-root path `references/b.md`')), problems.join('\n'));
+  assert.ok(problems.some((p) => p.includes('broken cross-skill path -> ctrl-other/core/missing.md')), problems.join('\n'));
+  assert.equal(problems.filter((p) => p.includes('SKILL.md')).length, 0, 'bundle-root paths are valid in SKILL.md');
+  assert.equal(problems.length, 2, problems.join('\n'));
+});
+test('catalog descriptions follow the DSH truncation rule and over-limit text fails', (t) => {
+  assert.equal(DSH_CATALOG_DESCRIPTION_MAX_LENGTH, 500);
+  assert.equal(catalogDescription('  folded\n  text\twith   gaps '), 'folded text with gaps');
+  const exact = 'x'.repeat(500);
+  assert.equal(catalogDescription(exact), exact);
+  assert.equal(catalogProblem(exact), undefined);
+  const long = `${'y'.repeat(497)}TAIL`;
+  assert.equal(catalogDescription(long), `${'y'.repeat(497)}...`);
+  assert.match(catalogProblem(long), /drops: "TAIL"/);
+  const root = fixture(t);
+  put(root, 'ctrl-fixture', `---\nname: ctrl-fixture\ndescription: >-\n  ${'z'.repeat(480)}\n  trigger words at the end\n---\n# Fixture\n`);
+  assert.ok(validateRoot(root).problems.some((p) => p.includes('DSH skill catalog truncates')));
+  const discovered = EXPECTED_SKILLS.map((name) => ({ name, file: name, body: 'x', description: 'short enough' }));
+  discovered[2].description = long;
+  assert.ok(packProblems({ discovered, skipped: [] }).some((p) => p.startsWith(`${EXPECTED_SKILLS[2]}: description is 501`)));
+});
+test('every shipped description reaches the model untruncated and names its Chinese triggers', () => {
+  const result = discover(resolveDefaultRoot());
+  for (const skill of result.discovered) {
+    assert.equal(catalogProblem(skill.description), undefined, skill.name);
+    assert.match(skill.description, /[\u4e00-\u9fff]/, `${skill.name} has no Chinese trigger text`);
   }
 });
 test('behavioral cases have unique IDs, valid skills and nonempty assertions', () => {

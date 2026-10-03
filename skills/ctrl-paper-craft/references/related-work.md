@@ -120,7 +120,7 @@ prior work. `To our knowledge` is not a substitute for a search.
 | Failure | Symptom | Repair |
 |---|---|---|
 | List of summaries | every paragraph ends without a difference statement | rewrite each as a positioning unit |
-| Positioned against the wrong work | the nearest competitor is absent while a distant one gets a paragraph | find the nearest work in the last two cycles and position against it |
+| Positioned against the wrong work | the nearest competitor is absent while a distant one gets a paragraph | find the nearest work across recent cycles and the foundational line, and position against it |
 | Unfair characterization | a cited method's own handling contradicts the description | correct it, and state the real difference |
 | Decoration citation | a citation attached to a sentence it does not support | remove it or move it to the sentence it supports |
 | Undated currency | the related work ends two cycles before the submission | add the recent line and position against it |
@@ -138,7 +138,7 @@ prior work. `To our knowledge` is not a substitute for a search.
 [ ] Every quoted number carries its protocol labels and a comparability verdict
 [ ] No cited method is mischaracterized, checked against its own text
 [ ] Every novelty claim has a search record, or is narrowed and marked
-[ ] The section is current through the last two venue cycles
+[ ] The section is current through at least the last two venue cycles and covers the foundational line
 [ ] Every citation supports the sentence it sits in
 [ ] Read-in-full versus abstract-only status is recorded where the support is load-bearing
 [ ] The section ends with what this paper measures, not with a summary

@@ -1,15 +1,12 @@
 ---
 name: ctrl-pre-submission-review
 description: >-
-  Referee-side pre-submission review for control-science-and-engineering papers across object
-  detection (目标检测), tracking (目标跟踪), re-identification (重识别), cooperative navigation
-  (协同导航), and filtering or state estimation (滤波). Produces three mutually blind reviewer
-  reports plus a post-freeze synthesis under the ctrl-shared eight-dimension rubric, with severity
-  tiers, evidence-pointer-or-drop, anti-sycophancy calibration, per-axis reviewer concern
-  taxonomies, and a blocking-flags roll-up. Use it when the user asks for 审稿, 模拟审稿, 预审,
-  同行评审, 拒稿风险分析, mock review, peer review, reviewer report, pre-submission check, or a
-  rejection-risk assessment before submitting to CVPR, ICCV, ECCV, IEEE TAC, Automatica, T-RO,
-  RA-L, ICRA, TGRS, 自动化学报, 控制理论与应用, or a comparable venue.
+  Use when the user wants a referee-style check of a paper on detection, tracking, re-ID,
+  cooperative navigation or filtering (目标检测, 跟踪, 重识别, 协同导航, 滤波): 审稿, 模拟审稿, 预审,
+  帮我审一下论文, 拒稿风险, mock or peer review, pre-submission check for CVPR, TAC, Automatica,
+  T-RO, ICRA, TGRS, 自动化学报 or similar. Gives pointer-backed concerns with severities,
+  eight-dimension scores, a derived recommendation and G3 readiness; several reviewers only in
+  isolated contexts, otherwise one labelled report.
 ---
 
 # CTRL pre-submission review
@@ -54,7 +51,10 @@ pointer, or it is dropped.
    tier and the loop budget of four review rounds.
 
 2. **Audit the input, then hash it, and report every verdict in the pack enum.** Record the content
-   hash and modification time of every file under review. Every finding, over every reviewer and
+   hash and modification time of every file under review. When the input is pasted text or no
+   hashing tool exists, identify the exact input instead (file name, version, date or the pasted
+   excerpt's first and last sentence) and write `hash not computed`; never invent one. Every
+   finding, over every reviewer and
    every gate, resolves to exactly one of `PASS` / `WARN` / `FAIL` / `BLOCKED` / `ERROR` /
    `NOT_APPLICABLE` from [verdicts-and-loops.md](../ctrl-shared/core/verdicts-and-loops.md). Never
    invent a seventh state, never soften `FAIL` into `WARN` because progress is wanted, and never
@@ -142,7 +142,7 @@ reviewer context.
 
 ```text
 # Reviewer R<k> report, round <n>
-- Manuscript revision: <path> hash <sha256 prefix>, mtime <timestamp>
+- Manuscript revision: <path> hash <sha256 prefix | not computed>, mtime <timestamp | version>
 - Axis: <det|track|reid|cnav|filt>, secondary <list or none>   Venue class: <A|B|C|D|E>
 - Emphasis brief: <lens name>
 - Isolation: separate context | one report per invocation | NON-BLIND shared context
@@ -170,7 +170,7 @@ Movement justified by: <pointers>
 Recommendation: Reject | Major revision | Minor revision | Accept
 Reason: <mapping rule applied, quoted>
 Verdict: <PASS | WARN | FAIL | BLOCKED | ERROR | NOT_APPLICABLE>
-Staleness: valid for revision hash <sha256 prefix> only; a later change voids this report
+Staleness: valid for revision <sha256 prefix, or the identified version> only; a later change voids this report
 
 # ===== separate file, ctrl-review-<round>-synthesis.md, never shown to a reviewer =====
 # Post-freeze synthesis, round <n>
@@ -214,7 +214,9 @@ standard gate block from core/gate-contract.md for G3, then report and flag coun
 - Never report a seventh verdict state, never soften `FAIL` into `WARN`, and never treat a verdict
   computed on an earlier revision as still valid.
 - Never issue a 9 or 10 with a `Blocking` finding open or with three or more `Major` findings, never
-  let the recommendation precede the scores, and never deliver a review with no input hash.
+  let the recommendation precede the scores, and never deliver a review that does not identify its
+  exact input revision. Record a hash when one can be computed; otherwise state `hash not computed`
+  rather than inventing one.
 
 ## Related files
 

@@ -66,8 +66,8 @@ the configuration had been pre-declared, because selection invalidates the nomin
 
 | Situation | Appropriate test | Assumption to state |
 |---|---|---|
-| 3 or more paired runs, same seeds, per-run values available | paired test over the seed pairs | the pairing is real, that is both arms saw the same seed and the same data order |
-| 3 or more unpaired runs per arm | rank-based test such as Mann-Whitney | observations are independent and the metric distribution is not assumed normal |
+| 3 or more paired runs, same seeds, per-run values available | paired test over the seed pairs | the pairing is real: both arms consumed the same random draws (common random numbers, for example the same Monte Carlo noise realizations, data split or scenario). Two different networks given the same seed integer are usually not paired, so check the between-arm correlation or treat them as unpaired |
+| 3 or more unpaired runs per arm | Welch's t-test on the difference, with the normality assumption stated; a rank test such as Mann-Whitney only with enough runs | observations are independent. With 3 runs per arm the exact two-sided Mann-Whitney p-value cannot fall below 0.10 (2/20), and with 4 per arm its minimum is about 0.029, so a rank test at 3 versus 3 can never reject at 0.05 |
 | per-image or per-sequence scores available | bootstrap over the evaluation units | the resampling unit is the unit of independence, images or sequences, not detections |
 | large per-unit sample, for example per-query reid scores | bootstrap confidence interval on the difference | state the number of resamples and the resampling unit |
 | comparison of a curve, for example a CMC or an FPPI curve | bootstrap over the whole curve, or compare at pre-declared operating points | do not compare curves by eye where they separate most |
@@ -80,7 +80,7 @@ and the sample it was computed from.
 | Method | Use when | Requirement |
 |---|---|---|
 | bootstrap percentile | per-unit scores exist, the metric is not a simple mean | at least 1000 resamples, and the resampling unit stated |
-| normal approximation over seeds | at least 5 seeds and an approximately symmetric metric | state the sample standard deviation and whether the t or z factor was used |
+| t interval over seeds | an approximately symmetric metric; with very few seeds the interval is wide and honest | use the t factor with n-1 degrees of freedom (2.776 at n = 5, 4.303 at n = 3 for 95 percent); a z factor of 1.96 understates the width at these sample sizes |
 | exact or binomial interval | the quantity is a rate, for example identity switch rate or detection rate per frame | state the interval family |
 | chi-square interval for ANEES | filtering consistency | see the `filt` section below |
 
@@ -141,13 +141,16 @@ who recomputes the second one rejects the paper.
 
 ### `reid`
 
-- Rank-1 is a rate over queries, so its interval is binomial or a bootstrap over queries. The query
-  count is usually large enough that this interval is narrow and misleading, while the dominant
-  uncertainty is the training seed. Report both.
-- mAP and Rank-1 move together but not proportionally. A gain in mAP without Rank-1 changed the
-  ranking inside the top list; state that instead of claiming a general gain.
-- Re-ranking changes both metrics substantially and is not a method component. Never compare an arm
-  with re-ranking against an arm without it.
+- Rank-1 is a rate over queries, but queries of one identity share a gallery and an appearance, so
+  they are not independent. Resample identities (all queries of an identity together) rather than
+  single queries; a binomial or per-query interval is narrow and misleading. The dominant
+  uncertainty is usually the training seed. Report both.
+- mAP and Rank-1 move together but not proportionally. A gain in mAP with an unchanged Rank-1 means
+  lower-ranked true matches moved up while the first match did not; state that instead of claiming
+  a general gain.
+- Re-ranking changes both metrics substantially and is post-processing, not part of the learned
+  representation. Unless re-ranking is the declared treatment, compare arms with identical
+  re-ranking status, and never compare an arm with re-ranking against an arm without it.
 - State the query count when reporting a gain on a small dataset, because a Rank-1 difference of one
   point can be a handful of queries.
 

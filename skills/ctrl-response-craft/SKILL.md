@@ -1,15 +1,11 @@
 ---
 name: ctrl-response-craft
 description: >-
-  Author-side revision correspondence for control-science-and-engineering papers across object
-  detection (目标检测), tracking (目标跟踪), re-identification (重识别), cooperative navigation
-  (协同导航), and filtering or state estimation (滤波). Produces point-by-point response letters,
-  conference rebuttals, revision cover letters, and a tracked revision plan, with concern triage
-  into accept, partially accept, rebut with evidence, and defer to limitations, a run-or-decline
-  decision for new-experiment requests, and per-reviewer isolation for mutually blind venues. Use
-  it when the user asks for 回复审稿意见, 审稿意见回复, 逐条回复, rebuttal, 修改说明, response to
-  reviewers, revision plan, cover letter for a revision, or help answering reviewer comments from
-  CVPR, ICCV, ECCV, IEEE TAC, Automatica, T-RO, RA-L, ICRA, TGRS, 自动化学报, or 控制理论与应用.
+  Use when answering peer review for a paper on detection, tracking, re-ID, cooperative navigation
+  or filtering (目标检测, 跟踪, 重识别, 协同导航, 滤波): 回复审稿意见, 逐条回复, 修改说明, 返修,
+  rebuttal, response letter, revision plan, cover letter to the editor. Triages each comment,
+  decides run-versus-decline for requested experiments, tracks promises in a revision ledger,
+  follows the venue's response format, and never claims a change the manuscript does not contain.
 ---
 
 # CTRL response craft
@@ -34,8 +30,11 @@ letter does not report it.
 
 - Read [verdicts-and-loops.md](../ctrl-shared/core/verdicts-and-loops.md) and the venue's own
   reviewer-response guidance first. The venue's guidance wins over anything here.
-- One file per reviewer for a mutually blind venue. A reviewer-facing file never mentions another
-  reviewer, another numbering, another score, or the authors' response to another review.
+- Fix the response format first: `shared-rebuttal` (CVPR, ICCV, ECCV one-page PDF),
+  `per-thread` (OpenReview), `combined-letter` (most journals) or `isolated`, per
+  [references/red-lines.md](references/red-lines.md). Draft `isolated` until the format is known.
+  Only the `isolated` format forbids naming another reviewer; no format ever quotes another
+  reviewer's score, recommendation or confidential comment.
 - Classify every comment before writing any response. The class determines the evidence obligation,
   and an unclassified comment gets answered from instinct, which is where most rebuttals fail.
 - Every promised experiment is a ledger row with an owner before the letter is drafted. The letter
@@ -57,10 +56,12 @@ letter does not report it.
    class in the ledger. Decide the class from the comment's mechanism, not its tone, using the
    comment-shape table in [references/rebuttal-strategy.md](references/rebuttal-strategy.md).
 
-3. **Fix the response culture.** Determine whether this is a conference rebuttal with a short hard
-   limit or a journal revision with a long window, and choose the winning moves accordingly. The
-   two cultures reward different things, and a journal-style letter in a rebuttal window is not
-   read.
+3. **Fix the response culture and format.** Determine whether this is a conference rebuttal with a
+   short hard limit or a journal revision with a long window, and choose the winning moves
+   accordingly. Record the response format (`shared-rebuttal`, `per-thread`, `combined-letter` or
+   `isolated`) and the venue rules that come with it, such as a one-page limit, no external links,
+   or no unrequested new results in a CVPR-class rebuttal. A journal-style letter in a rebuttal
+   window is not read.
 
 4. **Decide run versus argue versus decline for every new-experiment request.** Work the decision
    table in [references/revision-tracking.md](references/revision-tracking.md) row by row and record
@@ -90,19 +91,21 @@ letter does not report it.
    dependencies, and record the decisions taken with their residual risk. Produce the plan before
    editing the manuscript, so a long revision does not drift.
 
-9. **Draft the per-reviewer letters and the cover letter.** Use
-   [references/response-letter-template.md](references/response-letter-template.md). Write each
-   reviewer's letter as if it were the only review. Where two reviewers raised the same defect,
-   write the response twice in each reviewer's own framing, with the same evidence.
+9. **Draft the per-reviewer sections and the cover letter.** Use
+   [references/response-letter-template.md](references/response-letter-template.md), then assemble
+   them in the recorded format. In the `isolated` format write each letter as if it were the only
+   review, and answer a shared defect twice in each reviewer's own framing with the same evidence.
+   In a shared format answer it once and cross-reference it by the venue's identifier.
 
 10. **Reconcile the package in both directions.** Every claimed change is in the revised file at the
     cited location, and every change made is claimed somewhere. Every number in a letter matches the
     manuscript at the same precision. Run the full consistency check before sending.
 
-11. **Run the isolation and red-line scan.** Search every reviewer-facing file for the other
-    reviewers' designators, for any plural reference to reviews, for score and recommendation words,
-    and for meta-review language. A hit is a leak until proven otherwise. Apply
-    [references/red-lines.md](references/red-lines.md) in full.
+11. **Run the leak and red-line scan.** In every format, search reviewer-facing files for score,
+    recommendation and confidence words, confidential or meta-review language, and identifying
+    details or external links where the venue forbids them. In the `isolated` format also search
+    for the other reviewers' designators and plural references to reviews. A hit is a leak until
+    proven otherwise. Apply [references/red-lines.md](references/red-lines.md) in full.
 
 12. **Report the round outcome.** State the counts by class, the promises delivered versus made, the
     concerns carried forward, and whether the loop converged. Stop at four rounds, and report
@@ -110,7 +113,8 @@ letter does not report it.
 
 ## Output format
 
-Per-reviewer letter, one file per reviewer. Full template in
+Per-reviewer section, one file per reviewer in the `isolated` format and assembled into the venue's
+upload otherwise. Full template in
 [references/response-letter-template.md](references/response-letter-template.md).
 
 ```text
@@ -158,7 +162,8 @@ Round <n> report
 - Classes: accept <n>, partially accept <n>, rebut <n>, defer <n>, escalate <n>
 - Experiment promises made <n>, delivered <n>
 - Concerns accepted in a prior round and still unfixed: <n>
-- Isolation scan: <pass | the specific leak found>
+- Response format: <shared-rebuttal | per-thread | combined-letter | isolated>, guidance <document, date>
+- Leak scan: <pass | the specific leak found>
 - Package reconciliation: <pass | the specific mismatch>
 - Loop outcome: converged | budget exhausted with residual defects | stopped by user
 - Residual risk: <what stays open, and what it costs>
@@ -166,9 +171,11 @@ Round <n> report
 
 ## Red lines
 
-- Never mention another reviewer in a reviewer-facing file, in any wording, including `Reviewer 2`,
-  `R2`, `another reviewer`, `one of the reviewers`, or a plural reference to reviews.
-- Never report another reviewer's score, confidence, recommendation, or a meta-review sentence.
+- In the `isolated` format, never mention another reviewer in a reviewer-facing file, in any
+  wording, including `Reviewer 2`, `R2`, `another reviewer`, `one of the reviewers`, or a plural
+  reference to reviews. Draft in this format until the venue's format is confirmed.
+- In every format, never report another reviewer's score, confidence, recommendation, confidential
+  comment, or a meta-review sentence the reviewers were not shown, and never argue by headcount.
 - Never claim a change the revised manuscript does not contain, and never make a change that no
   letter reports.
 - Never promise an experiment that has no ledger row with an owner, and never report a result whose

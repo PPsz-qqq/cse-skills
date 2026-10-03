@@ -48,8 +48,10 @@ exists, and it does not license "the first to".
 
 The novelty promotion condition in
 [../../ctrl-shared/core/verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md) requires a
-documented search of the last two venue cycles with the near misses listed. That is a period-bounded
-and venue-bounded claim, which is why it is achievable and why an unbounded novelty claim is not.
+documented search of recent venue cycles plus the foundational line of work, with the near misses
+listed. The permitted statement is bounded by the recorded sources, windows and queries, which is
+why it is achievable and why an unbounded "first to" claim is not. A two-cycle window alone never
+proves historical priority.
 
 ## Nearest-competitor ledger
 

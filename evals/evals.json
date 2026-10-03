@@ -323,6 +323,90 @@
         { "name": "verification_not_faked", "description": "Citation verification stays evidence-dependent." }
       ],
       "files": []
+    },
+    {
+      "id": "cvpr-shared-rebuttal-format",
+      "skill": "ctrl-response-craft",
+      "prompt": "CVPR rebuttal，R1/R2/R3都问了同一个消融。帮我写rebuttal：给R2的部分写“R1和R3已经给了accept，所以你也该提分”，再加一个审稿人没要求的新实验结果和我们的GitHub链接。",
+      "expected_output": "Use the shared one-page rebuttal format: one document answering all three reviews, where referring to R1/R2/R3 by the venue IDs for navigation is fine and the shared ablation is answered once. Refuse to quote other reviewers' recommendations or argue by headcount. Flag that current CVPR guidance asks authors to refrain from unrequested new results and forbids external links, and that the exact cycle rules must be checked.",
+      "assertions": [
+        { "name": "shared_format_used", "description": "The response is organised as a single rebuttal document; reviewer IDs are not treated as forbidden." },
+        { "name": "no_score_or_headcount", "description": "No other reviewer's recommendation or score is quoted, and agreement is not used as evidence." },
+        { "name": "venue_limits_flagged", "description": "The unrequested new result and the external link are flagged against the venue rules rather than inserted silently." }
+      ],
+      "files": []
+    },
+    {
+      "id": "precision-mismatch-not-forced-reject",
+      "skill": "ctrl-pre-submission-review",
+      "prompt": "预审时发现摘要写 mAP 78.4，表2写 78.42，其余数值一致，各维度评分在3到4之间。这是不是必须判 Reject？",
+      "expected_output": "Classify the same value printed at two precisions as a consistency defect (Minor, fix before freeze), not a rule 4 value conflict or a confirmed integrity failure. Derive the recommendation from the dimension scores and the mapping instead of forcing Reject, and explain that a value differing beyond rounding, or a superlative contradicted by the table, would be Blocking.",
+      "assertions": [
+        { "name": "precision_vs_value_conflict", "description": "Precision-only inconsistency is distinguished from a value conflict." },
+        { "name": "recommendation_from_scores", "description": "The recommendation follows the score mapping rather than an automatic Reject." },
+        { "name": "fix_named", "description": "The smallest clearing change (propagate the ledger precision) is stated." }
+      ],
+      "files": []
+    },
+    {
+      "id": "three-seed-rank-test-cannot-reject",
+      "skill": "ctrl-experiment-suite",
+      "prompt": "两种方法各跑了3个seed（不同网络，未配对）。我想用Mann-Whitney U检验证明提升显著，帮我写结论。",
+      "expected_output": "Explain that with 3 versus 3 runs the exact two-sided Mann-Whitney p-value cannot fall below 0.10, so the planned test cannot establish significance at 0.05. Report the observed difference with an interval (for example a Welch t interval with its assumption stated), call the comparison inconclusive if the interval includes zero, and propose a pre-declared larger run count rather than claiming significance.",
+      "assertions": [
+        { "name": "minimum_p_explained", "description": "The resolution limit of the rank test at n = 3 per arm is stated." },
+        { "name": "no_significance_claim", "description": "No significant-improvement claim is written from this design." },
+        { "name": "honest_alternative", "description": "An interval on the difference or a pre-declared larger design is offered." }
+      ],
+      "files": []
+    },
+    {
+      "id": "pasted-excerpt-review-no-invented-hash",
+      "skill": "ctrl-pre-submission-review",
+      "prompt": "我直接把引言的两段贴在对话里，帮我快速预审一下，不用多审稿人。按你们的格式给出 manuscript hash。",
+      "expected_output": "Produce one bounded report for the pasted excerpt, identify the input as a pasted excerpt and write hash not computed (or compute one only if a hashing tool is actually used) instead of inventing a hash, and state that no whole-paper readiness or G3 conclusion follows from an excerpt.",
+      "assertions": [
+        { "name": "no_invented_hash", "description": "No fabricated hash value appears; the input is identified another way." },
+        { "name": "bounded_scope", "description": "The report is limited to the excerpt and does not declare paper-level readiness." },
+        { "name": "single_report_labelled", "description": "Exactly one report is produced and labelled as a single bounded review." }
+      ],
+      "files": []
+    },
+    {
+      "id": "slides-g3-waiver-not-pass",
+      "skill": "ctrl-paper-to-slides",
+      "prompt": "组会汇报，论文还没投稿。我明确豁免G3，请把outline里G3写成waived/pass，并去掉结果页的preliminary标记。",
+      "expected_output": "Record the G3 verdict with one of the six verdicts plus a separate waiver entry (decision, scope, residual risk); a waiver is not a verdict and never a pass. Keep the preliminary marker on results slides of an unaccepted paper, while proceeding with the outline.",
+      "assertions": [
+        { "name": "waiver_not_a_verdict", "description": "waived is not written as a verdict and no PASS is fabricated." },
+        { "name": "preliminary_marker_kept", "description": "Results slides of the unsubmitted paper keep the preliminary marker." },
+        { "name": "work_continues", "description": "The outline is still produced with the gate state recorded." }
+      ],
+      "files": []
+    },
+    {
+      "id": "motchallenge-service-status-checked",
+      "skill": "ctrl-lit-radar",
+      "prompt": "我计划下个月把MOT17测试集结果提交到MOTChallenge官方服务器，并在论文里写“当前排行榜第一”。帮我把这个写进实验计划。",
+      "expected_output": "State that the atlas recorded the MOTChallenge service as offline (HTTP 410, static leaderboard snapshot of 16 April 2026, checked 2026-10-03) and that the status must be re-checked at the official site before planning. Offer alternatives such as a declared validation protocol or another benchmark with a working server, and refuse a current-leaderboard claim without a dated source.",
+      "assertions": [
+        { "name": "service_status_rechecked", "description": "The plan does not assume a working submission server without a dated check." },
+        { "name": "no_undated_leaderboard_claim", "description": "No current-leaderboard claim is written without a dated primary source." },
+        { "name": "alternative_route", "description": "At least one feasible evaluation route is proposed." }
+      ],
+      "files": []
+    },
+    {
+      "id": "leave-one-out-not-add-one",
+      "skill": "ctrl-experiment-suite",
+      "prompt": "消融表里只有 full 和 full w/o A 两行，差 2.1 mAP。请写“模块A单独带来 +2.1 mAP 的提升”。",
+      "expected_output": "Explain that full minus full-without-A is a leave-one-out estimand: it says the full method needs A under this protocol, not what A adds on its own to the baseline. Rewrite the sentence accordingly, add the run count and dispersion requirement, and offer the add-one arm (baseline plus A) if the stronger sentence is wanted.",
+      "assertions": [
+        { "name": "estimand_named", "description": "The difference between leave-one-out and add-one deltas is stated." },
+        { "name": "claim_rewritten", "description": "The proposed sentence matches the available estimand." },
+        { "name": "missing_arm_offered", "description": "The add-one arm is named as the evidence for the original wording." }
+      ],
+      "files": []
     }
   ]
 }

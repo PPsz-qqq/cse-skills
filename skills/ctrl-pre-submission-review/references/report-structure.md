@@ -163,7 +163,7 @@ Checks, in the order that finds the most defects:
 | Aggregation level | a per-sequence value presented beside a per-dataset value without a label |
 | Prose and table agreement | a sentence claiming a gain that the table shows as a loss, or a different precision for the same number |
 | Duplicate displays | the same result appearing in two tables with different values, or a training set used as a test set |
-| Dispersion anomalies | a standard deviation larger than the mean's plausible range, an error bar that overlaps the baseline, or a claimed significance with no test |
+| Dispersion anomalies | a standard deviation larger than the mean's plausible range, error bars whose statistic (SD, SE, CI) is undefined, or a claimed significance with no test; overlap or separation of plotted bars is not itself a significance test |
 | Provenance | a headline number with no artifact path, no seed, and no config |
 | Reproducibility | a stated command, checkpoint, or dataset version that does not resolve |
 | Figure and text correspondence | a caption describing a panel that shows something else, a figure referenced in the wrong order |

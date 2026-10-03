@@ -1,15 +1,11 @@
 ---
 name: ctrl-lit-radar
 description: >-
-  Literature intelligence for control-science-and-engineering research across object detection
-  (目标检测), tracking (目标跟踪), re-identification (重识别), cooperative navigation (协同导航) and
-  filtering or state estimation (滤波). Use it for a literature review (文献综述), a related-work
-  section (研究现状), a literature search for a gap, an opening report or topic selection (开题,
-  选题), a novelty check before claiming 创新点, the closest-prior-work field of a G0 scope block,
-  venue-cycle tracking, and a nearest-competitor ledger. It constructs per-axis queries against
-  arXiv, OpenAlex, Semantic Scholar, Crossref, PubMed and IEEE Xplore, grades every source by how it
-  was read, applies a three-expansion saturation stop rule, and never reports a number it did not
-  read at first hand.
+  Use when research on detection, tracking, re-ID, cooperative navigation or filtering (目标检测,
+  跟踪, 重识别, 协同导航, 滤波) needs literature work: 文献综述, 文献调研, 找论文, 研究现状, 相关工作,
+  开题/选题 gaps, 创新点 novelty checks, nearest competitors, benchmark choice, venue deadlines.
+  Builds bilingual query plans (arXiv, OpenAlex, Semantic Scholar, Crossref, DBLP, IEEE Xplore,
+  CNKI), records read depth, stops by a declared saturation rule, never cites unread numbers.
 ---
 
 # CTRL literature radar

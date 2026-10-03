@@ -31,7 +31,7 @@ self-contained block that a reader can act on without the paper.
 
 **Acceptance criteria.**
 - Every number in the abstract appears identically in the body, at the same precision
-  (`references/reconciliation-and-notation.md`).
+  ([reconciliation-and-notation.md](reconciliation-and-notation.md)).
 - Every abstract result number has a checked G2 ledger row; comparative claims are `comparable`,
   and absolute non-comparative values use `NOT_APPLICABLE` with a reason.
 - The contribution is stated as what was done, not as what was avoided.
@@ -40,11 +40,12 @@ self-contained block that a reader can act on without the paper.
   promise.
 
 **What must not appear.** A number with no protocol, `state-of-the-art` without a matched
-comparison, `first to` without a two-cycle search (`../../ctrl-shared/core/verdicts-and-loops.md`),
+comparison, an unbounded `first to` (only a bounded search finding is allowed, per
+[verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md)),
 `significantly` without a test, a field claim supported by simulation, a citation, and any
 sentence that is only true if the reader skips the experiments section.
 
-See `references/abstract-template.md` for the worked structure.
+See [abstract-template.md](abstract-template.md) for the worked structure.
 
 ## Introduction
 
@@ -77,7 +78,7 @@ those papers cannot object to the characterization.
   methods.
 - Every nearest competitor is named and its precise difference from this work is stated in one
   sentence.
-- Copied numbers carry their protocol differences (`references/related-work.md`).
+- Copied numbers carry their protocol differences ([related-work.md](related-work.md)).
 - The gap the paper fills is stated last, and it follows from the specific differences above it.
 
 **What must not appear.** A paragraph that only summarizes; a mischaracterization of a cited
@@ -113,8 +114,9 @@ one.
 **Job.** Present the evidence that the claims hold and the conditions under which they do not.
 
 **Acceptance criteria.**
-- Every comparison carries its protocol block from `ctrl-experiment-suite`
-  `references/protocol-blocks.md`, in the text or in an appendix referenced from the table.
+- Every comparison carries its protocol block from
+  [protocol-blocks.md](../../ctrl-experiment-suite/references/protocol-blocks.md), in the text or
+  in an appendix referenced from the table.
 - Every headline number has a dispersion or an explicit `single seed` label.
 - Ablations isolate each claimed component, and null results are present and discussed.
 - The failure analysis is present: a scene, class, or condition where the method loses.
@@ -159,7 +161,7 @@ restatement of the abstract in different words with a stronger adjective.
 
 ## Section order and length control
 
-Adjust to the venue's structure and page budget (`references/axis-writing-guides.md`).
+Adjust to the venue's structure and page budget ([axis-writing-guides.md](axis-writing-guides.md)).
 
 | Section | Share of the body | Fails when |
 |---|---|---|

@@ -143,14 +143,14 @@ supported by a `G2`-passed ledger row.
 | Forbidden | Why | Replacement |
 |---|---|---|
 | `state-of-the-art` | unsupported without a matched comparison, and dated on arrival | the value with its protocol, and the named baseline |
-| `significantly better` | `significantly` is a statistical term | `higher by <delta>, <interval> excluding zero` or the null statement |
+| `significantly better` | `significantly` is a statistical term | `higher by <delta>, <interval> excluding zero` with the named test; when the interval includes zero, `inconclusive at this run count` |
 | `the first to` | recent cycles cannot prove historical priority | bounded search finding with recent/foundational work, near misses and limits |
 | `novel framework` | `novel` is a reviewer's verdict, not the authors' | name what is new, mechanically |
 | `extensive experiments` | a claim about effort, not evidence | name the datasets and the run count |
 | `effectively handles` | unfalsifiable | the measured behaviour and the condition |
 | `real-world` | a field claim needs field data | `in simulation` or the platform, site, and conditions |
 | `robust` | needs a perturbation class | `under <named corruption or outlier rate>` |
-| `achieves comparable performance` | usually means it lost | the value, the interval, and `no measurable difference` |
+| `achieves comparable performance` | usually means it lost | the value and the interval; `inconclusive` when the interval includes zero; `equivalent within <margin>` only with a pre-declared margin and an equivalence test |
 | `to the best of our knowledge` | launders an unrun search | run the search, or state the gap in reported evidence |
 
 ## Self-check before the abstract is frozen

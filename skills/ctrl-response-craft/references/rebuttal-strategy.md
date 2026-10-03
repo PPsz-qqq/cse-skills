@@ -8,11 +8,11 @@ which of these applies, so fix the class first from
 
 | Dimension | CVPR-class vision conference | Control, robotics, and estimation journals |
 |---|---|---|
-| Time for the response | one short rebuttal window, often 1 to 2 pages, sometimes a single text box | a revision round measured in weeks or months |
+| Time for the response | one short rebuttal window; CVPR, ICCV and ECCV use one anonymous one-page PDF for all reviews with no external links, while OpenReview venues use replies under each review | a revision round measured in weeks or months |
 | What the venue wants | a decision, now, with the smallest convincing evidence | a revised manuscript that a reviewer can re-check |
 | What wins | a decisive new number, a factual correction of a misreading, a clear scope statement | a new experiment, a corrected proof, an added comparison, a rewritten section |
 | What loses | restating the contribution, promising future work, arguing about novelty in the abstract | arguing with the reviewer, cosmetic edits presented as revisions, a response letter longer than the paper |
-| New experiments | often impossible in the window, so a partial run with a stated protocol is worth more than nothing | expected, and their absence is read as evasion |
+| New experiments | CVPR, ICCV and ECCV guidelines (CVPR 2026, ICCV 2025, ECCV 2024, checked 2026-10-03) ask authors to refrain from new contributions or experimental results not specifically requested, and reviewers may disregard them; report a new result only when a reviewer asked for it, after checking the current cycle's rules | expected, and their absence is read as evasion |
 | Rebuttal length | hard-limited, so every sentence must carry a number or a correction | long is acceptable but a long letter that avoids the point is worse than a short one that answers it |
 | The fatal move | claiming to fix something the reviewer will check | claiming a change in the letter that is not in the revised manuscript |
 
@@ -40,7 +40,8 @@ authors did not evaluate the comments. A letter that rebuts everything signals t
 
 - **A number the reviewer did not have.** A new run, a new ablation, a corrected comparison,
   reported with the protocol, the seed count, and the dispersion. This is the strongest move
-  available in any culture.
+  wherever the venue accepts new results: a journal revision, an OpenReview discussion, or a
+  conference rebuttal when the reviewer asked for that result.
 - **A pointer to the existing text.** A misreading is answered by quoting the sentence the reviewer
   missed, with its location, and then asking whether it should be made more prominent. Quote it
   exactly.
@@ -69,8 +70,8 @@ authors did not evaluate the comments. A letter that rebuts everything signals t
 | A long letter that answers two of ten points | the unanswered points are the ones that decide the score | answer all ten, in order |
 | Escalating to the editor over a scientific disagreement | the editor sides with the reviewer | escalate only on a factual error the manuscript already settles, and only in the cover letter |
 | Adding a new claim to answer a concern | the new claim has no evidence behind it | answer within the existing claim, or run the experiment |
-| Copying the same paragraph into every reviewer letter | it is correct practice, but only when phrased for each reviewer's own comment | phrase each response against that reviewer's wording |
-| Mentioning another reviewer to show consensus | it breaks blindness and can void the review | never, in any venue, in any wording |
+| Copying the same paragraph into every reviewer letter | in the `isolated` format it is correct practice, but only when phrased for each reviewer's own comment | phrase each response against that reviewer's wording; in shared formats answer once and cross-reference |
+| Citing other reviewers to show consensus | agreement is not evidence, and in the `isolated` format any mention breaks the isolation | argue from evidence; never quote another reviewer's score or recommendation; name reviewers only as the format in [red-lines.md](red-lines.md) allows |
 
 ## Using the review's own structure
 

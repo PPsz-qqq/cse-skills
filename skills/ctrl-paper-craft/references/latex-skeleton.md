@@ -131,8 +131,11 @@ even when it is numerically the largest.
 \end{figure}
 ```
 
-Every figure has its generating script beside it, per
-`../../ctrl-shared/core/artifact-contract.md`. A figure whose script is missing is a `G2` failure.
+Every generated figure has its generating script and input data beside it, per
+[artifact-contract.md](../../ctrl-shared/core/artifact-contract.md). A reused or supplied figure
+keeps its source, version and permission or credit instead; no fictional generator is written for
+it. A missing generator is a `G2` failure only for a figure presented as generated from project
+data.
 
 ## Algorithm skeleton
 
@@ -173,7 +176,7 @@ centralization defect that reviewers in that class look for first.
 ```
 
 The two abstracts must agree on every number
-(`references/reconciliation-and-notation.md`, bilingual pass).
+([reconciliation-and-notation.md](reconciliation-and-notation.md), bilingual pass).
 
 ## Structural checks
 
@@ -181,11 +184,11 @@ The two abstracts must agree on every number
 [ ] Class and style files are the current official ones, with the version recorded
 [ ] Page limit respected, with the reference section treatment per the venue
 [ ] Anonymity: no author names, no acknowledgments, no self-identifying repository links
-[ ] Every figure has its generating script, and every table has its source data
+[ ] Every generated figure has its script, reused figures their source and credit, and every table its source data
 [ ] Protocol blocks present, in the text or in the appendix, and referenced from every table
 [ ] Every number in the abstract appears identically in the body
 [ ] Every claim's strength matches its promotion condition
 [ ] Simulation and field results labeled in captions and in prose
 [ ] References complete, checked against sources, and formatted per the venue
-[ ] Section budget roughly within the shares in references/section-workflow.md
+[ ] Section budget roughly within the shares in section-workflow.md (this directory)
 ```

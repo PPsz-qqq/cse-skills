@@ -9,6 +9,10 @@ authority. Always verify against the current official call for papers or author 
 before formatting a submission, and record the version of the guidelines you used. Where this
 file conflicts with the official call, the official call wins.
 
+Verification status: venue names and publishers in the tables were checked against official
+publisher, society or IEEE Xplore pages on 2026-10-03. The "weight" and "evidence bar" columns are
+this pack's planning guidance, not statements of any venue's policy.
+
 ## How to choose, in order
 
 1. Fix the claim type from `ctrl-shared` G0. A theory result, an empirical delta, a system
@@ -32,6 +36,7 @@ Applies to `det`, `track`, `reid`, and the learning-heavy end of `cnav` and `fil
 | AAAI, IJCAI | all axes | solid contribution with clear framing | broad but slightly lower empirical bar than CVPR-class |
 | WACV, BMVC, ACCV | the three vision axes (`det`, `track`, `reid`) | complete, honest, well-evaluated work | one strong benchmark plus ablations is often enough |
 | T-PAMI, IJCV | the three vision axes (`det`, `track`, `reid`) | journal-depth: extended analysis, broader validation | substantial extension beyond any conference version is mandatory |
+| IEEE TIP, IEEE TCSVT, Pattern Recognition, IEEE TMM, IEEE TIFS | `det`, `track`, `reid` (TIFS often for person re-identification and surveillance) | sound method with thorough evaluation; journal-length analysis | multi-dataset evaluation, ablations, fair baselines; check each journal's conference-extension policy |
 
 Reviewer behaviour to plan for: this class rejects on perceived novelty first, then on
 unfair or thin comparison, then on missing ablations. A negative attitude toward "yet another
@@ -49,7 +54,12 @@ Applies primarily to `cnav` and `filt`.
 | IEEE TAES, Aerospace | `cnav`, `filt` in aerospace settings | navigation, guidance, integrity, fault detection | realistic scenarios, GNSS-denied or degraded conditions |
 | IFAC World Congress, IFAC journals, CDC, ACC | `filt`, `cnav` | methodological control contribution | theory plus simulation, hardware optional |
 | IEEE T-ITS, ITSC, IV | `det`, `track`, `reid` in traffic; `cnav` for vehicles | transportation-specific impact and datasets | dataset realism, vehicle-platform validation |
-| IEEE Sensors Journal, Measurement, NAVID | `filt`, `cnav` sensing | sensor system, calibration, fusion architecture | bench validation, error characterization, repeatability |
+| IEEE Sensors Journal, Measurement | `filt`, `cnav` sensing | sensor system, calibration, fusion architecture | bench validation, error characterization, repeatability |
+| NAVIGATION (Journal of the Institute of Navigation, ION), GPS Solutions, ION GNSS+, IEEE/ION PLANS, IET Radar, Sonar & Navigation | `cnav`, `filt` for positioning, navigation and timing | GNSS, inertial and multisensor PNT, integrity, cooperative positioning | real or recorded sensor data, error budgets, comparison with established PNT baselines |
+| Information Fusion (Elsevier), International Conference on Information Fusion (FUSION, ISIF) | `filt`, `track`, `cnav` fusion | fusion architectures, multi-target tracking, distributed estimation | consistency evidence, Monte Carlo design, fusion-rule correctness (for example cross-covariance handling) |
+| IEEE TNNLS, IEEE Transactions on Cybernetics, IEEE TII, IEEE TIE, IEEE TASE, IEEE/CAA Journal of Automatica Sinica | all axes when framed as learning, control or industrial systems | method plus control, learning or industrial relevance | stability or convergence arguments where claimed, application validation |
+| Chinese Journal of Aeronautics, Science China Information Sciences | `cnav`, `filt`, aerospace `det` and `track` | English-language aerospace or information-science contributions, published in China | as for the matching class B or A venue |
+| IEEE T-IV, IEEE TVT, IEEE Internet of Things Journal | `cnav` and `det`/`track` on vehicles, V2X and networked agents | vehicular or networked-system relevance | platform or network realism, communication assumptions stated |
 
 Reviewer behaviour to plan for: this class rejects on unstated assumptions, missing proof
 details, comparisons to a straw-man baseline, and simulation-only claims dressed as system
@@ -82,7 +92,9 @@ Applies to all axes when the target is a Chinese venue.
 Requirements that differ from English venues and are commonly missed: an explicit statement of
 创新点 (what is new, stated as a list of points), a Chinese abstract that is a real summary
 rather than a translation of the English one, 基金项目 funding acknowledgment formatting,
-中图分类号 and 文献标识码 fields, and reference formatting per  GB/T 7714.
+中图分类号 and 文献标识码 fields, and reference formatting per the GB/T 7714 edition the journal
+names. GB/T 7714-2025 replaced GB/T 7714-2015 on 2026-07-01 (national standards platform record,
+checked 2026-10-03); journals may lag, so follow the 投稿指南 and record the edition used.
 
 ## Class E: preprints and archives
 
@@ -116,7 +128,8 @@ Risk of desk rejection: <the single most likely reason, and our mitigation>
 ## Venue-specific failure modes worth pre-empting
 
 - **CVPR-class vision.** Ablation missing for the central claim; comparison under unmatched
-  protocol; "we are the first" without a search of the last two cycles; missing failure cases;
+  protocol; "we are the first" without a documented search of recent cycles and the foundational
+  line of work; missing failure cases;
   no compute or training-detail disclosure.
 - **Control theory venues.** Assumptions stated only in words; proof of the main theorem left to
   an appendix that does not close; comparisons against a baseline tuned unfairly; simulation

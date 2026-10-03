@@ -10,7 +10,7 @@ ledger from `ctrl-lit-radar`.
 
 | Score | Condition | Evidence required |
 |---|---|---|
-| 5 | no directly overlapping work retrieved under the recorded queries dated within the last two venue cycles, and the mechanism itself is unclaimed | the recorded search plus a ledger whose top row is `low` overlap severity |
+| 5 | no directly overlapping work retrieved within the recorded scope, which covers recent venue cycles plus the foundational line of work with near misses listed, and the mechanism itself is unclaimed | the recorded search with its windows, sources and coverage limits, plus a ledger whose top row is `low` overlap severity |
 | 4 | no overlapping work on the mechanism; overlapping work exists on the task or the setting | ledger with the differing axis named for each row |
 | 3 | one work overlaps on the mechanism but differs on a checkable axis such as the regime, the sensor or the assumption set | that work opened and read, with the location of the difference |
 | 2 | the mechanism is published; the novelty is in the combination, the scale, or the application | a statement of what the combination adds beyond the sum |
@@ -18,7 +18,9 @@ ledger from `ctrl-lit-radar`.
 
 Novelty score 5 is not available without a recorded search. This is the novelty promotion condition
 in [../../ctrl-shared/core/verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md), and
-it is the reason a "first to" sentence cannot be written from memory.
+it is the reason a "first to" sentence cannot be written from memory. Even a score of 5 licenses only
+the bounded statement "no directly overlapping work retrieved within <scope>", never an unbounded
+historical priority claim.
 
 ## Risk, scored 1 to 5
 

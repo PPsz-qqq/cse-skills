@@ -32,7 +32,7 @@ Rules.
 - The `Protocol labels` column carries the labels that travel with the number for the axis.
   `det` uses resolution and TTA, `track` uses online or offline and public or private, `reid` uses
   single-query or multi-query and re-ranking on or off, `cnav` uses distributed or centralized and
-  the message budget, `filt` uses`N` and the covariance policy.
+  the message budget, `filt` uses `N` and the covariance policy.
 - Bold a value only when it is the best under a matched protocol. If the best-looking number is
   `not comparable`, it stays unbolded and the reason is in `Notes`.
 - Every `+-` value names its statistic and run count in the caption.
@@ -107,7 +107,7 @@ unconditional df `N*T*n_x`. Distinguish pointwise from simultaneous bounds and s
 
 Rules.
 
-- One singleton arm per claimed component. See `references/ablation-matrix.md`.
+- One singleton arm per claimed component. See [ablation-matrix.md](ablation-matrix.md).
 - The `Delta vs baseline` column is relative to the baseline row, not to the previous row.
 - The `Interval` column carries the interval on the delta. `not computed` is a visible gap, not a
   blank.

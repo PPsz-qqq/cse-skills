@@ -140,7 +140,11 @@ ends careers rather than talks.
 
 ## Final rendered check
 
-Run this on the exported artifact, not on the Markdown outline.
+Run this on the exported artifact, not on the Markdown outline. Visual items need a renderer or an
+image export that you can actually inspect. Without one, report `rendered check: not performed`,
+list the visual items left unchecked, and still run the items that can be verified from files (the
+timing sum, ledger traceability, the revision recorded in the outline). Never report a visual PASS
+for a deck nobody rendered.
 
 ```text
 [ ] Every slide read at 50 percent zoom is still legible
@@ -151,6 +155,6 @@ Run this on the exported artifact, not on the Markdown outline.
 [ ] Every colour used semantically is consistent across the deck
 [ ] Every slide states its own single message in its title
 [ ] The timing budget recomputed from the slides fits the slot
-[ ] Every number on every slide traces to a G2-passed ledger row
-[ ] The deck was built from the revision hash recorded in the outline
+[ ] Every number on every slide traces to a G2-passed ledger row, or to the scoped source ledger as `reported`
+[ ] The deck was built from the revision recorded in the outline (hash when computable)
 ```

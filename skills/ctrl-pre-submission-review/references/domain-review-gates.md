@@ -18,9 +18,12 @@ how to obtain it.
    manuscript or in the artifacts the field was found.
 3. An `absent` field that carries a reported delta becomes a concern with an evidence pointer to
    the missing field's expected location. Do not invent the value.
-4. Report the gate status with the standard block. Three verdicts are available at review time.
-   `PASS` needs every required field present. `FAIL` needs a specific unmet criterion. `BLOCKED`
-   needs a named missing artifact.
+4. Report the gate status with the standard block and exactly the six verdicts from
+   [verdicts-and-loops.md](../../ctrl-shared/core/verdicts-and-loops.md). `PASS` needs every
+   applicable required field present and checked. `WARN` is a met criterion with a non-blocking
+   defect, never an integrity failure. `FAIL` needs a specific evaluated unmet criterion. `BLOCKED`
+   needs a named missing input or artifact. `ERROR` means the check itself could not run.
+   `NOT_APPLICABLE` needs the reason the criterion does not apply to this claim type.
 5. A failed G2 is blocking and has no waiver path. The remedy is to remove the claim or produce the
    evidence, so the review's resolution test names which of the two is expected.
 
@@ -112,7 +115,7 @@ sensors, calibration procedure, and onboard runtime where a hardware claim is ma
 | `Monte Carlo count` | the number of runs `N`, and whether every arm used the same `N` | a different `N` per arm is a comparability break, Blocking for a consistency claim |
 | `Consistency metric` | `NEES` or `ANEES`, the estimator that produced `P_k`, and the degrees of freedom `n_x` | Blocking for a consistency claim |
 | `Chi-square bounds` | the quantiles used, the confidence level, and whether the test is one-sided or two-sided | a bound chosen after seeing the result is not a test, Major |
-| `Bound used for comparison` | the numeric bounds actually plotted, and over how many runs and steps they were averaged | a bare `ANEES` value with no bound is not evidence, Major |
+| `Bound used for comparison` | the numeric bounds actually plotted, the run count `N`, the time index or aggregation, and, for any time-averaged statistic, its correlation-aware calibration (degrees of freedom are never inferred from `N*T` alone) | a bare `ANEES` value with no bound is not evidence, Major |
 | `Initialization error` | the initial error distribution and whether it is consistent with the initial `P_0` | a different initial error per arm is a comparability break, Blocking when arms differ |
 | `Noise covariance policy` | the `Q_k` and `R_k` used per arm, how they were obtained, and whether any arm was hand-tuned | a covariance mismatch applied to the baseline only is a comparison-integrity failure, Blocking |
 | `Estimator settings` | sigma points or particles, resampling scheme, and every tunable parameter, per arm | per-filter hand tuning for the proposed method only is a comparability break, Blocking |
@@ -184,5 +187,6 @@ with a `track` evaluation. In that situation:
 - Never downgrade a failed integrity criterion to an advisory note.
 - Never convert `BLOCKED` into `FAIL`. The remedy differs, since `BLOCKED` needs an input rather
   than a change.
-- Never accept a gate verdict computed on a different revision of the manuscript. A revision
-  invalidates the verdict, and the gate reverts to `FAIL` until re-run.
+- Never accept a gate verdict computed on a different revision of the manuscript. A revision marks
+  the earlier verdict `STALE`; its re-evaluation is `BLOCKED` until it is re-run, which is not an
+  automatic scientific `FAIL`.

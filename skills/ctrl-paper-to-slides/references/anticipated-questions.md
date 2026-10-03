@@ -102,7 +102,7 @@ slide, by labelling simulated results as simulated.
 | 6 | How much compute did this take? | Give the hardware and the total GPU-hours. Being asked this and not knowing it damages credibility more than a large number would |
 | 7 | What would you do with more time? | Name the single most valuable missing experiment and why it matters. This question tests whether the authors understand their own paper's weakest point |
 | 8 | Does this hold under a different protocol? | Give the protocol difference and what it would change, or state that it was not tested |
-| 9 | Is this a fair comparison? | Recite the protocol block from memory. This is the question the talk exists to pre-empt |
+| 9 | Is this a fair comparison? | Go to the backup slide that reproduces the checked protocol block and walk the matched fields; if a field is not on the slide, say it is not available rather than reconstructing it from memory. This is the question the talk exists to pre-empt |
 | 10 | What is the significance test? | Give the test, the seed count, and the result, or state that no test was run and why |
 
 ## Answer discipline

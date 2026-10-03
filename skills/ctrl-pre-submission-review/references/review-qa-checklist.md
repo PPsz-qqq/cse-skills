@@ -73,7 +73,7 @@ before delivery.
 [ ] No reviewer saw another reviewer's report, brief, or the synthesis
 [ ] Every emphasis brief was written before the first report existed
 [ ] No brief names an identity, institution, or personality
-[ ] Every report was frozen with a recorded hash before any comparison
+[ ] Every report was frozen before any comparison, with a recorded hash, or with `hash not computed` and an immutable file version when no hashing tool exists
 [ ] No frozen report was edited; corrections are appended and dated
 [ ] Consensus is labelled only where at least two reports raised the same underlying mechanism
 [ ] Every consensus row states the shared mechanism, not just similar wording

@@ -24,7 +24,7 @@ Read the entries for the primary axis in full, plus the entries for each seconda
 | det-8 | Efficiency claim with no parameter count, FLOPs on a stated input size, and latency on a named device with a stated batch size | the efficiency table | Major |
 | det-9 | "State of the art" asserted while the comparison omits a strong same-protocol baseline | the baseline list and the omission | Major |
 | det-10 | Remote-sensing split with geographic leakage, tiles from one scene in both train and test | the split construction and the spatial separation rule | Blocking |
-| det-11 | Novelty claim without a documented search of the last two venue cycles | the search terms and the near-miss list | Major, and it is a `Question` when the search itself is missing but plausible |
+| det-11 | Novelty claim without a documented search of recent venue cycles and the foundational line of work | the search terms, window and the near-miss list | Major, and it is a `Question` when the search itself is missing but plausible |
 | det-12 | Failure cases absent, so the reader cannot see where the detector loses | a qualitative failure figure or an error analysis | Minor if the paper is otherwise strong, Major when generalization is claimed |
 
 ## track, object tracking
@@ -104,8 +104,9 @@ These apply regardless of axis and are the most frequent cause of a low score.
 | Concern | Pointer required | Usual severity |
 |---|---|---|
 | The abstract claims more than the ledger supports, such as a mechanism explanation backed only by a leaderboard delta | the abstract sentence and the corresponding experiment | Blocking |
-| An integrity failure under [evidence-integrity.md](../../ctrl-shared/core/evidence-integrity.md) rules 1, 2, 4, or 10 | the claim and the artifact that contradicts it | Blocking, forces Reject |
-| A number appears at two precisions, or a superlative is contradicted by the paper's own table | both occurrences | Blocking |
+| A confirmed integrity failure under [evidence-integrity.md](../../ctrl-shared/core/evidence-integrity.md) rules 1, 2 or 10 | the claim and the artifact that contradicts it | Blocking, forces Reject |
+| A value differs between surfaces beyond rounding, or a superlative is contradicted by the paper's own table (rule 4) | both occurrences and the arithmetic | Blocking; Reject only when it carries the central claim |
+| The same value is printed at two precisions or in two units | both occurrences | Minor, Major if the rounding changes a comparison |
 | A contribution claimed in the introduction has no section, table, or figure that establishes it | the contribution list and the experiment list | Blocking |
 | An ablation run at a different budget from the main result, presented as an ablation | both configurations | Major |
 | Limitations section that lists only future work | the section | Major |

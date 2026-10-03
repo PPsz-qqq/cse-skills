@@ -122,8 +122,8 @@ is a new plan, and it requires a re-freeze with a new date.
 The rule from the integrity side is that the deviation must appear in the manuscript's limitations or
 methodology, whichever the venue expects. A dataset swap that is not disclosed, and a metric change
 after seeing that the original metric did not favour the method, are both integrity failures under
-[../../ctrl-shared/core/evidence-integrity.md](../../ctrl-shared/core/evidence-integrity.md) rules 9
-and 10.
+[../../ctrl-shared/core/evidence-integrity.md](../../ctrl-shared/core/evidence-integrity.md) rules 7
+and 9.
 
 ## Writing ctrl-scope.md for G0
 
@@ -157,7 +157,7 @@ come first, so that a plan is abandoned on evidence rather than on time.
 # ctrl-plan.md
 - Frozen on: <date>
 - Pre-commitment contract: <inline or path>
-- Protocol blocks: <P-det-1, ...> per gate-contract.md
+- Protocol blocks: <P-det-1, ...> per ctrl-experiment-suite references/protocol-blocks.md
 - Run order:
   | Order | Run | Purpose | Estimated GPU-hours | Stop condition |
   |-------|-----|---------|---------------------|----------------|

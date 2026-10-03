@@ -1,14 +1,12 @@
 ---
 name: ctrl-paper-craft
 description: >-
-  Write and revise the manuscript for 控制科学与工程 research across object detection (目标检测),
-  multi-object tracking (目标跟踪), re-identification (重识别), cooperative navigation (协同导航),
-  and filtering / state estimation (滤波). Use it to draft a section to acceptance criteria, frame a
-  contribution as empirical delta, mechanism, theory, system, or survey, position the work against
-  named competitors, reconcile numbers across abstract, tables, captions, and conclusion, and run a
-  notation-consistency pass. Triggers include 写论文, 投稿, 论文修改, 摘要, 引言, 相关工作, 创新点,
-  论文写作, manuscript writing, paper revision, abstract writing, related work, contribution
-  framing, LaTeX skeleton, and self-edit before submission.
+  Use when writing, revising or polishing a manuscript on detection, tracking, re-ID, cooperative
+  navigation or filtering (目标检测, 跟踪, 重识别, 协同导航, 滤波): 写论文, 论文修改, 润色, 摘要,
+  引言, 相关工作, 创新点表述, 中英文摘要, LaTeX, manuscript, abstract, contribution framing,
+  self-edit before submission. Frames each claim at the strength its evidence supports, positions
+  against named competitors, reconciles numbers across abstract, tables and captions, and checks
+  notation.
 ---
 
 # CTRL paper craft
@@ -35,8 +33,9 @@ scope is requested. New or strengthened result claims require the applicable evi
 - Write at the strength the promotion conditions in `../ctrl-shared/core/verdicts-and-loops.md`
   permit. When the condition is unmet, write the weaker true statement and delete the stronger
   wording instead of appending a hedge.
-- One number, one precision, one unit, on every surface. A value at two precisions is an integrity
-  failure, not a copy-editing issue.
+- One number, one precision, one unit, on every surface. A value that conflicts between surfaces
+  beyond rounding is an integrity failure; the same value at two precisions is a consistency defect
+  to fix before any freeze.
 - The protocol travels with the number. A `track` number without online or offline and public or
   private labels beside it is not comparable to anything, and a `reid` number without its
   re-ranking status is ambiguous on its face.

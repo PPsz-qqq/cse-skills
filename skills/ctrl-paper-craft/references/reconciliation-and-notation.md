@@ -1,9 +1,12 @@
 # Number reconciliation and notation consistency
 
 Two passes that run after the content is settled and before anything is frozen. Both are mechanical
-and both are blocking. `ctrl-shared` `core/evidence-integrity.md` Rule 4 makes a number that
-appears at two precisions, or a superlative contradicted by the paper's own table, an integrity
-failure rather than a copy-editing issue.
+and both must be complete before a freeze. Under
+[evidence-integrity.md](../../ctrl-shared/core/evidence-integrity.md) Rule 4, a value that differs
+between surfaces beyond rounding, or a superlative contradicted by the paper's own table, is an
+integrity failure rather than a copy-editing issue. The same value printed at two precisions or in
+two units is a consistency defect: fix it before the freeze, and rate it `Minor` unless the rounding
+changes a comparison, a ranking or a claimed threshold.
 
 ## Pass 1, number reconciliation
 
@@ -77,7 +80,8 @@ including in a caption.
 |---|---|
 | the number has a ledger row, matches everywhere, and its protocol is matched | `pass`, no action |
 | the number has no ledger row | `FAIL`: obtain the evidence or remove the number from the manuscript |
-| the number exists in two precisions or two units | `FAIL`: pick the ledger's precision and propagate it |
+| the value differs between surfaces beyond rounding | `FAIL`, integrity: reconcile every surface against the ledger row and report the corrected value |
+| the same value appears at two precisions or in two units | `WARN`, consistency defect: propagate the ledger's precision and unit before the freeze; `FAIL` if the rounding changes a comparison, a ranking or a threshold |
 | the number is copied under a different protocol | mark it `not comparable` and keep it out of the headline delta |
 | the ledger row changed after the number was written | the verdict is `STALE`, recompute it and re-propagate |
 | a superlative is contradicted by the table | `FAIL`: delete the superlative or report the contradicting case |
@@ -128,8 +132,9 @@ Never generate a bibliography entry from memory. A fabricated or mismatched cita
 credibility per unit of effort, it is invisible in a compiled PDF, and it is the one defect a reader
 can check in seconds. Fetch every entry from a source of record and verify it, or leave a visible
 placeholder. Every citation in the text appears in the reference list and the reverse, numbering is
-sequential in first-appearance order where the venue requires it, formatting follows the venue or
-GB/T 7714 for the Chinese venues, every DOI, venue, year, and page range was checked against the
+sequential in first-appearance order where the venue requires it, formatting follows the venue or,
+for Chinese venues, the GB/T 7714 edition the journal names (GB/T 7714-2025 replaced the 2015
+edition on 2026-07-01), every DOI, venue, year, and page range was checked against the
 source rather than from memory, no citation was added as decoration, read-in-full and abstract-only
 and title-only sources are distinguished where the support matters, and no invented citation or
 invented result is attributed to a real paper.

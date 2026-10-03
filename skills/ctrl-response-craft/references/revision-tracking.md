@@ -4,8 +4,9 @@ The ledger that makes the response letter checkable. Every comment gets a row be
 is drafted, and every row is resolved before the letter is sent.
 
 Keep the full ledger at `ctrl-revision-<round>-ledger.md`. Keep the per-reviewer summary block in
-each reviewer's letter. Never put the full cross-reviewer ledger into a reviewer-facing file for a
-mutually blind venue.
+each reviewer's letter. The full ledger is author-side: never put it into a reviewer-facing file,
+and in the `isolated` response format of [red-lines.md](red-lines.md) never let one reviewer's rows
+reach another reviewer's letter.
 
 ## Ledger schema
 
@@ -14,7 +15,7 @@ mutually blind venue.
 |---|---|---|---|---|---|---|---|---|---|
 | 1.3 | R1 | compare with <method> at matched resolution | partially accept | A2 | control run at 512x512, 3 seeds | exp/det_ctrl_r512, done | Table 3, Sec 5.2 | C11, C12 | closed |
 | 2.1 | R2 | add <dataset> evaluation | defer | A1 | dataset availability statement | not run, unavailable | Sec 7 lim. 2 | - | closed |
-| 3.4 | R3 | p-value on the 0.4 delta | accept | A3 | 3-seed dispersion, Wilcoxon | exp/det_seeds, running | Table 4 | C14 | open |
+| 3.4 | R3 | p-value on the 0.4 delta | accept | A3 | 5 paired seeds, t interval on the difference (a signed-rank test cannot reach 0.05 with 3 pairs) | exp/det_seeds, running | Table 4 | C14 | open |
 ```
 
 Column rules.
@@ -22,7 +23,7 @@ Column rules.
 | Column | Content |
 |---|---|
 | `ID` | the reviewer's own comment number, verbatim, as `<reviewer-number>.<comment>` |
-| `Reviewer` | the reviewer designator used internally. Never appears in another reviewer's letter |
+| `Reviewer` | the reviewer designator used internally; it appears in another reviewer's letter only in a shared response format |
 | `Class` | accept, partially accept, rebut with evidence, defer to limitations, escalate |
 | `Owner` | one named author. An unowned row is an unfinished row |
 | `Evidence needed` | the artifact that would close the comment, named specifically |
@@ -116,7 +117,7 @@ Run before sending. Each item is a check against an artifact, not a recollection
 [ ] Every figure or table cited in a letter exists in the revised manuscript with that number
 [ ] Every deferral names the limitation entry that now carries it
 [ ] No letter introduces a claim absent from the manuscript
-[ ] No per-reviewer letter mentions another reviewer, score, or recommendation
+[ ] The response format is recorded; isolated letters never mention another reviewer, and no letter quotes a score or recommendation
 [ ] The cover letter's counts match the ledger
 [ ] The marked-up manuscript's highlights match the change list
 [ ] The response files and the manuscript revision carry the same hash recorded in the ledger

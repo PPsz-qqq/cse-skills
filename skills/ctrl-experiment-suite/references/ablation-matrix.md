@@ -22,9 +22,20 @@ paper that means arms `{00, 10, 01, 11}` where `1` means present, and the two si
 are the point of the design. Without them no component is isolated and the interaction is
 unmeasured.
 
+Two estimands answer two different questions, and each sentence must say which one it uses.
+
+| Estimand | Arms | Question it answers |
+|---|---|---|
+| add-one | `baseline + A` minus `baseline` | does A help on its own, relative to the baseline |
+| leave-one-out | `full` minus `full without A` | does the full method still need A |
+
+They coincide only when components do not interact. The common "w/o A" table reports leave-one-out
+deltas; a claim that A is necessary in the full method needs that arm, while a claim that A alone
+improves the baseline needs the add-one arm.
+
 ## One protocol rule
 
-Every ablation arm runs under the identical protocol block from `references/protocol-blocks.md`.
+Every ablation arm runs under the identical protocol block from [protocol-blocks.md](protocol-blocks.md).
 The following are not ablations and must be presented as separate experiments.
 
 - an arm trained for fewer epochs, or at a smaller resolution, because it was cheaper;
@@ -117,8 +128,9 @@ reproduces it.
 Write this paragraph, or its equivalent, in the experiments section. It is required by
 `ctrl-shared` `core/evidence-integrity.md` Rule 6.
 
-- The ablation shows that the component is necessary for the measured gain under this protocol.
-- It does not show why, unless a separate measurement isolates the mechanism.
+- The add-one arm shows what the component adds to the baseline under this protocol; the
+  leave-one-out arm shows whether the full method still needs it. Name the estimand used.
+- Neither shows why, unless a separate measurement isolates the mechanism.
 - It does not establish that the component is necessary in general, only on this data, at this
   resolution, with this backbone, at this run count.
 - It does not rule out that a simpler substitute achieves the same gain. Naming the substitute

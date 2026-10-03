@@ -1,14 +1,12 @@
 ---
 name: ctrl-experiment-suite
 description: >-
-  Design, audit, and report experiments for 控制科学与工程 research across object detection
-  (目标检测), multi-object tracking (目标跟踪), re-identification (重识别), cooperative navigation
-  (协同导航), and filtering / state estimation (滤波). Use it to build the per-axis comparison
-  protocol block that a delta requires, to fix a seed policy and a significance test, to design an
-  ablation matrix that isolates each claimed component, to assemble a reproducibility package, and
-  to fill results-table templates that survive review. Triggers include 实验设计, 消融实验,
-  结果分析, 对比实验, 重复性实验, 误差棒, experiment design, ablation study, protocol matching,
-  significance testing, error bars, reproducibility checklist, and results table formatting.
+  Use when designing, auditing or reporting experiments on detection, tracking, re-ID, cooperative
+  navigation or filtering (目标检测, 跟踪, 重识别, 协同导航, 滤波): 实验设计, 对比实验, 消融实验,
+  结果分析, 误差棒, 显著性, 重复性, protocol matching, seeds, ablation, NEES/ANEES consistency,
+  results tables. Builds per-axis protocol blocks, seed and statistics plans, ablation matrices,
+  reproducibility records and the G2 claim ledger; refuses unmatched or single-seed superiority
+  claims.
 ---
 
 # CTRL experiment suite

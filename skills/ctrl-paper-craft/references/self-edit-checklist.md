@@ -59,7 +59,8 @@ claim the evidence cannot support wastes every later pass.
 [ ] No cell was filled by estimation, interpolation, or memory
 ```
 
-Run the full procedure in `references/reconciliation-and-notation.md` for a submission-tier pass.
+Run the full procedure in [reconciliation-and-notation.md](reconciliation-and-notation.md) for a
+submission-tier pass.
 
 ## Pass 4, structure and argument
 
@@ -126,7 +127,7 @@ Run the full procedure in `references/reconciliation-and-notation.md` for a subm
 [ ] Supplementary-material policy followed
 [ ] Ethics and dual-use statement present where the venue requires it
 [ ] Data and code availability statement present where the venue requires it
-[ ] Chinese-venue requirements met: 创新点 list, both abstracts, 中图分类号, 基金项目, GB/T 7714
+[ ] Chinese-venue requirements met: 创新点 list, both abstracts, 中图分类号, 基金项目, and references in the GB/T 7714 edition the journal names (GB/T 7714-2025 replaced the 2015 edition on 2026-07-01)
 [ ] Preprint policy checked before posting
 ```
 

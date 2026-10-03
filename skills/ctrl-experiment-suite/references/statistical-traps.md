@@ -129,9 +129,10 @@ written as an improvement because it is positive.
 **Symptom.** Dispersion is in the table, larger than the reported delta, and the text still says
 `outperforms`.
 
-**Repair.** Apply the ladder in `references/statistics-and-seeds.md`. If the interval on the
-difference contains zero, write `no measurable difference under this protocol`, and say what the
-benchmark can and cannot resolve at this run count.
+**Repair.** Apply the ladder in [statistics-and-seeds.md](statistics-and-seeds.md). If the interval
+on the difference contains zero, write `the comparison is inconclusive at this run count`, not `no
+difference` or `on par`, and say what the benchmark can and cannot resolve at this run count.
+Equivalence needs a pre-declared margin and an equivalence test.
 
 ## T9 Simulation presented as a field result
 
