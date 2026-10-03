@@ -1,0 +1,18 @@
+# OS and editor junk
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+*~
+
+# Editor and tool state
+.vscode/
+.idea/
+
+# Nothing here should ever be committed as a dependency tree
+node_modules/
+__pycache__/
+*.pyc
+
+# Generated during development, not part of the deliverable
+*.log
