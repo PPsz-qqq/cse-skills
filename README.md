@@ -1,4 +1,4 @@
-# ctrl-skills
+# cse-skills
 
 English | [中文](README.zh.md)
 
