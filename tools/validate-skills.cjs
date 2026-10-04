@@ -11,7 +11,7 @@ const NON_SKILL_DIRS = new Set(['tools', 'docs', 'scripts', 'evals', '_research'
 function resolveDefaultRoot(pkgRoot = path.join(__dirname, '..')) {
   for (const candidate of [path.join(pkgRoot, 'skills'), path.join(pkgRoot, '..', 'skills'), pkgRoot]) {
     if (!fs.existsSync(candidate) || !fs.statSync(candidate).isDirectory()) continue;
-    if (fs.readdirSync(candidate).some((name) => name.startsWith('ctrl-')
+    if (fs.readdirSync(candidate).some((name) => name.startsWith('cse-')
       && fs.existsSync(path.join(candidate, name, 'SKILL.md')))) return candidate;
   }
   return path.join(pkgRoot, 'skills');
@@ -74,10 +74,10 @@ function validateRoot(rootInput, options = {}) {
   }
   // Inline paths such as `references/x.md` or `core/x.md` are bundle-root relative by convention.
   // Inside a resource file they resolve one level too deep, so they must be written as links
-  // relative to that file. A preceding skill qualifier, as in `ctrl-shared` `core/x.md`, names
+  // relative to that file. A preceding skill qualifier, as in `cse-shared` `core/x.md`, names
   // another bundle and is checked against that bundle instead.
   function checkBundlePaths(file, text, bundleDir) {
-    const re = /(?:`(ctrl-[a-z0-9-]+)`\s+)?`((?:references|core|assets|scripts|templates)\/[^`\s]+?\.(?:md|json|cjs|py|ps1|txt))`/g;
+    const re = /(?:`(cse-[a-z0-9-]+)`\s+)?`((?:references|core|assets|scripts|templates)\/[^`\s]+?\.(?:md|json|cjs|py|ps1|txt))`/g;
     let match;
     const body = withoutFences(text);
     while ((match = re.exec(body))) {

@@ -4,8 +4,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const EXPECTED_SKILLS = Object.freeze([
-  'ctrl-shared', 'ctrl-lit-radar', 'ctrl-idea-forge', 'ctrl-experiment-suite',
-  'ctrl-paper-craft', 'ctrl-pre-submission-review', 'ctrl-response-craft', 'ctrl-paper-to-slides',
+  'cse-shared', 'cse-lit-radar', 'cse-idea-forge', 'cse-experiment-suite',
+  'cse-paper-craft', 'cse-pre-submission-review', 'cse-response-craft', 'cse-paper-to-slides',
 ]);
 
 // DSH's model-facing catalog (@deepseek-ai/dsh-tool-skill) shows each skill as its
@@ -142,10 +142,10 @@ function discover(root) {
 function packProblems(result) {
   const problems = [];
   const names = new Map();
-  for (const skill of result.discovered.filter((s) => s.name.startsWith('ctrl-'))) {
+  for (const skill of result.discovered.filter((s) => s.name.startsWith('cse-'))) {
     if (names.has(skill.name)) problems.push(`duplicate skill name ${skill.name}: ${names.get(skill.name)} and ${skill.file}`);
     names.set(skill.name, skill.file);
-    if (!EXPECTED_SKILLS.includes(skill.name)) problems.push(`unexpected ctrl-* skill: ${skill.name}`);
+    if (!EXPECTED_SKILLS.includes(skill.name)) problems.push(`unexpected cse-* skill: ${skill.name}`);
     if (!skill.body) problems.push(`empty skill body: ${skill.name}`);
     const truncated = typeof skill.description === 'string' ? catalogProblem(skill.description) : undefined;
     if (truncated) problems.push(`${skill.name}: ${truncated}`);
@@ -154,7 +154,7 @@ function packProblems(result) {
   for (const skipped of result.skipped) {
     const candidate = path.basename(skipped.file) === 'SKILL.md'
       ? path.basename(path.dirname(skipped.file)) : path.basename(skipped.file, '.md');
-    if (candidate.startsWith('ctrl-')) problems.push(`invalid ctrl-* candidate ${skipped.file}: ${skipped.reason}`);
+    if (candidate.startsWith('cse-')) problems.push(`invalid cse-* candidate ${skipped.file}: ${skipped.reason}`);
   }
   return problems;
 }

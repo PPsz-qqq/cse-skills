@@ -60,7 +60,7 @@ node tools/validate-skills.cjs --fix-bom
 Relative Markdown links are checked, including angle-bracket paths containing spaces. Explicit
 inline paths beginning `./` or `../` are checked outside fenced examples. Inline paths such as
 `references/x.md` are bundle-root relative by convention: they are fine in SKILL.md, but inside a
-resource file they must be links relative to that file, and a qualified form such as `ctrl-shared`
+resource file they must be links relative to that file, and a qualified form such as `cse-shared`
 followed by `core/x.md` is checked against the named bundle. Example blocks do not have to exist as
 source files. Anchor fragments are not validated. Resource references should use real clickable
 links in each SKILL.md so they are discoverable and checkable.

@@ -1,4 +1,4 @@
-# CTRL 技能包快速使用
+# CSE 技能包快速使用
 
 这套包保留 8 个技能（7 个工作流 + 1 个共享规范），覆盖目标检测、跟踪、重识别、协同导航和滤波。
 它不是自动训练或自动投稿工具。入口与参考内容采用按需加载，避免一次塞入所有文件。
@@ -7,14 +7,14 @@
 
 | 你要做什么 | 主要技能 | 最少提供什么 |
 |---|---|---|
-| 查文献、找最近竞品 | `ctrl-lit-radar` | 问题/方向、时间范围、检索语言 |
-| 选题、开题、创新点 | `ctrl-idea-forge` | 痛点、应用场景、数据和算力预算 |
-| 对比/消融设计、结果审计 | `ctrl-experiment-suite` | 对比问题或真实结果材料 |
-| 改摘要、润色段落、写论文 | `ctrl-paper-craft` | 原文和修改范围；新主张需要证据 |
-| 模拟审稿、找拒稿风险 | `ctrl-pre-submission-review` | 论文或明确限定的片段、目标领域 |
-| 回复审稿意见 | `ctrl-response-craft` | 审稿意见原文、稿件和已完成的修改 |
-| 做会议/组会/答辩幻灯片 | `ctrl-paper-to-slides` | 论文、听众、发言时间、输出格式 |
-| 查门禁、台账、命名约定 | `ctrl-shared` | 想了解的共享规则 |
+| 查文献、找最近竞品 | `cse-lit-radar` | 问题/方向、时间范围、检索语言 |
+| 选题、开题、创新点 | `cse-idea-forge` | 痛点、应用场景、数据和算力预算 |
+| 对比/消融设计、结果审计 | `cse-experiment-suite` | 对比问题或真实结果材料 |
+| 改摘要、润色段落、写论文 | `cse-paper-craft` | 原文和修改范围；新主张需要证据 |
+| 模拟审稿、找拒稿风险 | `cse-pre-submission-review` | 论文或明确限定的片段、目标领域 |
+| 回复审稿意见 | `cse-response-craft` | 审稿意见原文、稿件和已完成的修改 |
+| 做会议/组会/答辩幻灯片 | `cse-paper-to-slides` | 论文、听众、发言时间、输出格式 |
+| 查门禁、台账、命名约定 | `cse-shared` | 想了解的共享规则 |
 
 ## 四种工作模式
 
@@ -23,39 +23,39 @@
 - **design 设计**：先产出检索计划、候选想法、试验协议或返修计划；未定项保留，不假装已冻结。
 - **finalize 最终确认**：向正文、回复信或结果幻灯片提升实证主张时，必须检查适用门禁和真实来源。
 
-完整规则见 [execution-contract.md](../skills/ctrl-shared/core/execution-contract.md)。
+完整规则见 [execution-contract.md](../skills/cse-shared/core/execution-contract.md)。
 
 ## 可直接用的请求
 
 ```text
-用 ctrl-paper-craft 的 local-edit 模式润色下面这一段。
+用 cse-paper-craft 的 local-edit 模式润色下面这一段。
 保留数据、引用、single-seed 范围，不做全论文审计，只返回改稿和必要说明。
 
-用 ctrl-lit-radar 做 sketch 检索计划：多目标跟踪在低外观区分度场景的关联方法。
+用 cse-lit-radar 做 sketch 检索计划：多目标跟踪在低外观区分度场景的关联方法。
 只有当前可用工具能实际检索时才列验证过的论文；没有访问能力就给计划并写清限制。
 
-用 ctrl-experiment-suite 审计这个对比表，重点检查检测器、种子、统计单位和协议差异。
+用 cse-experiment-suite 审计这个对比表，重点检查检测器、种子、统计单位和协议差异。
 我会提供配置与日志。不要补不存在的数值。
 
-用 ctrl-pre-submission-review 做诊断，只检查附件论文，不需要先有 G2 PASS。
+用 cse-pre-submission-review 做诊断，只检查附件论文，不需要先有 G2 PASS。
 默认一份有依据的报告；若做多份隔离模拟评审，说明隔离方式，不声称统计独立。
 
-用 ctrl-paper-to-slides 给论文做 3 分钟 teaser 大纲，时间不含问答。
+用 cse-paper-to-slides 给论文做 3 分钟 teaser 大纲，时间不含问答。
 先给 4–5 页、逐页时长及备用材料，不直接生成 PPT。
 
-用 ctrl-response-craft 回复 CVPR rebuttal（一页 PDF，三位审稿人共用一份）。
+用 cse-response-craft 回复 CVPR rebuttal（一页 PDF，三位审稿人共用一份）。
 先确认格式和当期规则，不写其他审稿人的分数，不加外部链接。
 ```
 
-也可以在消息里直接写 `/ctrl-paper-craft`、`/ctrl-pre-submission-review` 等技能名来显式调用；
+也可以在消息里直接写 `/cse-paper-craft`、`/cse-pre-submission-review` 等技能名来显式调用；
 这在模型没有自动匹配到技能、或想强制使用某个技能时最可靠。
 
 ## 产物怎么交接
 
 需要文件时使用你指定的研究项目目录，不往安装目录写研究结果。
-首次冻结后不覆盖旧产物；新版带修订后缀，通过项目的 `ctrl-artifacts.md` 指向当前版本。
+首次冻结后不覆盖旧产物；新版带修订后缀，通过项目的 `cse-artifacts.md` 指向当前版本。
 后续技能读取索引和真实文件，不依赖聊天里记住的数值。
-命名、完整台账和版本交接见 [artifact-contract.md](../skills/ctrl-shared/core/artifact-contract.md)。
+命名、完整台账和版本交接见 [artifact-contract.md](../skills/cse-shared/core/artifact-contract.md)。
 
 ## 重要边界
 

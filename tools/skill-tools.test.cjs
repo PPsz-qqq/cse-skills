@@ -8,17 +8,17 @@ const { EXPECTED_SKILLS, DSH_CATALOG_DESCRIPTION_MAX_LENGTH, catalogDescription,
   frontmatterBoolean, parseInvocationPolicy, discover, packProblems } = require('./skill-contract.cjs');
 const { resolveDefaultRoot, markdownTargets, validateRoot } = require('./validate-skills.cjs');
 const description = 'An offline test skill with a sufficiently descriptive trigger and a bounded workflow for regression testing.';
-function text(name = 'ctrl-fixture', extra = '', body = '# Fixture\n\nA useful instruction.\n') {
+function text(name = 'cse-fixture', extra = '', body = '# Fixture\n\nA useful instruction.\n') {
   return `---\nname: ${name}\ndescription: ${description}\n${extra}---\n${body}`;
 }
 function fixture(t) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ctrl-skill-tools-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cse-skill-tools-'));
   const verifiedRoot = fs.realpathSync(root);
   t.after(() => {
     // Delete only the exact temp fixture created by this invocation, never a glob/computed parent.
     assert.equal(fs.realpathSync(root), verifiedRoot);
     assert.equal(path.dirname(verifiedRoot), fs.realpathSync(os.tmpdir()));
-    assert.ok(path.basename(verifiedRoot).startsWith('ctrl-skill-tools-'));
+    assert.ok(path.basename(verifiedRoot).startsWith('cse-skill-tools-'));
     fs.rmSync(verifiedRoot, { recursive: true, force: true });
   });
   return root;
@@ -31,7 +31,7 @@ function put(root, name, content = text(name)) {
 }
 
 test('LF and CRLF frontmatter, folded text and nested metadata parse', () => {
-  const raw = '---\nname: ctrl-fixture\ndescription: >-\n  First line\n  and second line.\nmetadata:\n  category: research\nuser-invocable: false\n---\n# Body\n';
+  const raw = '---\nname: cse-fixture\ndescription: >-\n  First line\n  and second line.\nmetadata:\n  category: research\nuser-invocable: false\n---\n# Body\n';
   const parsed = parseSkillText(raw);
   assert.equal(parsed.ok, true);
   assert.equal(parsed.description, 'First line and second line.');
@@ -40,9 +40,9 @@ test('LF and CRLF frontmatter, folded text and nested metadata parse', () => {
   assert.equal(parseSkillText(raw.replace(/\n/g, '\r\n')).ok, true);
 });
 test('BOM, duplicate YAML keys, missing closure and wrong scalar types fail', () => {
-  for (const raw of ['\ufeff' + text(), text('ctrl-fixture', 'name: duplicate\n'),
-    '---\nname: ctrl-fixture\ndescription: hello\n', text().replace(`description: ${description}`, 'description: [one, two]'),
-    text().replace('name: ctrl-fixture', 'name: 123')]) assert.equal(parseSkillText(raw).ok, false);
+  for (const raw of ['\ufeff' + text(), text('cse-fixture', 'name: duplicate\n'),
+    '---\nname: cse-fixture\ndescription: hello\n', text().replace(`description: ${description}`, 'description: [one, two]'),
+    text().replace('name: cse-fixture', 'name: 123')]) assert.equal(parseSkillText(raw).ok, false);
 });
 test('canonical invocation booleans match DSH contract including numeric 0/1', () => {
   for (const value of [true, 1, '1', 'TRUE', 'yes', 'on']) assert.equal(frontmatterBoolean({ flag: value }, 'flag'), true);
@@ -57,16 +57,16 @@ test('legacy invocation keys are rejected, not silently ignored', () => {
 });
 test('bundles, flat markdown and linked directories are discovered', (t) => {
   const root = fixture(t);
-  put(root, 'ctrl-fixture');
-  fs.writeFileSync(path.join(root, 'ctrl-flat.md'), text('ctrl-flat'));
+  put(root, 'cse-fixture');
+  fs.writeFileSync(path.join(root, 'cse-flat.md'), text('cse-flat'));
   const target = path.join(root, 'resources');
   fs.mkdirSync(target);
-  fs.writeFileSync(path.join(target, 'SKILL.md'), text('ctrl-linked'));
-  fs.symlinkSync(target, path.join(root, 'ctrl-linked'), process.platform === 'win32' ? 'junction' : 'dir');
+  fs.writeFileSync(path.join(target, 'SKILL.md'), text('cse-linked'));
+  fs.symlinkSync(target, path.join(root, 'cse-linked'), process.platform === 'win32' ? 'junction' : 'dir');
   const result = discover(root);
-  assert.ok(result.discovered.some((s) => s.name === 'ctrl-fixture'));
-  assert.ok(result.discovered.some((s) => s.name === 'ctrl-flat'));
-  assert.ok(result.discovered.some((s) => s.name === 'ctrl-linked'));
+  assert.ok(result.discovered.some((s) => s.name === 'cse-fixture'));
+  assert.ok(result.discovered.some((s) => s.name === 'cse-flat'));
+  assert.ok(result.discovered.some((s) => s.name === 'cse-linked'));
 });
 test('eight records cannot conceal a missing name with a duplicate', () => {
   const discovered = EXPECTED_SKILLS.map((name, i) => ({ name, file: `bundle-${i}`, body: 'instruction' }));
@@ -74,24 +74,24 @@ test('eight records cannot conceal a missing name with a duplicate', () => {
   discovered[7].name = discovered[0].name;
   const problems = packProblems({ discovered, skipped: [] });
   assert.ok(problems.some((p) => p.includes('duplicate')));
-  assert.ok(problems.some((p) => p.includes('missing expected skill: ctrl-paper-to-slides')));
+  assert.ok(problems.some((p) => p.includes('missing expected skill: cse-paper-to-slides')));
 });
 test('empty roots and blank bodies cannot pass validation', (t) => {
   const root = fixture(t);
   assert.ok(validateRoot(root).problems.some((p) => p.includes('no valid skill')));
-  put(root, 'ctrl-fixture', text('ctrl-fixture', '', ''));
+  put(root, 'cse-fixture', text('cse-fixture', '', ''));
   assert.ok(validateRoot(root).problems.some((p) => p.includes('body is empty')));
 });
 test('default root prioritizes in-package skills over legacy sibling', (t) => {
   const root = fixture(t);
   const pkg = path.join(root, 'pack');
-  put(path.join(pkg, 'skills'), 'ctrl-inner');
-  put(path.join(root, 'skills'), 'ctrl-legacy');
+  put(path.join(pkg, 'skills'), 'cse-inner');
+  put(path.join(root, 'skills'), 'cse-legacy');
   assert.equal(resolveDefaultRoot(pkg), path.join(pkg, 'skills'));
 });
 test('local links with spaces, encoded names and anchors resolve; bad escapes fail cleanly', (t) => {
   const root = fixture(t);
-  const dir = put(root, 'ctrl-fixture', text('ctrl-fixture', '', '# Fixture\n[x](<references/space name.md>#part)\n[y](references/space%20name.md)\n[z](bad%Q1.md)\n'));
+  const dir = put(root, 'cse-fixture', text('cse-fixture', '', '# Fixture\n[x](<references/space name.md>#part)\n[y](references/space%20name.md)\n[z](bad%Q1.md)\n'));
   fs.mkdirSync(path.join(dir, 'references'));
   fs.writeFileSync(path.join(dir, 'references', 'space name.md'), '# Resource\n');
   const result = validateRoot(root);
@@ -101,7 +101,7 @@ test('local links with spaces, encoded names and anchors resolve; bad escapes fa
 });
 test('broken reference and inline paths fail while code-fence examples are ignored', (t) => {
   const root = fixture(t);
-  put(root, 'ctrl-fixture', text('ctrl-fixture', '', '# Fixture\n[x](missing.md)\n`../missing.json`\n```text\n[example](fictional.md)\n```\n'));
+  put(root, 'cse-fixture', text('cse-fixture', '', '# Fixture\n[x](missing.md)\n`../missing.json`\n```text\n[example](fictional.md)\n```\n'));
   const problems = validateRoot(root).problems;
   assert.equal(problems.length, 2);
   assert.ok(problems.some((p) => p.includes('relative link')));
@@ -109,8 +109,8 @@ test('broken reference and inline paths fail while code-fence examples are ignor
 });
 test('frontmatter unknown keys, duplicate names and invalid metadata fail', (t) => {
   const root = fixture(t);
-  put(root, 'ctrl-fixture', text('ctrl-fixture', 'unknown: true\nmetadata: []\n'));
-  fs.writeFileSync(path.join(root, 'ctrl-flat.md'), text('ctrl-fixture'));
+  put(root, 'cse-fixture', text('cse-fixture', 'unknown: true\nmetadata: []\n'));
+  fs.writeFileSync(path.join(root, 'cse-flat.md'), text('cse-fixture'));
   const problems = validateRoot(root).problems;
   for (const needle of ['unknown frontmatter key', 'duplicate skill name', 'metadata must be a mapping']) {
     assert.ok(problems.some((p) => p.includes(needle)), needle);
@@ -118,7 +118,7 @@ test('frontmatter unknown keys, duplicate names and invalid metadata fail', (t) 
 });
 test('BOM repair is opt-in and normal checks are read-only', (t) => {
   const root = fixture(t);
-  const dir = put(root, 'ctrl-fixture', '\ufeff' + text());
+  const dir = put(root, 'cse-fixture', '\ufeff' + text());
   const file = path.join(dir, 'SKILL.md');
   const before = fs.readFileSync(file);
   assert.ok(validateRoot(root).problems.length);
@@ -130,23 +130,23 @@ test('actual pack has exact skill names, scoped execution links and valid struct
   const root = resolveDefaultRoot();
   assert.deepEqual(packProblems(discover(root)), []);
   assert.deepEqual(validateRoot(root, { packageRoot: path.join(__dirname, '..') }).problems, []);
-  for (const name of EXPECTED_SKILLS.filter((n) => n !== 'ctrl-shared')) {
+  for (const name of EXPECTED_SKILLS.filter((n) => n !== 'cse-shared')) {
     assert.match(fs.readFileSync(path.join(root, name, 'SKILL.md'), 'utf8'), /execution-contract\.md/);
   }
 });
 test('bundle-root inline paths fail inside resource files; qualified cross-skill paths are checked', (t) => {
   const root = fixture(t);
-  const dir = put(root, 'ctrl-fixture', text('ctrl-fixture', '', '# Fixture\nSee `references/b.md`.\n[a](references/a.md) [b](references/b.md)\n'));
+  const dir = put(root, 'cse-fixture', text('cse-fixture', '', '# Fixture\nSee `references/b.md`.\n[a](references/a.md) [b](references/b.md)\n'));
   fs.mkdirSync(path.join(dir, 'references'));
   fs.writeFileSync(path.join(dir, 'references', 'b.md'), '# B\n');
   fs.writeFileSync(path.join(dir, 'references', 'a.md'),
-    '# A\nAmbiguous: `references/b.md`.\nQualified: `ctrl-other` `core/rules.md` and `ctrl-other`\n`core/missing.md`.\n```text\n`references/fenced.md`\n```\n');
-  const other = put(root, 'ctrl-other');
+    '# A\nAmbiguous: `references/b.md`.\nQualified: `cse-other` `core/rules.md` and `cse-other`\n`core/missing.md`.\n```text\n`references/fenced.md`\n```\n');
+  const other = put(root, 'cse-other');
   fs.mkdirSync(path.join(other, 'core'));
   fs.writeFileSync(path.join(other, 'core', 'rules.md'), '# Rules\n');
   const problems = validateRoot(root).problems;
   assert.ok(problems.some((p) => p.includes('bundle-root path `references/b.md`')), problems.join('\n'));
-  assert.ok(problems.some((p) => p.includes('broken cross-skill path -> ctrl-other/core/missing.md')), problems.join('\n'));
+  assert.ok(problems.some((p) => p.includes('broken cross-skill path -> cse-other/core/missing.md')), problems.join('\n'));
   assert.equal(problems.filter((p) => p.includes('SKILL.md')).length, 0, 'bundle-root paths are valid in SKILL.md');
   assert.equal(problems.length, 2, problems.join('\n'));
 });
@@ -160,7 +160,7 @@ test('catalog descriptions follow the DSH truncation rule and over-limit text fa
   assert.equal(catalogDescription(long), `${'y'.repeat(497)}...`);
   assert.match(catalogProblem(long), /drops: "TAIL"/);
   const root = fixture(t);
-  put(root, 'ctrl-fixture', `---\nname: ctrl-fixture\ndescription: >-\n  ${'z'.repeat(480)}\n  trigger words at the end\n---\n# Fixture\n`);
+  put(root, 'cse-fixture', `---\nname: cse-fixture\ndescription: >-\n  ${'z'.repeat(480)}\n  trigger words at the end\n---\n# Fixture\n`);
   assert.ok(validateRoot(root).problems.some((p) => p.includes('DSH skill catalog truncates')));
   const discovered = EXPECTED_SKILLS.map((name) => ({ name, file: name, body: 'x', description: 'short enough' }));
   discovered[2].description = long;

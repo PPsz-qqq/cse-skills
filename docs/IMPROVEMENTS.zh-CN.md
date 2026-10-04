@@ -1,7 +1,10 @@
 # Skills 检查与完善记录
 
-本文件按轮次记录。第二轮（2026-10-03 至 10-04）在文末；第一轮“仍需注意”中的安装器问题（第 2 项）
-已在第二轮修复，外部事实核查（第 4 项）已对基准数据集图谱和期刊矩阵完成一轮第一手来源核对。
+本文件按轮次记录。第二轮（2026-10-03 至 10-04）和第三轮（2026-10-04，改名）在文末；第一轮“仍需注意”中的
+安装器问题（第 2 项）已在第二轮修复，外部事实核查（第 4 项）已对基准数据集图谱和期刊矩阵完成一轮第一手来源核对。
+
+说明：第三轮把技能前缀从 `ctrl-` 改为 `cse-`。为保证文中链接有效，前两轮记录里的技能名、路径和产物名
+已一并替换为新名字；仓库名 ctrl-skills 及安装器的 `.ctrl-skills-*` 标记文件名未改。
 
 ## 第一轮
 
@@ -34,10 +37,10 @@
 | 离线解析被描述为当前运行时已启用 | 明确离线检查与实际provider启用/根目录/会话可见性是不同验证 |
 
 入口说明：[中文快速使用](QUICKSTART.zh-CN.md)。
-规则：[执行约定](../skills/ctrl-shared/core/execution-contract.md)、
-[门禁](../skills/ctrl-shared/core/gate-contract.md)、
-[产物交接](../skills/ctrl-shared/core/artifact-contract.md)、
-[统计与符号](../skills/ctrl-shared/core/terminology-and-notation.md)。
+规则：[执行约定](../skills/cse-shared/core/execution-contract.md)、
+[门禁](../skills/cse-shared/core/gate-contract.md)、
+[产物交接](../skills/cse-shared/core/artifact-contract.md)、
+[统计与符号](../skills/cse-shared/core/terminology-and-notation.md)。
 
 ### 已完成的验证
 
@@ -72,7 +75,7 @@
 
 | 问题 | 本轮处理 |
 |---|---|
-| 8 个 description 全部超过 DSH 目录的 500 字符上限（624–806 字符），`dsh-tool-skill` 会截断为 497 字符加 `...`，其中 5 个技能的中文触发词（实验设计、写论文、审稿、回复审稿意见、论文做PPT 等）和 ctrl-shared 的“仅在明确询问时加载”恰好被截掉 | 8 个描述改写为 “Use when …” 开头、中英触发词前置，归一化后 436–474 字符；校验器与发现检查对超长描述直接判失败，并有回归测试 |
+| 8 个 description 全部超过 DSH 目录的 500 字符上限（624–806 字符），`dsh-tool-skill` 会截断为 497 字符加 `...`，其中 5 个技能的中文触发词（实验设计、写论文、审稿、回复审稿意见、论文做PPT 等）和 cse-shared 的“仅在明确询问时加载”恰好被截掉 | 8 个描述改写为 “Use when …” 开头、中英触发词前置，归一化后 436–474 字符；校验器与发现检查对超长描述直接判失败，并有回归测试 |
 | 交叉引用失效：证据规则让人去 gate-contract 找协议块；idea-forge 让人去 artifact-contract 找冻结方案格式；图谱、预承诺仍指向 gate-contract；references 内部用 `references/x.md` 写法会多解析一层 | 全部改为真实相对链接；校验器新增“资源文件中误用技能根相对路径”和“带技能名的跨技能路径”检查（对上一轮副本可检出 11 处） |
 | 同一数值不同精度（78.4 与 78.42）被定为诚信失败并强制 Reject | 区分“超出舍入的数值矛盾”（阻塞级，必要时 Reject）与“同值不同精度”（一致性缺陷，通常 Minor）；规则 1、2、10 的确认违规才强制 Reject |
 | 新颖性条件仍有“两个周期即可”的旧写法（评分 5 分、相关工作、摘要、审稿分类、饱和规则） | 统一为“近期周期 + 奠基工作 + 近似工作 + 覆盖边界”，只允许有范围的检索结论 |
@@ -92,7 +95,7 @@
 
 - 结构校验：8 个技能，63 个 Markdown 文件，无结构问题；描述长度、资源内路径、跨技能路径检查均通过。
 - 离线 DSH 兼容发现：8 个预期技能全部解析，目录文本完整（436–474/500）。对真实用户根目录
-  `~/.dsh/skills` 也做了离线解析：其中 8 个 ctrl-* 是指向本包的 junction，全部完整。
+  `~/.dsh/skills` 也做了离线解析：其中 8 个 cse-* 是指向本包的 junction，全部完整。
 - 回归测试：`skill-tools.test.cjs` 17 项通过；`install.test.cjs` 4 项通过（同一测试对旧安装器 4 项全部失败）。
 - 安装器在真实根目录只做了 `-WhatIf` 预览：8 个技能均识别为“已链接”，没有任何改动。
 - 行为规格：新增 7 条，共 33 条；JSON 结构已检查。这不是 33 条模型行为全部通过的声明。
@@ -103,7 +106,7 @@
 
 ### 仍需注意
 
-1. 当前会话中 skill 工具加载 `ctrl-shared` 返回 unknown，说明文件系统技能提供者在本会话未生效
+1. 当前会话中 skill 工具加载 `cse-shared` 返回 unknown，说明文件系统技能提供者在本会话未生效
    （第一轮也记录为 inactive）。文件已通过 junction 就位，但本轮没有启用任何插件或修改 profile，
    因为这会影响该 profile 的所有会话，需要用户决定。
 2. 仍有部分外部事实无法在第一手来源核实（VOC2012 测试标注、COCO 2017 类别与划分数、Objects365 v2、
@@ -113,3 +116,20 @@
 4. 未运行训练、仿真、GPU 任务、PPT 导出/渲染或彩排；行为规格未经模型自动评测。
 5. 同一用户根目录中的其他技能包（academic-*、nature-* 等）有 18 个描述超过 500 字符会被截断，
    本轮未修改这些不属于本包的文件。
+
+## 第三轮：技能前缀改为 cse-
+
+日期：2026-10-04（Asia/Hong_Kong）。按用户选择，把 8 个技能的前缀从 `ctrl-` 统一改为 `cse-`
+（Control Science and Engineering）。
+
+| 范围 | 处理 |
+|---|---|
+| 技能目录与 frontmatter `name` | `skills/ctrl-*` 改为 `skills/cse-*`（git 记录为重命名），8 个 `name` 字段同步 |
+| 交叉引用 | 所有相对链接、`ctrl-shared` 等技能名、标题中的 CTRL 改为 cse/CSE；`_research/` 历史调研报告未改 |
+| 产物文件名 | `ctrl-claims.md` 等改为 `cse-claims.md` 等；共享约定新增兼容规则：已有项目里的 `ctrl-<name>` 视为同一逻辑产物，冻结文件不改名 |
+| 工具与测试 | 预期技能名、前缀判断、跨技能路径检查、测试夹具全部改为 `cse-`；安装器新增旧名清理：只删除指向本源目录的旧名链接（通常已悬空）和未修改的自有旧名副本，其他旧名条目只报告不动；新增 1 组测试 |
+| 未改 | 仓库与本地文件夹名 ctrl-skills、GitHub 仓库名、安装器标记 `.ctrl-skills-install.json` 与备份目录 `.ctrl-skills-backup`、`pack_name` |
+
+改名时 `skills/` 下有 3 个目录被 DeepSeek Harness 进程占用、无法直接重命名（可删除但不能改名）；
+做法是先移除 `~/.dsh/skills` 中的 8 个旧 junction，能改名的用 `git mv`，其余 3 个复制到新名后用
+`git rm` 删除旧目录。内容逐文件核对文件数一致。之后用新安装器重新链接 `~/.dsh/skills`。

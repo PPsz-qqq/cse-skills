@@ -1,4 +1,4 @@
-# Install the ctrl-* skill pack
+# Install the cse-* skill pack
 
 The installable root is this package's `skills/` directory: eight bundles at
 `<root>/<name>/SKILL.md`. Installing files and enabling a provider are separate operations.
@@ -79,7 +79,7 @@ To confirm live availability:
 
 1. Inspect the intended profile's skill provider activation and configured roots.
 2. Confirm a direct child bundle exists under a scanned root and its name is not shadowed.
-3. Ask the skill tool to load `ctrl-shared` explicitly to inspect the contract, or a user-facing
+3. Ask the skill tool to load `cse-shared` explicitly to inspect the contract, or a user-facing
    skill matching your task. A successful load, not an offline parse, is the live probe.
 4. Check provider logs for skipped frontmatter, filesystem/watch failures and duplicate names.
 
@@ -96,7 +96,7 @@ $dshBase = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $HOME '.dsh' }
 $dst = Join-Path $dshBase 'skills'
 New-Item -ItemType Directory -Path $dst -Force | Out-Null
 Get-ChildItem -LiteralPath $src -Directory |
-  Where-Object { $_.Name -like 'ctrl-*' -and (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')) } |
+  Where-Object { $_.Name -like 'cse-*' -and (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')) } |
   ForEach-Object { New-Item -ItemType Junction -Path (Join-Path $dst $_.Name) -Target $_.FullName }
 ```
 

@@ -49,63 +49,63 @@ widely shared lists refer to. Install from the verified column.
 
 | Mechanism | Landed in |
 |---|---|
-| Multi-stage pipeline with mandatory, coverage-bounded integrity checks between stages | `ctrl-shared` G0 to G3, `ctrl-paper-craft` |
-| Two-stage peer review with a revision round between them | `ctrl-pre-submission-review`, `ctrl-response-craft` |
-| Claim-pointer and evidence-pointer discipline on every concern | `ctrl-shared` `core/review-rubrics.md` |
-| Failure-mode classification used as a pre-submission gate | `ctrl-shared` `core/gate-contract.md` |
-| Schema-style pre-commitment: fix the decision rule before executing | `ctrl-idea-forge` pre-commitment contract |
+| Multi-stage pipeline with mandatory, coverage-bounded integrity checks between stages | `cse-shared` G0 to G3, `cse-paper-craft` |
+| Two-stage peer review with a revision round between them | `cse-pre-submission-review`, `cse-response-craft` |
+| Claim-pointer and evidence-pointer discipline on every concern | `cse-shared` `core/review-rubrics.md` |
+| Failure-mode classification used as a pre-submission gate | `cse-shared` `core/gate-contract.md` |
+| Schema-style pre-commitment: fix the decision rule before executing | `cse-idea-forge` pre-commitment contract |
 
 ### From Nature Skills
 
 | Mechanism | Landed in |
 |---|---|
-| Mutually blind multi-reviewer review: one immutable packet, emphasis briefs defined first, each reviewer isolated, reports frozen before comparison | `ctrl-pre-submission-review`, and the same rule stated as a red line in `ctrl-shared` `core/review-rubrics.md` |
-| Consensus labeled only when two reviews independently raise the same concern | `ctrl-pre-submission-review` synthesis step |
-| Separation of the reviewer package from any synthesis, with the synthesis never shown to reviewers | `ctrl-pre-submission-review`, `ctrl-response-craft` |
-| Reviewer-facing isolation, so no reviewer sees another's comments or numbering | `ctrl-response-craft` |
-| Consistency sweep: a manuscript checked against itself for numbers and superlatives | `ctrl-shared` `core/terminology-and-notation.md`, and the G2 reconciliation rule |
-| Journal-fragment and paper-type routing | `ctrl-shared` `core/venue-matrix.md` classification by claim type |
+| Mutually blind multi-reviewer review: one immutable packet, emphasis briefs defined first, each reviewer isolated, reports frozen before comparison | `cse-pre-submission-review`, and the same rule stated as a red line in `cse-shared` `core/review-rubrics.md` |
+| Consensus labeled only when two reviews independently raise the same concern | `cse-pre-submission-review` synthesis step |
+| Separation of the reviewer package from any synthesis, with the synthesis never shown to reviewers | `cse-pre-submission-review`, `cse-response-craft` |
+| Reviewer-facing isolation, so no reviewer sees another's comments or numbering | `cse-response-craft` |
+| Consistency sweep: a manuscript checked against itself for numbers and superlatives | `cse-shared` `core/terminology-and-notation.md`, and the G2 reconciliation rule |
+| Journal-fragment and paper-type routing | `cse-shared` `core/venue-matrix.md` classification by claim type |
 
 ### From Scientific Agent Skills (K-Dense)
 
 | Mechanism | Landed in |
 |---|---|
-| Claim and evidence registries with stable IDs | `ctrl-shared` `core/artifact-contract.md` ledger, IDs `C1`, `C2`, ... |
-| Human-only approval gates on irreversible steps | gate reporting format and the waiver rule in `ctrl-shared` |
+| Claim and evidence registries with stable IDs | `cse-shared` `core/artifact-contract.md` ledger, IDs `C1`, `C2`, ... |
+| Human-only approval gates on irreversible steps | gate reporting format and the waiver rule in `cse-shared` |
 | Deterministic, no-network verification scripts as the checker rather than model judgment | `tools/validate-skills.cjs` in this repository |
-| Evidence-before-prose ordering | `ctrl-paper-craft` workflow order |
+| Evidence-before-prose ordering | `cse-paper-craft` workflow order |
 
 ### From AI Research SKILLs (Orchestra Research)
 
 | Mechanism | Landed in |
 |---|---|
-| Never generate a bibliography entry from memory; verify against two independent sources; emit a placeholder instead | `ctrl-lit-radar` citation discipline, `ctrl-shared` rule 1 and rule 10 |
-| Pre-registration of the protocol before results exist | `ctrl-idea-forge` pre-commitment, `ctrl-experiment-suite` protocol blocks |
-| A multi-dimension rigor rubric with an explicit grade formula | `ctrl-shared` `core/review-rubrics.md` eight dimensions and the recommendation mapping |
+| Never generate a bibliography entry from memory; verify against two independent sources; emit a placeholder instead | `cse-lit-radar` citation discipline, `cse-shared` rule 1 and rule 10 |
+| Pre-registration of the protocol before results exist | `cse-idea-forge` pre-commitment, `cse-experiment-suite` protocol blocks |
+| A multi-dimension rigor rubric with an explicit grade formula | `cse-shared` `core/review-rubrics.md` eight dimensions and the recommendation mapping |
 
 ### From ARIS
 
 | Mechanism | Landed in |
 |---|---|
-| Effort tiers that scale the work to the stakes | `ctrl-shared` `core/verdicts-and-loops.md` effort tiers |
-| Six-state verdict enum with staleness invalidation on the audited input | `ctrl-shared` `core/verdicts-and-loops.md` |
+| Effort tiers that scale the work to the stakes | `cse-shared` `core/verdicts-and-loops.md` effort tiers |
+| Six-state verdict enum with staleness invalidation on the audited input | `cse-shared` `core/verdicts-and-loops.md` |
 | Review loop round cap and an explicit numeric stop rule | review and revise loop in the same file |
-| Pilot budget caps in hours and GPU-hours, with a hard stop | `ctrl-idea-forge` pilot budget |
-| Strongest-rejection-memo plus an independent adjudicator | `ctrl-idea-forge` killer-objection step |
+| Pilot budget caps in hours and GPU-hours, with a hard stop | `cse-idea-forge` pilot budget |
+| Strongest-rejection-memo plus an independent adjudicator | `cse-idea-forge` killer-objection step |
 
 ### From PaperSpine
 
 | Mechanism | Landed in |
 |---|---|
-| A long explicit step protocol rather than an open-ended instruction | the numbered workflow in every `ctrl-*` skill |
-| Two attempts on a defect, then change tactic | `ctrl-shared` `core/verdicts-and-loops.md` repair loop |
+| A long explicit step protocol rather than an open-ended instruction | the numbered workflow in every `cse-*` skill |
+| Two attempts on a defect, then change tactic | `cse-shared` `core/verdicts-and-loops.md` repair loop |
 | Review policy tiers from balanced to strict | effort tiers combined with the review loop |
 
 Not ported from PaperSpine, and recorded here so the omission is deliberate rather than an
 oversight: its exemplar-driven learning (read a fixed number of strong papers in the target
-venue, then match their structure and ambition level quantitatively). `ctrl-paper-craft` instead
-derives structure from the venue-class expectations in `ctrl-shared` `core/venue-matrix.md`. If
-you want exemplar calibration later, the natural home is a step in `ctrl-paper-craft` that reads
+venue, then match their structure and ambition level quantitatively). `cse-paper-craft` instead
+derives structure from the venue-class expectations in `cse-shared` `core/venue-matrix.md`. If
+you want exemplar calibration later, the natural home is a step in `cse-paper-craft` that reads
 3 to 6 accepted papers from the target venue and records their section word budgets and figure
 counts as a target range, with the venue and the sampled papers named so the target is auditable.
 
@@ -113,18 +113,18 @@ counts as a target range, with the venue and the sampled papers named so the tar
 
 | Mechanism | Landed in |
 |---|---|
-| Calibration rule: start every dimension at the midpoint and justify movement | `ctrl-shared` `core/verdicts-and-loops.md` |
-| Top scores require zero Blocking findings and at most two Major findings | the same file, applied in `ctrl-pre-submission-review` |
-| Multi-dimension idea evaluation with a strong-accept condition | `ctrl-idea-forge` scoring |
-| Banned-style checks promoted to findings rather than nitpicks | `ctrl-shared` punctuation rule and the `ctrl-paper-craft` self-edit checklist |
+| Calibration rule: start every dimension at the midpoint and justify movement | `cse-shared` `core/verdicts-and-loops.md` |
+| Top scores require zero Blocking findings and at most two Major findings | the same file, applied in `cse-pre-submission-review` |
+| Multi-dimension idea evaluation with a strong-accept condition | `cse-idea-forge` scoring |
+| Banned-style checks promoted to findings rather than nitpicks | `cse-shared` punctuation rule and the `cse-paper-craft` self-edit checklist |
 
 ### From Research Paper Writing Skills and Claude Scholar
 
 | Mechanism | Landed in |
 |---|---|
-| Output contract: outline, role-tagged paragraphs, and a claim-evidence-status map | `ctrl-paper-craft` output format and the ledger |
-| Adversarial self-review triaged into pass / needs revision / needs experiment | `ctrl-paper-craft` self-edit pass |
-| Evidence records and claim promotion gates | `ctrl-shared` `core/verdicts-and-loops.md` promotion table |
+| Output contract: outline, role-tagged paragraphs, and a claim-evidence-status map | `cse-paper-craft` output format and the ledger |
+| Adversarial self-review triaged into pass / needs revision / needs experiment | `cse-paper-craft` self-edit pass |
+| Evidence records and claim promotion gates | `cse-shared` `core/verdicts-and-loops.md` promotion table |
 | Blocker-first behaviour: refuse to produce output when the evidence is insufficient, and name the one unblocking item | the same file |
 
 ### From Auto Empirical Research Skills
@@ -132,7 +132,7 @@ counts as a target range, with the venue and the sampled papers named so the tar
 | Mechanism | Landed in |
 |---|---|
 | Hard gates at fixed pipeline positions rather than advisory checks | G0 to G3 |
-| Warning against flat installation of very large skill sets | the install-time separation of `ctrl-shared`, which other skills load surgically |
+| Warning against flat installation of very large skill sets | the install-time separation of `cse-shared`, which other skills load surgically |
 
 ## What was deliberately left behind
 

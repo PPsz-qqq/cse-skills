@@ -35,44 +35,47 @@ shared contract follows from that one commitment.
 See [中文快速使用](docs/QUICKSTART.zh-CN.md). Local edits, diagnostic review and draft planning
 can run independently without rebuilding the entire research pipeline. Final scientific claims
 require the applicable evidence gates. All entries use the
-[execution contract](skills/ctrl-shared/core/execution-contract.md) for capability limits and handoff.
+[execution contract](skills/cse-shared/core/execution-contract.md) for capability limits and handoff.
 
 ## The skills
 
-Eight bundles, in `skills/`. `ctrl-shared` is the contract the other seven obey; the rest form
-a pipeline.
+Eight bundles, in `skills/`. `cse-shared` is the contract the other seven obey; the rest form
+a pipeline. The `cse-` prefix stands for Control Science and Engineering. Until 2026-10-04 the
+skills were named `ctrl-*`; the repository keeps the name ctrl-skills, the installer removes links
+left under the old names, and projects with old `ctrl-*` artifact files keep working (see
+[artifact-contract.md](skills/cse-shared/core/artifact-contract.md)).
 
 | Skill | Use it for | Trigger examples |
 |---|---|---|
-| [ctrl-shared](skills/ctrl-shared/SKILL.md) | the shared contract: gates, evidence rules, venue matrix, review rubrics, verdicts, terminology, artifact formats. Other skills load it; explicit questions about the contract can load it directly | "what does this pack require", gate and ledger definitions |
-| [ctrl-lit-radar](skills/ctrl-lit-radar/SKILL.md) | literature search, venue-cycle tracking, benchmark atlas, nearest-competitor ledger | 文献综述, 相关工作, 找论文, literature review, 文献调研 |
-| [ctrl-idea-forge](skills/ctrl-idea-forge/SKILL.md) | turn a gap into a falsifiable, budgeted research idea; G0 scope and G1 frozen plan | 选题, 开题, 创新点, research idea, hypothesis |
-| [ctrl-experiment-suite](skills/ctrl-experiment-suite/SKILL.md) | design, audit, and report experiments; per-axis protocol blocks, statistics, ablations, reproducibility | 实验设计, 消融实验, 结果分析, ablation, protocol |
-| [ctrl-paper-craft](skills/ctrl-paper-craft/SKILL.md) | write and revise the manuscript section by section | 写论文, 投稿, 论文写作, manuscript, abstract |
-| [ctrl-pre-submission-review](skills/ctrl-pre-submission-review/SKILL.md) | referee-side pre-submission review with mutually blind reviewers | 审稿, 模拟审稿, 预审, mock review, 帮我审一下论文 |
-| [ctrl-response-craft](skills/ctrl-response-craft/SKILL.md) | response letters, rebuttals, revision plans | 回复审稿意见, rebuttal, response letter |
-| [ctrl-paper-to-slides](skills/ctrl-paper-to-slides/SKILL.md) | conference, oral, and defense decks from a paper | 论文做PPT, 学术汇报, conference talk, slides |
+| [cse-shared](skills/cse-shared/SKILL.md) | the shared contract: gates, evidence rules, venue matrix, review rubrics, verdicts, terminology, artifact formats. Other skills load it; explicit questions about the contract can load it directly | "what does this pack require", gate and ledger definitions |
+| [cse-lit-radar](skills/cse-lit-radar/SKILL.md) | literature search, venue-cycle tracking, benchmark atlas, nearest-competitor ledger | 文献综述, 相关工作, 找论文, literature review, 文献调研 |
+| [cse-idea-forge](skills/cse-idea-forge/SKILL.md) | turn a gap into a falsifiable, budgeted research idea; G0 scope and G1 frozen plan | 选题, 开题, 创新点, research idea, hypothesis |
+| [cse-experiment-suite](skills/cse-experiment-suite/SKILL.md) | design, audit, and report experiments; per-axis protocol blocks, statistics, ablations, reproducibility | 实验设计, 消融实验, 结果分析, ablation, protocol |
+| [cse-paper-craft](skills/cse-paper-craft/SKILL.md) | write and revise the manuscript section by section | 写论文, 投稿, 论文写作, manuscript, abstract |
+| [cse-pre-submission-review](skills/cse-pre-submission-review/SKILL.md) | referee-side pre-submission review with mutually blind reviewers | 审稿, 模拟审稿, 预审, mock review, 帮我审一下论文 |
+| [cse-response-craft](skills/cse-response-craft/SKILL.md) | response letters, rebuttals, revision plans | 回复审稿意见, rebuttal, response letter |
+| [cse-paper-to-slides](skills/cse-paper-to-slides/SKILL.md) | conference, oral, and defense decks from a paper | 论文做PPT, 学术汇报, conference talk, slides |
 
 ## The pipeline
 
 ```text
-ctrl-lit-radar      find the gap and the nearest competitors
+cse-lit-radar      find the gap and the nearest competitors
        |
-ctrl-idea-forge     G0 scope -> G1 frozen plan (falsifiable, budgeted)
+cse-idea-forge     G0 scope -> G1 frozen plan (falsifiable, budgeted)
        |
-ctrl-experiment-suite   run and audit; G2 evidence freeze (claim ledger)
+cse-experiment-suite   run and audit; G2 evidence freeze (claim ledger)
        |
-ctrl-paper-craft    write the manuscript against the ledger
+cse-paper-craft    write the manuscript against the ledger
        |
-ctrl-pre-submission-review  3 blind reviewers -> G3 readiness
+cse-pre-submission-review  3 blind reviewers -> G3 readiness
        |
-ctrl-response-craft     revision round and point-by-point response
+cse-response-craft     revision round and point-by-point response
        |
-ctrl-paper-to-slides    audience-facing deck
+cse-paper-to-slides    audience-facing deck
 ```
 
 Each stage reads the previous stage's artifacts by file, not by conversation memory. The
-artifact names are fixed by [ctrl-shared/core/artifact-contract.md](skills/ctrl-shared/core/artifact-contract.md).
+artifact names are fixed by [cse-shared/core/artifact-contract.md](skills/cse-shared/core/artifact-contract.md).
 
 ## The four gates
 
@@ -89,7 +92,7 @@ assertion.
 `G1` and `G2` have no waiver path. `G0` and `G3` may be waived only on explicit user instruction,
 with the residual risk recorded; the waiver is logged beside the unchanged verdict and is never a
 pass. Definitions and pass criteria are in
-[ctrl-shared/core/gate-contract.md](skills/ctrl-shared/core/gate-contract.md).
+[cse-shared/core/gate-contract.md](skills/cse-shared/core/gate-contract.md).
 
 ## What makes it domain-specific
 
@@ -98,7 +101,7 @@ General academic-writing advice does not cover the things that actually decide t
 - **Protocol-matched comparison.** Input resolution, test-time augmentation, pretraining data,
   detector provenance, re-ranking, query construction, and hand-tuning symmetry. Each axis has a
   list of differences that invalidate a delta, in
-  [ctrl-shared/core/evidence-integrity.md](skills/ctrl-shared/core/evidence-integrity.md).
+  [cse-shared/core/evidence-integrity.md](skills/cse-shared/core/evidence-integrity.md).
 - **Axis-specific evidence obligations.** Tracking numbers require detector provenance and the
   public-versus-private detection label. Cooperative navigation requires a distribution proof
   and a communication model with delay and loss. Filtering requires Monte Carlo consistency
@@ -108,10 +111,10 @@ General academic-writing advice does not cover the things that actually decide t
 - **Metric precision.** `mAP` is meaningless without its averaging convention; `MOTA` without the
   detection protocol is not comparable to anything; `FPPI` is an operating rate while `LAMR` is
   the summary metric. Conventions are pinned in
-  [ctrl-shared/core/terminology-and-notation.md](skills/ctrl-shared/core/terminology-and-notation.md).
+  [cse-shared/core/terminology-and-notation.md](skills/cse-shared/core/terminology-and-notation.md).
 - **Venue-class reviewer behaviour.** What a CVPR-class reviewer rejects on differs from what a
   TAC reviewer rejects on. See
-  [ctrl-shared/core/venue-matrix.md](skills/ctrl-shared/core/venue-matrix.md).
+  [cse-shared/core/venue-matrix.md](skills/cse-shared/core/venue-matrix.md).
 - **Chinese-language venue requirements.** 创新点 stated as explicit points, a real Chinese
   abstract rather than a translation, 基金项目 and 中图分类号 fields, references in the GB/T 7714
   edition the journal names (GB/T 7714-2025 replaced the 2015 edition on 2026-07-01).
@@ -165,7 +168,7 @@ node --test tools/install.test.cjs          # installer ownership rules, Windows
 The validator checks frontmatter presence and keys, kebab-case `name` matching the directory
 name, boolean spelling of invocation keys, frontmatter closure, a UTF-8 BOM, unresolved
 `TODO`/`TBD` markers, every relative markdown link, and every inline-code path such as
-[gate-contract.md](skills/ctrl-shared/core/gate-contract.md). Inline paths are checked in both
+[gate-contract.md](skills/cse-shared/core/gate-contract.md). Inline paths are checked in both
 directions: a `../` path that is right in `SKILL.md` resolves one level too high inside
 `references/`, and a bundle-root path such as `references/x.md` resolves one level too deep there.
 It also fails any description longer than 500 characters, because DSH's skill catalog cuts
@@ -205,14 +208,14 @@ ctrl-skills/                 the repository root
   README.zh.md          中文说明
   INSTALL.md            install, verification, and uninstall
   skills/               the skill root: exactly the eight bundles, nothing else
-    ctrl-shared/          the shared contract
-    ctrl-lit-radar/       literature intelligence
-    ctrl-idea-forge/      scoping and planning
-    ctrl-experiment-suite/  experiments and statistics
-    ctrl-paper-craft/     manuscript writing
-    ctrl-pre-submission-review/  referee-side review
-    ctrl-response-craft/  revision correspondence
-    ctrl-paper-to-slides/ decks
+    cse-shared/          the shared contract
+    cse-lit-radar/       literature intelligence
+    cse-idea-forge/      scoping and planning
+    cse-experiment-suite/  experiments and statistics
+    cse-paper-craft/     manuscript writing
+    cse-pre-submission-review/  referee-side review
+    cse-response-craft/  revision correspondence
+    cse-paper-to-slides/ decks
   tools/                validator, DSH discovery check, installer and their tests
   evals/                behavioural eval cases
   docs/                 source-to-mechanism mapping, Chinese quick start, improvement notes

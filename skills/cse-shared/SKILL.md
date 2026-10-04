@@ -1,0 +1,85 @@
+---
+name: cse-shared
+description: >-
+  Internal shared contract of the cse-* pack for control science and engineering (目标检测, 目标跟踪,
+  重识别, 协同导航, 滤波). Other cse skills read its files by path: gates G0-G3, the six verdicts,
+  evidence and protocol-matching rules, venue matrix, review rubrics, terminology, artifact names.
+  Load it directly only when the user asks about this pack's rules themselves, such as what G2
+  requires or how claims are tiered (门禁, 证据规则); never as a standalone research workflow.
+---
+
+# CSE shared contract
+
+Shared reference package for the `cse-*` skill family. It serves research in
+控制科学与工程 (Control Science and Engineering) across five application domains:
+
+| Axis | Chinese | Typical subcommunity |
+|---|---|---|
+| `det` | 目标检测 | computer vision, pattern recognition |
+| `track` | 目标跟踪 | computer vision, multi-object tracking |
+| `reid` | 重识别 | person / vehicle re-identification, retrieval |
+| `cnav` | 协同导航 | multi-robot, UAV swarm, cooperative localization |
+| `filt` | 滤波 | estimation, sensor fusion, guidance and control |
+
+A single paper may cross axes. Record every axis that applies and run every gate for the
+primary axis plus the evidence rules of each secondary axis.
+
+## Stance
+
+- Ground every statement in an artifact that exists: the user's own draft, code, logs, figures,
+  or a verified published source. Never in what a paper "probably" reported.
+- Separate three epistemic tiers and label them explicitly wherever they appear: `measured`
+  (produced by a run the user can point at), `reported` (stated by a citable source),
+  `assumed` (a working hypothesis). Tier mixing is the single most common failure in this
+  literature, in both directions: simulated results presented as field results, and single-seed
+  numbers presented as stable performance.
+- Prefer a smaller, verifiable claim over a larger, unfalsifiable one. A paper that claims
+  "improves mAP by 1.2 on MSMT17 with matched protocol" is stronger than one that claims
+  "achieves state-of-the-art performance".
+- Quantitative comparison is a measurement claim and inherits every obligation of a physical
+  measurement: define the instrument, the protocol, the number of trials, and the uncertainty.
+- Never invent a citation, a number, a figure, a baseline, a dataset split, a hardware
+  specification, or an experiment that was not run. If a requested element does not exist,
+  mark the location `[MISSING]` and state what would be required to fill it.
+- Report negative and null results. A failed ablation is a finding, and suppressing it is
+  misconduct rather than style.
+
+## Invariants
+
+These five hold across every skill in the pack. A violation is blocking regardless of which
+skill is active.
+
+1. **No fabricated evidence.** Every number in every artifact traces to a run, a log, a table,
+   or a cited source. See `core/evidence-integrity.md`.
+2. **No unfair comparison.** A performance comparison is valid only under a matched protocol.
+   Declare the protocol before reporting the delta. See `core/evidence-integrity.md`.
+3. **No gate skipped.** A gate is passed by an artifact, not by an assertion. See
+   `core/gate-contract.md`.
+4. **No unreported boundary.** Every claim carries its validity boundary: dataset, split,
+   scenario, hardware, seed count, and assumption set.
+5. **No silent language switch.** Terminology and notation follow
+   `core/terminology-and-notation.md`, so the same object has one symbol and one name
+   throughout a manuscript, a slide deck, and a response letter.
+
+## File map
+
+Load only what the current step needs. Read the file with the file-read tool; each path is
+relative to this skill's base directory, which the `skill` tool reported.
+
+| File | Open when |
+|---|---|
+| [core/execution-contract.md](core/execution-contract.md) | Start a task, select a scoped mode, check capabilities, or hand off current revisions |
+| [core/gate-contract.md](core/gate-contract.md) | You need the gate definitions, pass criteria, artifacts, or blocking semantics |
+| [core/evidence-integrity.md](core/evidence-integrity.md) | You are auditing numbers, comparisons, ablations, seeds, or provenance |
+| [core/venue-matrix.md](core/venue-matrix.md) | You are choosing or justifying a target venue, or need its review criteria |
+| [core/review-rubrics.md](core/review-rubrics.md) | You are scoring a manuscript, calibrating severity, or writing a review |
+| [core/verdicts-and-loops.md](core/verdicts-and-loops.md) | You need the verdict enum, staleness rule, loop budgets, effort tiers, calibration rule, or claim-promotion conditions |
+| [core/terminology-and-notation.md](core/terminology-and-notation.md) | You need metric definitions, symbol conventions, or bilingual term choices |
+| [core/artifact-contract.md](core/artifact-contract.md) | You are creating or naming deliverable files, or running the final checklist |
+
+## Scope boundary
+
+This pack covers the research and publication workflow. It does not run experiments, train
+models, or execute simulation campaigns on the user's behalf unless a separate tool exists for
+it. It does not replace venue-specific author guidelines, which always win over this pack when
+they conflict; when they conflict, follow the venue and record the override.

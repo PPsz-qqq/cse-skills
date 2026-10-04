@@ -24,42 +24,45 @@
 
 先看 [中文快速使用](docs/QUICKSTART.zh-CN.md)。局部编辑、诊断和设计不必重跑整条流水线；
 最终科学主张必须检查适用门禁。各入口共用
-[执行约定](skills/ctrl-shared/core/execution-contract.md)，规定工具不可用时的降级和新版产物交接。
+[执行约定](skills/cse-shared/core/execution-contract.md)，规定工具不可用时的降级和新版产物交接。
 
 ## 八个技能
 
-全部位于 `skills/` 目录。`ctrl-shared` 是其余七个共同遵守的契约，其余七个构成一条流水线。
+全部位于 `skills/` 目录。`cse-shared` 是其余七个共同遵守的契约，其余七个构成一条流水线。
+前缀 `cse-` 取自 Control Science and Engineering（控制科学与工程）。2026-10-04 之前技能名为 `ctrl-*`；
+仓库仍叫 ctrl-skills，安装器会清理旧名字留下的链接，已有 `ctrl-*` 产物文件的项目照常可用（见
+[artifact-contract.md](skills/cse-shared/core/artifact-contract.md)）。
 
 | 技能 | 用途 | 触发词示例 |
 |---|---|---|
-| [ctrl-shared](skills/ctrl-shared/SKILL.md) | 共享契约：关卡、证据规则、期刊矩阵、审稿评分表、裁决枚举、术语规范、产物格式。其他技能按需读取；显式询问共享规范时可直接加载，不作为独立研究流程 | 这个包有什么要求、关卡与台账定义 |
-| [ctrl-lit-radar](skills/ctrl-lit-radar/SKILL.md) | 文献检索、会议周期跟踪、基准数据集图谱、最接近竞品台账 | 文献综述, 相关工作, 找论文, 文献调研, literature review |
-| [ctrl-idea-forge](skills/ctrl-idea-forge/SKILL.md) | 把研究缺口变成可证伪、有预算的研究构想；产出 G0 范围与 G1 冻结方案 | 选题, 开题, 创新点, research idea, hypothesis |
-| [ctrl-experiment-suite](skills/ctrl-experiment-suite/SKILL.md) | 实验设计、审计与结果报告；各方向协议块、统计处理、消融实验、可复现性 | 实验设计, 消融实验, 结果分析, ablation, protocol |
-| [ctrl-paper-craft](skills/ctrl-paper-craft/SKILL.md) | 逐节撰写与修改论文正文 | 写论文, 投稿, 论文写作, manuscript, abstract |
-| [ctrl-pre-submission-review](skills/ctrl-pre-submission-review/SKILL.md) | 审稿人视角的投稿前自审，多审稿人互盲 | 审稿, 模拟审稿, 预审, 帮我审一下论文, mock review |
-| [ctrl-response-craft](skills/ctrl-response-craft/SKILL.md) | 审稿意见回复、rebuttal、修订计划 | 回复审稿意见, rebuttal, response letter |
-| [ctrl-paper-to-slides](skills/ctrl-paper-to-slides/SKILL.md) | 由论文生成会议报告、口头报告与答辩幻灯 | 论文做PPT, 学术汇报, conference talk, slides |
+| [cse-shared](skills/cse-shared/SKILL.md) | 共享契约：关卡、证据规则、期刊矩阵、审稿评分表、裁决枚举、术语规范、产物格式。其他技能按需读取；显式询问共享规范时可直接加载，不作为独立研究流程 | 这个包有什么要求、关卡与台账定义 |
+| [cse-lit-radar](skills/cse-lit-radar/SKILL.md) | 文献检索、会议周期跟踪、基准数据集图谱、最接近竞品台账 | 文献综述, 相关工作, 找论文, 文献调研, literature review |
+| [cse-idea-forge](skills/cse-idea-forge/SKILL.md) | 把研究缺口变成可证伪、有预算的研究构想；产出 G0 范围与 G1 冻结方案 | 选题, 开题, 创新点, research idea, hypothesis |
+| [cse-experiment-suite](skills/cse-experiment-suite/SKILL.md) | 实验设计、审计与结果报告；各方向协议块、统计处理、消融实验、可复现性 | 实验设计, 消融实验, 结果分析, ablation, protocol |
+| [cse-paper-craft](skills/cse-paper-craft/SKILL.md) | 逐节撰写与修改论文正文 | 写论文, 投稿, 论文写作, manuscript, abstract |
+| [cse-pre-submission-review](skills/cse-pre-submission-review/SKILL.md) | 审稿人视角的投稿前自审，多审稿人互盲 | 审稿, 模拟审稿, 预审, 帮我审一下论文, mock review |
+| [cse-response-craft](skills/cse-response-craft/SKILL.md) | 审稿意见回复、rebuttal、修订计划 | 回复审稿意见, rebuttal, response letter |
+| [cse-paper-to-slides](skills/cse-paper-to-slides/SKILL.md) | 由论文生成会议报告、口头报告与答辩幻灯 | 论文做PPT, 学术汇报, conference talk, slides |
 
 ## 流水线
 
 ```text
-ctrl-lit-radar          找到缺口与最接近的竞品
+cse-lit-radar          找到缺口与最接近的竞品
        |
-ctrl-idea-forge         G0 范围 -> G1 冻结方案（可证伪、有预算）
+cse-idea-forge         G0 范围 -> G1 冻结方案（可证伪、有预算）
        |
-ctrl-experiment-suite   执行与审计；G2 证据冻结（声明台账）
+cse-experiment-suite   执行与审计；G2 证据冻结（声明台账）
        |
-ctrl-paper-craft        依据台账撰写正文
+cse-paper-craft        依据台账撰写正文
        |
-ctrl-pre-submission-review  三位互盲审稿人 -> G3 就绪
+cse-pre-submission-review  三位互盲审稿人 -> G3 就绪
        |
-ctrl-response-craft     修订轮次与逐条回复
+cse-response-craft     修订轮次与逐条回复
        |
-ctrl-paper-to-slides    面向听众的报告
+cse-paper-to-slides    面向听众的报告
 ```
 
-每个阶段都按**文件**读取上一阶段的产物，而不是依赖对话记忆。产物命名由 [ctrl-shared/core/artifact-contract.md](skills/ctrl-shared/core/artifact-contract.md) 固定。
+每个阶段都按**文件**读取上一阶段的产物，而不是依赖对话记忆。产物命名由 [cse-shared/core/artifact-contract.md](skills/cse-shared/core/artifact-contract.md) 固定。
 
 ## 四道关卡
 
@@ -72,16 +75,16 @@ ctrl-paper-to-slides    面向听众的报告
 | `G2` 证据冻结 | 范围内的主张是否有真实来源、比较是否成立？ | 未核验的最终主张，不阻塞诊断或草稿 |
 | `G3` 投稿就绪 | 这篇稿子能否扛住自己的审稿人？ | 投稿 |
 
-`G1` 与 `G2` 不可豁免。`G0` 与 `G3` 仅在用户明确指示时可豁免，且必须记录残余风险；豁免单独记录，原裁决不变，不是第七种裁决，也不等于 PASS。定义与通过标准见 [ctrl-shared/core/gate-contract.md](skills/ctrl-shared/core/gate-contract.md)。
+`G1` 与 `G2` 不可豁免。`G0` 与 `G3` 仅在用户明确指示时可豁免，且必须记录残余风险；豁免单独记录，原裁决不变，不是第七种裁决，也不等于 PASS。定义与通过标准见 [cse-shared/core/gate-contract.md](skills/cse-shared/core/gate-contract.md)。
 
 ## 领域专有之处
 
 通用的学术写作建议，覆盖不到真正决定这些论文成败的东西。
 
-- **协议对齐的对比。** 输入分辨率、测试时增强、预训练数据、检测器来源、re-ranking、query 构造、调参是否对称。每个方向都有一份「会使差值失效的差异清单」，见 [ctrl-shared/core/evidence-integrity.md](skills/ctrl-shared/core/evidence-integrity.md)。
+- **协议对齐的对比。** 输入分辨率、测试时增强、预训练数据、检测器来源、re-ranking、query 构造、调参是否对称。每个方向都有一份「会使差值失效的差异清单」，见 [cse-shared/core/evidence-integrity.md](skills/cse-shared/core/evidence-integrity.md)。
 - **各方向专属的证据义务。** 跟踪指标必须标注检测器来源以及 public/private detection；协同导航必须给出分布性证明和含时延、丢包的通信模型；滤波必须给出蒙特卡洛一致性证据，即 NEES 或 ANEES 对卡方界的检验。默认在每个时刻独立评估，自由度为 `N * n_x`；只有在独立性成立或相关性已被标定处理时才允许按 `N * T * n_x` 池化。
-- **指标精度。** `mAP` 不写明平均方式就没有意义；`MOTA` 不写检测协议就无法与任何结果比较；`FPPI` 是工作点横轴，`LAMR` 才是汇总指标。相关规范固定在 [ctrl-shared/core/terminology-and-notation.md](skills/ctrl-shared/core/terminology-and-notation.md)。
-- **不同期刊层级的审稿行为。** CVPR 类审稿人与 TAC 审稿人拒稿的理由并不相同，见 [ctrl-shared/core/venue-matrix.md](skills/ctrl-shared/core/venue-matrix.md)。
+- **指标精度。** `mAP` 不写明平均方式就没有意义；`MOTA` 不写检测协议就无法与任何结果比较；`FPPI` 是工作点横轴，`LAMR` 才是汇总指标。相关规范固定在 [cse-shared/core/terminology-and-notation.md](skills/cse-shared/core/terminology-and-notation.md)。
+- **不同期刊层级的审稿行为。** CVPR 类审稿人与 TAC 审稿人拒稿的理由并不相同，见 [cse-shared/core/venue-matrix.md](skills/cse-shared/core/venue-matrix.md)。
 - **中文期刊要求。** 创新点要以条目形式明确列出；中文摘要必须是真正的中文摘要而不是英译；基金项目、中图分类号等字段齐备；参考文献按期刊指定的 GB/T 7714 版本著录（GB/T 7714-2025 已于 2026-07-01 全部代替 2015 版，过渡期以期刊投稿指南为准）。
 
 ## 包对自身施加的规则
@@ -121,7 +124,7 @@ node --test tools/skill-tools.test.cjs      # 结构和发现逻辑的回归测�
 node --test tools/install.test.cjs          # 安装器所有权规则（仅 Windows，只用临时目录）
 ```
 
-校验器检查：frontmatter 是否存在及字段是否合法、`name` 是否为 kebab-case 且与目录名一致、调用开关的布尔拼写、frontmatter 是否闭合、是否存在 UTF-8 BOM、是否有未处理的 `TODO`/`TBD` 标记、每一条相对 Markdown 链接，以及每一条行内代码路径（例如 [gate-contract.md](skills/ctrl-shared/core/gate-contract.md)）。
+校验器检查：frontmatter 是否存在及字段是否合法、`name` 是否为 kebab-case 且与目录名一致、调用开关的布尔拼写、frontmatter 是否闭合、是否存在 UTF-8 BOM、是否有未处理的 `TODO`/`TBD` 标记、每一条相对 Markdown 链接，以及每一条行内代码路径（例如 [gate-contract.md](skills/cse-shared/core/gate-contract.md)）。
 
 行内路径要双向检查：在 `SKILL.md` 中正确的 `../` 路径放进 `references/` 后会多上溯一层，而 `references/x.md` 这类相对技能根目录的写法放进 `references/` 后又会多下钻一层，**没有其他工具会报告这些问题**。
 
@@ -150,14 +153,14 @@ ctrl-skills/                 仓库根目录
   README.zh.md          本文件
   INSTALL.md            安装、验证与卸载
   skills/               技能根目录：只有八个技能，别无其他
-    ctrl-shared/          共享契约
-    ctrl-lit-radar/       文献情报
-    ctrl-idea-forge/      选题与规划
-    ctrl-experiment-suite/ 实验与统计
-    ctrl-paper-craft/     论文写作
-    ctrl-pre-submission-review/ 审稿人视角自审
-    ctrl-response-craft/  修订往来
-    ctrl-paper-to-slides/ 报告幻灯
+    cse-shared/          共享契约
+    cse-lit-radar/       文献情报
+    cse-idea-forge/      选题与规划
+    cse-experiment-suite/ 实验与统计
+    cse-paper-craft/     论文写作
+    cse-pre-submission-review/ 审稿人视角自审
+    cse-response-craft/  修订往来
+    cse-paper-to-slides/ 报告幻灯
   tools/                校验器、DSH 发现检查、安装器及其测试
   evals/                行为评测用例
   docs/                 来源到机制的映射、中文快速使用、完善记录

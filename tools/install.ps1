@@ -1,12 +1,12 @@
 <#
 .SYNOPSIS
-  Install, update, or remove the ctrl-* skill pack for DSH without ever deleting data it does not own.
+  Install, update, or remove the cse-* skill pack for DSH without ever deleting data it does not own.
 
 .DESCRIPTION
   DSH discovers skills from <root>/<name>/SKILL.md or <root>/<name>.md at the top level of a
   scanned root. The user-level root is <DSH_HOME>/skills, which defaults to ~/.dsh/skills.
 
-  Link mode (default) creates one directory junction per ctrl-* bundle, so edits in this repository
+  Link mode (default) creates one directory junction per cse-* bundle, so edits in this repository
   are visible without copying. Copy mode copies each bundle and writes an ownership record,
   .ctrl-skills-install.json, holding the SHA-256 of every copied file.
 
@@ -20,12 +20,15 @@
     <Target>\.ctrl-skills-backup\<timestamp>\<name>; nothing is deleted. DSH scans only the top
     level of a root, so the backup folder is not discovered as a skill.
   - -WhatIf prints the plan without changing anything.
+  - The skills were named ctrl-<name> before 2026-10-04. An entry under the old name is removed
+    only when it is a link into this source tree (usually dangling after the rename) or an
+    unmodified owned copy; anything else under an old name is reported and left alone.
 
   Installing files does not enable a provider. The @deepseek-ai/dsh-skill-filesystem provider must
   be active and must scan the target root before a session can load the skills.
 
 .PARAMETER Source
-  Directory holding the ctrl-* bundle directories. Defaults to this package's skills/ directory,
+  Directory holding the cse-* bundle directories. Defaults to this package's skills/ directory,
   then a legacy sibling skills/ directory, then the package root.
 
 .PARAMETER Target
@@ -36,7 +39,7 @@
   after source edits.
 
 .PARAMETER Remove
-  Remove the installed ctrl-* links or unmodified owned copies instead of installing.
+  Remove the installed cse-* links or unmodified owned copies instead of installing.
 
 .PARAMETER Force
   Also act on foreign links (unlink only, the target is untouched) and on directories this script
@@ -65,6 +68,8 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$SkillPrefix = 'cse-'
+$LegacyPrefix = 'ctrl-'   # skill prefix used before 2026-10-04
 $MarkerName = '.ctrl-skills-install.json'
 $BackupDirName = '.ctrl-skills-backup'
 
@@ -220,7 +225,7 @@ if (-not $Source) {
   foreach ($candidate in $candidates) {
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) { continue }
     $hasBundle = Get-ChildItem -LiteralPath $candidate -Directory -ErrorAction SilentlyContinue |
-      Where-Object { $_.Name -like 'ctrl-*' -and (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')) }
+      Where-Object { $_.Name -like "$SkillPrefix*" -and (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')) }
     if ($hasBundle) { $chosen = $candidate; break }
   }
   if (-not $chosen) { $chosen = Join-Path $pkgRoot 'skills' }
@@ -240,9 +245,9 @@ if (Test-PathInside $script:targetRoot $sourceRoot) {
 }
 
 $bundles = @(Get-ChildItem -LiteralPath $sourceRoot -Directory |
-  Where-Object { $_.Name -like 'ctrl-*' -and (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')) } |
+  Where-Object { $_.Name -like "$SkillPrefix*" -and (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')) } |
   Sort-Object Name)
-if ($bundles.Count -eq 0) { throw "No ctrl-* bundles with a SKILL.md were found under $sourceRoot" }
+if ($bundles.Count -eq 0) { throw "No $SkillPrefix* bundles with a SKILL.md were found under $sourceRoot" }
 
 Write-Host "source     : $sourceRoot"
 Write-Host "skill root : $($script:targetRoot)"
@@ -332,6 +337,44 @@ foreach ($bundle in $bundles) {
   }
 }
 
+# Entries left under the pre-2026-10-04 names (ctrl-<name>). Only links into this source tree and
+# unmodified owned copies are removed; everything else under an old name is reported and kept.
+foreach ($bundle in $bundles) {
+  $legacyName = $LegacyPrefix + $bundle.Name.Substring($SkillPrefix.Length)
+  $legacyDest = Join-Path $script:targetRoot $legacyName
+  $item = Get-Entry $legacyDest
+  if (-not $item) { continue }
+  try {
+    if (Test-IsLink $item) {
+      $targets = @(Get-LinkTargets $item)
+      $inside = $false
+      foreach ($t in $targets) { if (Test-PathInside $t $sourceRoot) { $inside = $true } }
+      if ($inside) {
+        if ($PSCmdlet.ShouldProcess($legacyDest, "remove legacy link only (target untouched: $($targets -join ';'))")) {
+          Remove-LinkOnly $legacyDest
+          Write-Host ("  unlink {0} (old name of {1})" -f $legacyName, $bundle.Name)
+        }
+        $changed++
+      } else {
+        Write-Warning ("  keep   {0}: old-name link to another location ({1})" -f $legacyName, ($targets -join ';'))
+        $skipped++
+      }
+    } elseif ($item.PSIsContainer -and (Get-CopyState $legacyDest $legacyName) -eq 'owned-clean') {
+      if ($PSCmdlet.ShouldProcess($legacyDest, 'delete unmodified owned copy under the old name')) {
+        Remove-Item -LiteralPath $legacyDest -Recurse -Force
+        Write-Host ("  delete {0} (unmodified old-name copy of {1})" -f $legacyName, $bundle.Name)
+      }
+      $changed++
+    } else {
+      Write-Warning ("  keep   {0}: old-name entry not owned by this installer" -f $legacyName)
+      $skipped++
+    }
+  } catch {
+    Write-Warning ("  FAIL   {0}: {1}" -f $legacyName, $_.Exception.Message)
+    $failed++
+  }
+}
+
 Write-Host ''
 Write-Host ("done: {0} changed, {1} unchanged, {2} skipped, {3} failed" -f $changed, $unchanged, $skipped, $failed)
 Write-Host ''
@@ -339,6 +382,6 @@ Write-Host 'Next: files on disk are not the same as a loaded skill. The @deepsee
 Write-Host 'provider must be active and must scan this root (or add the source skills/ directory to'
 Write-Host 'customSkillDirs instead). Check offline parsing with:'
 Write-Host ("  node tools/check-dsh-discovery.cjs `"{0}`"" -f $script:targetRoot)
-Write-Host 'then confirm in a session that the skill tool can load ctrl-shared.'
+Write-Host 'then confirm in a session that the skill tool can load cse-shared.'
 
 if ($failed -gt 0) { exit 1 }
