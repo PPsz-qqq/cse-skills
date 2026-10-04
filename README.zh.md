@@ -1,4 +1,4 @@
-# ctrl-skills
+# cse-skills
 
 面向**控制科学与工程**研究与投稿的 agent 技能包，覆盖五个方向。
 
