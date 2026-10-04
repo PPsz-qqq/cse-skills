@@ -30,6 +30,38 @@ is a measurement, and it inherits every obligation of a measurement: a defined i
 declared protocol, a stated number of trials, and honest uncertainty. Nearly every rule in the
 shared contract follows from that one commitment.
 
+## Quick examples
+
+**Find literature gaps and competitors:**
+```
+帮我调研一下多目标跟踪的相关工作，特别是MOT17和MOT20基准上的最新方法
+```
+
+**Design a falsifiable experiment:**
+```
+我想提出一个改进的卡尔曼滤波器用于无人机集群定位，帮我设计实验方案
+```
+
+**Generate publication-grade figures:**
+```
+画一个tracking的PR曲线对比图，三条曲线：Ours、ByteTrack、FairMOT，主题用IEEE
+```
+
+**Write manuscript sections:**
+```
+根据我的实验结果写Introduction，目标期刊是IEEE T-RO
+```
+
+**Pre-submission review:**
+```
+帮我审一下这篇论文，准备投CVPR 2026
+```
+
+**Respond to reviewers:**
+```
+帮我逐条回复这些审稿意见，生成response letter
+```
+
 ## Scoped use
 
 See [中文快速使用](docs/QUICKSTART.zh-CN.md). Local edits, diagnostic review and draft planning
