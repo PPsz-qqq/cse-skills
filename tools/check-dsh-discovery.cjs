@@ -23,7 +23,7 @@ function main() {
     for (const problem of problems) console.error(`FAIL: ${problem}`);
     process.exitCode = 1;
   } else {
-    console.log('PASS: all eight distinct expected cse-* bundles parse under the compatibility contract,');
+    console.log('PASS: all nine distinct expected cse-* bundles parse under the compatibility contract,');
     console.log(`      and every description fits the default ${DSH_CATALOG_DESCRIPTION_MAX_LENGTH}-character catalog limit.`);
     console.log('Live provider activation, configured roots and session visibility were not checked.');
   }

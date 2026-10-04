@@ -39,7 +39,7 @@ require the applicable evidence gates. All entries use the
 
 ## The skills
 
-Eight bundles, in `skills/`. `cse-shared` is the contract the other seven obey; the rest form
+Nine bundles, in `skills/`. `cse-shared` is the contract the other eight obey; the rest form
 a pipeline. The `cse-` prefix stands for Control Science and Engineering. Until 2026-10-04 the
 skills were named `ctrl-*`; the repository keeps the name ctrl-skills, the installer removes links
 left under the old names, and projects with old `ctrl-*` artifact files keep working (see
@@ -51,6 +51,7 @@ left under the old names, and projects with old `ctrl-*` artifact files keep wor
 | [cse-lit-radar](skills/cse-lit-radar/SKILL.md) | literature search, venue-cycle tracking, benchmark atlas, nearest-competitor ledger | 文献综述, 相关工作, 找论文, literature review, 文献调研 |
 | [cse-idea-forge](skills/cse-idea-forge/SKILL.md) | turn a gap into a falsifiable, budgeted research idea; G0 scope and G1 frozen plan | 选题, 开题, 创新点, research idea, hypothesis |
 | [cse-experiment-suite](skills/cse-experiment-suite/SKILL.md) | design, audit, and report experiments; per-axis protocol blocks, statistics, ablations, reproducibility | 实验设计, 消融实验, 结果分析, ablation, protocol |
+| [cse-figure-studio](skills/cse-figure-studio/SKILL.md) | publication-grade data visualization with venue-compliant themes and demo-data tracking | 画图, 作图, 论文图表, 科研绘图, figure, plot, visualization |
 | [cse-paper-craft](skills/cse-paper-craft/SKILL.md) | write and revise the manuscript section by section | 写论文, 投稿, 论文写作, manuscript, abstract |
 | [cse-pre-submission-review](skills/cse-pre-submission-review/SKILL.md) | referee-side pre-submission review with mutually blind reviewers | 审稿, 模拟审稿, 预审, mock review, 帮我审一下论文 |
 | [cse-response-craft](skills/cse-response-craft/SKILL.md) | response letters, rebuttals, revision plans | 回复审稿意见, rebuttal, response letter |
@@ -65,7 +66,11 @@ cse-idea-forge     G0 scope -> G1 frozen plan (falsifiable, budgeted)
        |
 cse-experiment-suite   run and audit; G2 evidence freeze (claim ledger)
        |
-cse-paper-craft    write the manuscript against the ledger
+       +------------+
+       |            |
+cse-figure-studio   cse-paper-craft    visualize results    write manuscript
+       |            |                   (venue-compliant)   (against ledger)
+       +------------+
        |
 cse-pre-submission-review  3 blind reviewers -> G3 readiness
        |
@@ -207,11 +212,12 @@ ctrl-skills/                 the repository root
   README.md             this file
   README.zh.md          中文说明
   INSTALL.md            install, verification, and uninstall
-  skills/               the skill root: exactly the eight bundles, nothing else
+  skills/               the skill root: exactly the nine bundles, nothing else
     cse-shared/          the shared contract
     cse-lit-radar/       literature intelligence
     cse-idea-forge/      scoping and planning
     cse-experiment-suite/  experiments and statistics
+    cse-figure-studio/   publication-grade data visualization
     cse-paper-craft/     manuscript writing
     cse-pre-submission-review/  referee-side review
     cse-response-craft/  revision correspondence

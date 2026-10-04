@@ -6,6 +6,7 @@ const path = require('node:path');
 const EXPECTED_SKILLS = Object.freeze([
   'cse-shared', 'cse-lit-radar', 'cse-idea-forge', 'cse-experiment-suite',
   'cse-paper-craft', 'cse-pre-submission-review', 'cse-response-craft', 'cse-paper-to-slides',
+  'cse-figure-studio',
 ]);
 
 // DSH's model-facing catalog (@deepseek-ai/dsh-tool-skill) shows each skill as its
