@@ -26,9 +26,9 @@
 最终科学主张必须检查适用门禁。各入口共用
 [执行约定](skills/cse-shared/core/execution-contract.md)，规定工具不可用时的降级和新版产物交接。
 
-## 八个技能
+## 九个技能
 
-全部位于 `skills/` 目录。`cse-shared` 是其余七个共同遵守的契约，其余七个构成一条流水线。
+全部位于 `skills/` 目录。`cse-shared` 是其余八个共同遵守的契约，其余八个构成一条流水线。
 前缀 `cse-` 取自 Control Science and Engineering（控制科学与工程）。2026-10-04 之前技能名为 `ctrl-*`；
 仓库仍叫 ctrl-skills，安装器会清理旧名字留下的链接，已有 `ctrl-*` 产物文件的项目照常可用（见
 [artifact-contract.md](skills/cse-shared/core/artifact-contract.md)）。
@@ -39,6 +39,7 @@
 | [cse-lit-radar](skills/cse-lit-radar/SKILL.md) | 文献检索、会议周期跟踪、基准数据集图谱、最接近竞品台账 | 文献综述, 相关工作, 找论文, 文献调研, literature review |
 | [cse-idea-forge](skills/cse-idea-forge/SKILL.md) | 把研究缺口变成可证伪、有预算的研究构想；产出 G0 范围与 G1 冻结方案 | 选题, 开题, 创新点, research idea, hypothesis |
 | [cse-experiment-suite](skills/cse-experiment-suite/SKILL.md) | 实验设计、审计与结果报告；各方向协议块、统计处理、消融实验、可复现性 | 实验设计, 消融实验, 结果分析, ablation, protocol |
+| [cse-figure-studio](skills/cse-figure-studio/SKILL.md) | 出版级数据可视化，带期刊主题与演示数据追踪 | 画图, 作图, 论文图表, 科研绘图, figure, plot, visualization |
 | [cse-paper-craft](skills/cse-paper-craft/SKILL.md) | 逐节撰写与修改论文正文 | 写论文, 投稿, 论文写作, manuscript, abstract |
 | [cse-pre-submission-review](skills/cse-pre-submission-review/SKILL.md) | 审稿人视角的投稿前自审，多审稿人互盲 | 审稿, 模拟审稿, 预审, 帮我审一下论文, mock review |
 | [cse-response-craft](skills/cse-response-craft/SKILL.md) | 审稿意见回复、rebuttal、修订计划 | 回复审稿意见, rebuttal, response letter |
@@ -53,7 +54,11 @@ cse-idea-forge         G0 范围 -> G1 冻结方案（可证伪、有预算）
        |
 cse-experiment-suite   执行与审计；G2 证据冻结（声明台账）
        |
-cse-paper-craft        依据台账撰写正文
+       +------------+
+       |            |
+cse-figure-studio   cse-paper-craft    可视化结果         依据台账撰写正文
+       |            |                   （期刊主题）
+       +------------+
        |
 cse-pre-submission-review  三位互盲审稿人 -> G3 就绪
        |
@@ -130,7 +135,7 @@ node --test tools/install.test.cjs          # 安装器所有权规则（仅 Win
 
 description 超过 500 个字符（空白归一化后）会被判失败：DSH 的技能目录（catalog）默认在 500 字符处截断描述，末尾的触发词将永远到不了模型。此外，若一个技能都没扫到，校验器会以非零码退出，而不是报告「通过」——避免根目录写错却看起来像成功。
 
-[发现检查](tools/check-dsh-discovery.cjs) 使用真实 YAML 解析和核查过的调用字段约定，检查八个不同的预期技能名称。
+[发现检查](tools/check-dsh-discovery.cjs) 使用真实 YAML 解析和核查过的调用字段约定，检查九个不同的预期技能名称。
 这只是离线兼容检查；运行时插件启用、扫描目录及会话可见性需单独核实。结构修改后应运行它。
 工具说明见 [tools/README.md](tools/README.md)。
 
@@ -152,11 +157,12 @@ ctrl-skills/                 仓库根目录
   README.md             英文说明
   README.zh.md          本文件
   INSTALL.md            安装、验证与卸载
-  skills/               技能根目录：只有八个技能，别无其他
+  skills/               技能根目录：只有九个技能，别无其他
     cse-shared/          共享契约
     cse-lit-radar/       文献情报
     cse-idea-forge/      选题与规划
     cse-experiment-suite/ 实验与统计
+    cse-figure-studio/   出版级数据可视化
     cse-paper-craft/     论文写作
     cse-pre-submission-review/ 审稿人视角自审
     cse-response-craft/  修订往来
