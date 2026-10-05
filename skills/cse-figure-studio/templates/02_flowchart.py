@@ -20,7 +20,7 @@ CX, BW = 108, 136                     # main column centre and box width
 X0 = CX - BW / 2
 
 start = fig.pill(CX - 30, 6, 60, 16, 'Start', tone=DARK)
-init = fig.io(X0 + 8, 34, BW - 16, 24, 'Initialize', '$\\hat{x}_0$, $P_0$, $Q$, $R$', tone='teal')
+init = fig.io(X0 + 8, 33, BW - 16, 27, 'Initialize', '$\\hat{x}_0$, $P_0$, $Q$, $R$', tone='teal')
 pred = fig.box(X0, 70, BW, 28, 'Predict', '$\\hat{x}_{k|k-1}$,  $P_{k|k-1}$', tone='gray')
 meas = fig.io(X0 + 8, 110, BW - 16, 22, 'Read measurement $z_k$', tone='teal')
 innov = fig.box(X0, 144, BW, 28, 'Innovation test', '$\\epsilon_k=\\nu_k^{\\top}S_k^{-1}\\nu_k$', tone='gray')

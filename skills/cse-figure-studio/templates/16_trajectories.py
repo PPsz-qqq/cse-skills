@@ -13,8 +13,8 @@ import sys
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'scripts'))
 import numpy as np  # noqa: E402
-from matplotlib.patches import Rectangle  # noqa: E402
 from matplotlib.lines import Line2D  # noqa: E402
+from matplotlib.patches import Patch, Rectangle  # noqa: E402
 import pubplot as pp  # noqa: E402
 
 args = pp.template_args(__doc__)
@@ -30,13 +30,14 @@ paths = [np.c_[8 + 84 * t, 41 + 9 * np.sin(2 * np.pi * t)],
 colors = [pp.CYCLE[0], pp.CYCLE[1], pp.CYCLE[2]]
 DENIED = (42, 70)
 
-fig, ax = pp.figure('ieee-single', aspect=0.64)
+fig, ax = pp.figure('ieee-single', aspect=0.70)
 ax.add_patch(Rectangle((DENIED[0], -4), DENIED[1] - DENIED[0], 62, facecolor='#F2F3F5', edgecolor='none',
                        hatch='////', zorder=0))
 ax.patches[-1].set_edgecolor('#D9DCE1')
 ax.patches[-1].set_linewidth(0)
-ax.text(np.mean(DENIED), 54.2, 'GNSS-denied', ha='center', va='center', fontsize=7, color=pp.MUTED,
-        fontweight='bold', bbox={'boxstyle': 'round,pad=0.2', 'fc': 'white', 'ec': 'none'})
+ax.text(np.mean(DENIED), 54.2, pp.tr('GNSS-denied', 'GNSS 拒止区'), ha='center', va='center',
+        fontsize=pp.size('annot'), color=pp.MUTED, fontweight='bold',
+        bbox={'boxstyle': 'round,pad=0.2', 'fc': 'white', 'ec': 'none'})
 
 for i, (gt, color) in enumerate(zip(paths, colors)):
     inside = (gt[:, 0] > DENIED[0]) & (gt[:, 0] < DENIED[1])
@@ -62,8 +63,8 @@ for i, (gt, color) in enumerate(zip(paths, colors)):
                        linewidth=0.6, zorder=2.5)
     ax.plot(*est[0], 'o', ms=4, mfc='white', mec=color, mew=1.0, zorder=4)
     ax.plot(*est[-1], 's', ms=3.6, color=color, zorder=4)
-    ax.text(est[0, 0] - 2.2, est[0, 1], f'Agent {i + 1}', ha='right', va='center', fontsize=7, color=color,
-            fontweight='bold')
+    ax.text(est[0, 0] - 2.2, est[0, 1], pp.tr(f'Agent {i + 1}', f'智能体 {i + 1}'), ha='right', va='center',
+            fontsize=pp.size('annot'), color=color, fontweight='bold')
 
 anchors = np.array([[2, 54], [98, 54], [98, 0]])
 ax.plot(anchors[:, 0], anchors[:, 1], '^', ms=5.5, color='#C2A04A', mec='#8A6E1F', mew=0.6, zorder=4)
@@ -71,14 +72,14 @@ ax.plot(anchors[:, 0], anchors[:, 1], '^', ms=5.5, color='#C2A04A', mec='#8A6E1F
 ax.set_aspect('equal')
 ax.set_xlim(-14, 102)
 ax.set_ylim(-4, 58)
-ax.set_xlabel('East (m)')
-ax.set_ylabel('North (m)')
-from matplotlib.patches import Ellipse
-legend_ellipse = Ellipse((0, 0), 1, 1, facecolor='#7F8790', alpha=0.25, edgecolor='#7F8790', linewidth=0.6)
+ax.set_xlabel(pp.tr('East (m)', '东向 (m)'))
+ax.set_ylabel(pp.tr('North (m)', '北向 (m)'))
 handles = [Line2D([], [], color='#4A515B', lw=0.7, ls=(0, (3, 2))), Line2D([], [], color=pp.INK, lw=1.2),
-           legend_ellipse,
+           Patch(facecolor='#7F8790', alpha=0.25, edgecolor='#7F8790', linewidth=0.6),
            Line2D([], [], ls='', marker='^', ms=5.5, color='#C2A04A', mec='#8A6E1F')]
-ax.legend(handles, ['Ground truth', 'Estimate', '95% ellipse', 'Anchor'], ncols=4, loc='lower left',
-          bbox_to_anchor=(0, 1.0), borderaxespad=0.2, handlelength=1.5, columnspacing=1.0)
+labels = [pp.tr('Ground truth', '真值'), pp.tr('Estimate', '估计'), pp.tr('95% ellipse', '95% 置信椭圆'),
+          pp.tr('Anchor', '锚点')]
+ax.legend(handles, labels, ncols=4 if pp.size('legend') < 8 else 2, loc='lower left', bbox_to_anchor=(0, 1.0),
+          borderaxespad=0.2, handlelength=1.5, columnspacing=1.0)
 
 pp.save(fig, args.out, '16_trajectories', args.formats, args.dpi)

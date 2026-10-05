@@ -18,37 +18,35 @@ import pubplot as pp  # noqa: E402
 args = pp.template_args(__doc__)
 pp.use(args.theme, args.lang)
 
-# name, FPS, accuracy, parameters (M), label offset in points, horizontal and vertical alignment
-pts = [('Method A', 8.5, 63.9, 92, (0, 11), 'center', 'bottom'), ('Method B', 14, 62.2, 61, (-35, 0), 'right', 'center'),
-       ('Method C', 26, 60.4, 38, (-35, 0), 'right', 'center'), ('Method D', 45, 57.8, 25, (0, -8), 'center', 'top'),
-       ('Method E', 85, 53.9, 12, (-6, 0), 'right', 'center'), ('Method F', 19, 58.6, 70, (0, -11), 'center', 'top')]
+# name, FPS, accuracy (%), parameters (M); labels are placed automatically by pp.label_points
+pts = [('Method A', 8.5, 63.9, 92), ('Method B', 14, 62.2, 61), ('Method C', 26, 60.4, 38),
+       ('Method D', 45, 57.8, 25), ('Method E', 85, 53.9, 12), ('Method F', 19, 58.6, 70)]
 ours = ('Ours', 38, 63.2, 31)
 pp.mark_demo('placeholder speed and accuracy values')
+AREA = 1.4                                    # marker area (pt^2) per million parameters
+BASE_FILL, BASE_EDGE = '#C7CCD3', '#6B727C'
 
-fig, ax = pp.figure('ieee-single', aspect=0.70)
+fig, ax = pp.figure('ieee-single', aspect=0.72)
 ax.set_xscale('log')
 pp.light_grid(ax, 'both')
 ax.axvline(30, color='#9AA1AA', lw=0.7, ls=(0, (3, 2)), zorder=1)
-ax.text(31.5, 50.6, 'real time (30 FPS)', color=pp.MUTED, fontsize=6.8, va='bottom', ha='left')
+ax.text(31.5, 50.5, pp.tr('real time (30 FPS)', '实时 (30 FPS)'), color=pp.MUTED, fontsize=pp.size('annot'),
+        va='bottom', ha='left')
 
 fps = np.array([p[1] for p in pts])
 acc = np.array([p[2] for p in pts])
-order = np.argsort(-fps)
-front, best = [], -np.inf
-for i in order:
+front, best = [], -np.inf                     # Pareto front of the baselines, drawn as a step line
+for i in np.argsort(-fps):
     if acc[i] > best:
         front.append(i)
         best = acc[i]
 front = sorted(front, key=lambda i: fps[i])
-ax.step(fps[front], acc[front], where='post', color='#9AA1AA', lw=0.8, ls=(0, (2.5, 2)), zorder=1)
+ax.step(fps[front], acc[front], where='post', color='#A3AAB3', lw=0.8, ls=(0, (2.5, 2)), zorder=1)
 
-for name, f, a, params, off, ha, va in pts:
-    ax.scatter(f, a, s=params * 1.4, color='#B4BAC2', edgecolor='#6B727C', linewidth=0.6, zorder=3)
-    ax.annotate(name, (f, a), xytext=off, textcoords='offset points', fontsize=7, color=pp.MUTED, ha=ha, va=va)
+ax.scatter(fps, acc, s=[p[3] * AREA for p in pts], color=BASE_FILL, edgecolor=BASE_EDGE, linewidth=0.6, zorder=3)
 name, f, a, params = ours
-ax.scatter(f, a, s=params * 1.4, color=pp.OURS, edgecolor='white', linewidth=0.8, zorder=4)
-ax.annotate('Ours', (f, a), xytext=(8, 6), textcoords='offset points', fontsize=7.5, fontweight='bold',
-            color=pp.OURS, va='center')
+ax.scatter(f, a, s=params * AREA * 3.2, color='none', edgecolor=pp.OURS, linewidth=0.6, alpha=0.45, zorder=3)
+ax.scatter(f, a, s=params * AREA, color=pp.OURS, edgecolor='#FFFFFF', linewidth=0.8, zorder=4)
 
 ax.xaxis.set_major_locator(FixedLocator([5, 10, 20, 50, 100]))
 ax.xaxis.set_major_formatter(lambda v, _: f'{v:g}')
@@ -56,11 +54,16 @@ ax.xaxis.set_minor_locator(NullLocator())
 ax.xaxis.set_minor_formatter(NullFormatter())
 ax.set_xlim(5, 140)
 ax.set_ylim(50, 66)
-ax.set_xlabel('Speed (FPS, same GPU, log scale)')
+ax.set_xlabel(pp.tr('Speed (FPS, same GPU, log scale)', '速度 (FPS，同一 GPU，对数坐标)'))
 ax.set_ylabel('HOTA (%)')
 for s, label in ((20, '20M'), (60, '60M')):
-    ax.scatter([], [], s=s * 1.4, color='#B4BAC2', edgecolor='#6B727C', linewidth=0.6, label=label)
-ax.legend(title='Parameters', loc='upper right', title_fontsize=7, labelspacing=0.9, borderpad=0.4,
-          handletextpad=0.8)
+    ax.scatter([], [], s=s * AREA, color=BASE_FILL, edgecolor=BASE_EDGE, linewidth=0.6, label=label)
+ax.legend(title=pp.tr('Parameters', '参数量'), loc='upper right', title_fontsize=pp.size('legend'), labelspacing=0.9,
+          borderpad=0.4, handletextpad=0.8)
+
+names = [p[0] for p in pts] + [pp.tr('Ours', '本文')]
+pp.label_points(ax, list(fps) + [f], list(acc) + [a], names, marker_size=[p[3] * AREA for p in pts] + [params * AREA * 3.2],
+                colors=[pp.MUTED] * len(pts) + [pp.OURS], weights=['normal'] * len(pts) + ['bold'],
+                order=[len(pts)] + list(range(len(pts))))
 
 pp.save(fig, args.out, '12_tradeoff_scatter', args.formats, args.dpi)

@@ -28,16 +28,17 @@ fig.image_icon(6, ROW1 - 15, 34, 30, tone='blue', stack=3, offset=4)
 fig.text(23, ROW1 + 25, 'Frames $I_t$', T.small, color=T.muted)
 
 # Stage 1.
-backbone = fig.box(71, ROW1 - 17, 86, 34, 'Backbone', 'multi-scale features', tone='gray')
-head = fig.box(71, ROW2 - 17, 86, 34, 'Detection head', 'boxes + scores', tone='gray')
+backbone = fig.box(71, ROW1 - 19, 86, 38, 'Backbone', 'multi-scale features', tone='gray')
+head = fig.box(71, ROW2 - 19, 86, 38, 'Detection head', 'boxes + scores', tone='gray')
 fig.arrow((50, ROW1), backbone.left)
 fig.arrow(backbone.bottom, head.top)
 
 # Stage 2: two cues feed the proposed matching module.
-motion = fig.box(196, ROW1 - 17, 76, 34, 'Motion', 'Kalman prediction', tone='teal')
-appear = fig.box(196, ROW2 - 17, 76, 34, 'Appearance', 're-ID embedding', tone='teal')
+motion = fig.box(196, ROW1 - 19, 76, 38, 'Motion', 'Kalman prediction', tone='teal')
+appear = fig.box(196, ROW2 - 19, 76, 38, 'Appearance', 're-ID embedding', tone='teal')
 MY, MH = 49, 86
-match = fig.box(290, MY, 74, MH, 'Matching', 'uncertainty-aware cost', tone='blue', emphasis=True, label_dy=-14)
+match = fig.box(290, MY, 80, MH, 'Matching', 'uncertainty-aware cost', tone='blue', emphasis=True, label_dy=-14,
+                sub_size=T.small)
 cost = [[0.95, 0.15, 0.30, 0.10], [0.20, 0.85, 0.10, 0.35], [0.10, 0.25, 0.90, 0.15], [0.30, 0.10, 0.20, 0.55]]
 fig.matrix(match.cx - 13.5, MY + MH - 36, cost, cell=6, gap=1, tone='blue')
 fig.arrow(head.right, appear.left, label='$\\mathcal{D}_t$')
@@ -45,8 +46,8 @@ fig.arrow(motion.right, match.port('left', (ROW1 - MY) / MH))
 fig.arrow(appear.right, match.port('left', (ROW2 - MY) / MH))
 
 # Stage 3.
-update = fig.box(392, ROW1 - 17, 72, 34, 'Track update', 'Kalman correction', tone='gray')
-life = fig.box(392, ROW2 - 17, 72, 34, 'Birth / death', 'lifecycle rules', tone='gray')
+update = fig.box(392, ROW1 - 19, 72, 38, 'Track update', 'Kalman correction', tone='gray')
+life = fig.box(392, ROW2 - 19, 72, 38, 'Birth / death', 'lifecycle rules', tone='gray')
 fig.arrow(match.port('right', (ROW1 - MY) / MH), update.left)
 fig.arrow(update.bottom, life.top)
 

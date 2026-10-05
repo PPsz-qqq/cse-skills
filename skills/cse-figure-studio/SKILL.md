@@ -1,138 +1,169 @@
 ---
 name: cse-figure-studio
-description: Publication-grade data visualization for detection, tracking, re-ID, navigation, and filtering research
-whenToUse: Use when creating, auditing, or revising manuscript figures for CSE papers (目标检测/跟踪/重识别/协同导航/滤波论文配图). Triggers include 画图/作图/论文图表/科研绘图/figure generation/plot/visualization
+description: >-
+  Use when drawing, restyling or auditing figures for a paper on detection, tracking, re-ID,
+  cooperative navigation or filtering (目标检测, 跟踪, 重识别, 协同导航, 滤波): 画图, 作图, 论文配图,
+  科研绘图, 框架图, 流程图, 网络结构图, 控制框图, 结果曲线, 消融柱状图, figure, plot. Builds diagrams
+  and data plots at final column width with IEEE, Elsevier, Springer or 自动化学报 themes, lints text
+  size and collisions, stamps placeholder data DEMO, exports PDF/SVG/PNG/EPS, never plots invented
+  numbers.
 ---
 
-# CSE Figure Studio
+# CSE figure studio
 
-Publication-grade data visualization engine for control science and engineering research: detection, tracking, re-identification, cooperative navigation, and filtering. Produces IEEE/Elsevier/Springer/中文期刊-compliant figures with automatic demo-data tracking, text-collision detection, WCAG-compliant colors, and venue-specific typographic themes.
+Draw the figures of a detection, tracking, re-ID, cooperative-navigation or filtering paper at their
+printed size, so that what the reviewer sees is exactly what was checked: legible type, one accent
+for the proposed method, honest uncertainty, and a number on every mark that traces to a result file.
 
-## Execution contract
+## Start here
 
-### Start
+Read [execution-contract.md](../cse-shared/core/execution-contract.md) first. Select the smallest
+useful mode: restyling one supplied figure is `local-edit`, auditing a draft's figures is
+`diagnostic`, planning a paper's figure set is `design`, and producing figures that carry final
+results is `finalize`. Then check the machine:
 
-1. **Clarify intent**: figure type (quantitative data plot vs qualitative detection/tracking visualization), target venue (IEEE conference/journal, Elsevier, Springer, 自动化学报, 控制理论与应用, 控制与决策), language (English/Chinese labels), and whether this is initial drafting or camera-ready revision.
+```text
+python scripts/render.py --doctor
+```
 
-2. **Check data provenance**: 
-   - Real experimental results with stated protocol, dataset, and statistical treatment → proceed with production figure
-   - Placeholder/synthetic/demo data → mark with `pp.mark_demo()`, apply demo stamp, warn that figure is not a manuscript-ready result
+It reports whether matplotlib, a headless Chrome or Edge (SVG to PDF/PNG), Pillow (previews), an EPS
+converter and the Latin and Chinese fonts are present. Promise only the formats it confirms.
 
-3. **Select or customize template**: 
-   - Match figure type to template catalog (curves with bands, bar charts, scatter plots, confusion matrices, trajectories with covariance ellipses, PR curves, detection boxes, re-ID retrieval)
-   - Customize data, labels, colors, and layout
-   - Never violate venue constraints (widths, font sizes, resolution, file format)
+## Default stance
 
-### Workflow
+- A figure is a display of measurements. Every plotted value comes from a file the claim ledger or
+  the user points to. A value that does not exist is `[MISSING: ...]` in the plan, never a plausible
+  curve.
+- Templates ship with placeholder data registered through `pp.mark_demo()` or `pp.demo_rng()`.
+  While it is registered, every export is stamped DEMO DATA. Remove the registration only together
+  with the placeholder data, never to clean up a picture.
+- Draw at the final width. Pick the width key or the measured `\columnwidth` first; font sizes are
+  then the sizes that print, and the lint can judge them.
+- One message per figure, one accent colour for "ours", muted greys for baselines, and the same
+  colour for the same object in every figure of the paper.
+- Regenerate data figures deterministically from data with a script kept beside the figure. Never
+  let an image model redraw a plot, and never edit a value inside a drawing program.
+- The default effort tier is `standard` for one figure and `thorough` for a full figure set.
 
-1. **Template discovery**: show user the template catalog if they request "show me examples" or "what figures can you make"
-2. **Data integration**: 
-   - Replace demo data with user's actual results
-   - Verify units, axis labels, and caption-figure alignment
-   - Check that every plotted number has a source (experiment log, evaluation script output, statistical test)
-3. **Venue compliance**: 
-   - Apply theme: `--theme ieee` (default 9-10pt), `--theme elsevier` (7pt), `--theme springer` (8-12pt), `--theme zh` (中文标注), `--theme aas` (自动化学报 8pt)
-   - Set width: `ieee-single` (88.9mm), `ieee-double` (182mm), `elsevier-single` (90mm), `elsevier-double` (190mm), `springer-small` (119mm), `springer-large` (174mm), `aas-single` (8cm), `aas-double` (16cm)
-   - Export formats: `--formats eps pdf svg png` with `--dpi 600` (line art) or `--dpi 300` (photos/halftones)
-4. **Rendering and QA**:
-   - Run `python <template>.py --out <dir> --formats <fmt> --dpi <dpi> --theme <theme> --lang <en|zh>`
-   - Inspect warnings: text overlaps, clipped labels, WCAG color contrast failures, demo data stamps
-   - Run `python render.py --doctor <output.svg>` for additional PDF/EPS checks (fonts, clipping, transparency)
-5. **Caption drafting**: state dataset, protocol, statistical test, sample size, error bar meaning (SEM/SD/CI), and any post-processing
+## Workflow
 
-### Output
+1. **Fix the figure's job.** Write one sentence the figure must make obvious, the claim rows it
+   displays (`C3`, `C5`), the panels, and the figure type. Choose the nearest template from the
+   table below or from [references/figure-catalog.md](references/figure-catalog.md).
 
-- **Figure files**: EPS (vector, IEEE/Springer preferred), PDF (vector, universal), SVG (inspection), PNG/TIFF (raster fallback, at specified DPI)
-- **Demo stamp**: "DEMO DATA" watermark in bottom-right when `pp.mark_demo()` was called
-- **Warnings log**: text overlaps, clipped elements, WCAG contrast issues, font embedding problems
-- **Template source**: user receives the exact `.py` file used, enabling reproducibility and fine-tuning
+2. **Check the evidence behind every mark.** For each series record the source file, the tier
+   (`measured`, `reported`, `assumed`), the run count and the dispersion statistic. Comparisons in
+   one panel must share a protocol, timings must share hardware, and a highlighted best setting must
+   come from validation data. If a source is missing, stop and name it; offer the template with its
+   DEMO stamp as a layout preview only.
 
-### Red lines
+3. **Fix venue, width and language.** Theme `default`, `ieee`, `elsevier`, `springer` or `aas`; width
+   key or measured width; `--lang zh` for Chinese labels. Facts and their sources are in
+   [references/print-and-venue-specs.md](references/print-and-venue-specs.md); re-check the venue's
+   current guidelines before a submission.
 
-- **No fabricated data**: if user has no real results, produce a demo figure with visible stamp and explicit "this is placeholder" warning. Never present demo data as real results.
-- **No venue rule violations**: do not exceed max figure dimensions, drop below minimum font sizes, or use prohibited formats (JPEG for line art, Type 3 fonts for IEEE venues that ban them, RGB when CMYK is required)
-- **No unlabeled axes**: every axis must have quantity, unit, and scale (linear/log) clearly stated
-- **No unattributed claims in captions**: every performance number, dataset name, and comparison must trace to a stated source (our experiment, cited paper, public benchmark)
-- **Caption-figure consistency**: numbers in caption must match figure data exactly; axis labels in caption must match axis labels in figure; figure title/number in caption must match presented figure
+4. **Copy the template into the project.** Put the script at `fig/fig<n>-<slug>.py` in the user's
+   project, never inside this skill. Replace the demo block with loading code, delete the
+   `mark_demo` call with it, and keep labels in the paper's notation. Use `pp.tr(en, zh)` for any
+   label that must exist in both languages.
 
-## When to delegate
+5. **Render and lint.** Run the script. Fix every lint warning: text below the theme minimum,
+   overlapping or clipped text, hairlines. `python scripts/gallery.py` runs the whole template set
+   the same way and fails on any warning.
 
-- **Statistical analysis beyond plotting**: use `cse-experiment-suite` for ANOVA, t-tests, consistency checks (NEES/ANEES), or multi-seed aggregation
-- **Baseline/competitor literature search**: use `cse-lit-radar` to find comparison methods and their reported numbers
-- **Caption writing and claim framing**: use `cse-paper-craft` for Results section prose and evidence-calibrated claim strength
-- **Pre-submission figure audit**: use `cse-pre-submission-review` for referee-perspective critique of figure clarity, caption completeness, and data integrity
+6. **Look at the result.** Inspect the PNG at print size, then
+   `python scripts/render.py fig.png --preview` for the greyscale and colour-vision-deficiency
+   sheet, and `python scripts/render.py fig.pdf` for page size and embedded fonts. Judge it against
+   [references/design-rules.md](references/design-rules.md). Without a renderer, report
+   `visual check: not performed`.
 
-## Integration with pack
+7. **Write the caption from the protocol.** State what is plotted, the dataset and split, the run
+   count and what bars or bands show, protocol labels the axis needs, and simulation or field. Use
+   the caption obligations in
+   [results-tables.md](../cse-experiment-suite/references/results-tables.md).
 
-Part of the `ctrl-skills` CSE research pack:
-- `cse-idea-forge` → research question
-- `cse-lit-radar` → related work and baselines  
-- `cse-experiment-suite` → protocol and statistical design
-- **`cse-figure-studio`** → data visualization (this skill)
-- `cse-paper-craft` → manuscript writing
-- `cse-pre-submission-review` → mock peer review
-- `cse-response-craft` → reviewer response
+8. **Export and record.** Write `fig/fig<n>-<slug>.pdf` (plus `svg`, `png`, `eps` as the venue
+   needs) beside its script and data, per
+   [artifact-contract.md](../cse-shared/core/artifact-contract.md). Stop after 3 iteration rounds
+   (the figure-iteration budget in [verdicts-and-loops.md](../cse-shared/core/verdicts-and-loops.md))
+   and report the outcome.
 
-## Examples
+## Templates
 
-**Request**: "Plot ROC curves for my three detectors on COCO validation set"
-**Response**: 
-1. Clarify: do you have the actual per-image predictions, or should I show you the template with demo data first?
-2. If demo: present template 17 (PR curves), show code, explain how to replace synthetic curves with real evaluator output (pycocotools AP)
-3. If real data: request predictions file, run evaluation, plot actual curves, omit demo stamp
+| No. | Template | Use it for |
+|---|---|---|
+| 01 | framework overview | method pipeline with the proposed stage accented |
+| 02 | algorithm flowchart | filter or algorithm steps, decisions, loops |
+| 03 | network architecture | encoder-decoder or backbone with tensor shapes |
+| 04 | module detail | one block (attention, fusion) with operators and residuals |
+| 05 | control block diagram | feedback loop with summing junctions and an estimator |
+| 06 | cooperative system | multi-agent scene and per-agent processing chain |
+| 07 | timing diagram | multi-rate sensors, latency, out-of-sequence updates |
+| 08 | taxonomy tree | related-work families for a survey or introduction |
+| 09 | paradigm comparison | teaser: conventional pipeline against the proposed one |
+| 10 | curves with seed bands | metric against epoch or time, mean and range over runs |
+| 11 | ablation bars | variants against metrics, error bars, gain over baseline |
+| 12 | accuracy-speed trade-off | scatter on a log speed axis with Pareto front |
+| 13 | sensitivity heatmap | two hyperparameters, selected setting outlined |
+| 14 | raincloud distributions | per-sequence or per-run errors of several methods |
+| 15 | filter consistency | ANEES with chi-square bounds, RMSE with CRLB |
+| 16 | trajectories with covariance | ground truth, estimates, 95 % ellipses, anchors |
+| 17 | precision-recall curves | PR curves with iso-F1 contours and AP in the legend |
+| 18 | tracking strip | frames with identity-coloured boxes, history, a failure |
+| 19 | re-ID ranking | query against the top-10 gallery of baseline and ours |
 
-**Request**: "Make an IEEE two-column bar chart comparing our method's speed and accuracy against three baselines"
-**Response**:
-1. Confirm venue: IEEE conference or journal? (determines font size 9-10pt)
-2. Request data: mean ± std for speed (ms) and accuracy (%) for all four methods
-3. Template 02 (grouped bars), width `ieee-double`, theme `ieee`, export EPS at 600 dpi
-4. Draft caption: "Comparison of inference speed and accuracy on [dataset]. Error bars show ±1 SEM over [n] runs. Our method achieves [X]% accuracy at [Y] ms per frame."
+Templates 01 to 09 use `scripts/figkit.py` (SVG built in points, rendered by a headless browser);
+10 to 19 use `scripts/pubplot.py` (matplotlib). `scripts/demo_scene.py` draws the illustrated stand-in
+images of 18 and 19. The API of both engines is in [references/api.md](references/api.md).
 
-**Request**: "画一个中文的自动化学报单栏轨迹图，要有协方差椭圆"
-**Response**:
-1. Venue: 自动化学报 (single column 8cm, 中文标注, Times New Roman + 宋体, 8 pt labels, 600 ppi grayscale EPS)
-2. Template 16 (trajectories with covariance ellipses), width `aas-single`, theme `aas`, lang `zh`
-3. Check: do you have real trajectory estimates with covariance matrices, or demo first?
-4. Export: `--formats eps --dpi 600`, verify grayscale mode, check 8pt labels are readable
+## Output format
 
-## Technical reference
+Report every figure with a build report.
 
-- **Engine**: `scripts/pubplot.py` (core plotting), `scripts/figkit.py` (utilities), `scripts/render.py` (doctor/validator)
-- **Templates**: 19 templates in `templates/` directory covering quantitative data plots and qualitative visualizations (see [figure_catalog.md](references/figure_catalog.md))
-- **Themes**: `ieee` (9-10pt, Helvetica/Arial/TNR), `elsevier` (7pt, Arial/Helvetica/TNR), `springer` (8-12pt, Helvetica/Arial), `zh` (中文, SimSun/SimHei), `aas` (自动化学报, 8pt, TNR+宋体)
-- **Venue specs**: see [print_venues.md](references/print_venues.md) for IEEE/Elsevier/Springer/CVPR/NeurIPS/ICML/自动化学报/控制理论与应用 widths, fonts, DPI, and format requirements (verified 2026-10-04)
+```text
+Figure build report
+- Figure: fig/fig4-anees.pdf (+ svg, png), generator fig/fig4-anees.py, data exp/mc-200/anees.csv
+- Job: <the one sentence>; claim rows: C4, C5
+- Venue and size: <IEEE single column, 88.9 mm, theme ieee, lang en>
+- Data: <measured, from the files above | supplied, unverified | DEMO, stamped, not a result>
+- Lint: <0 warnings | the remaining warnings>
+- Visual check: <PNG at print size and grey/CVD preview inspected | not performed: no renderer>
+- Fonts: <all embedded, no Type 3 | not checked>
+- Iteration: <round n of 3, converged | budget exhausted with residual defects | stopped by user>
+- Not done: <EPS (no converter), Chinese version, or none>
+```
 
-## Quality checklist
+## Red lines
 
-Before presenting a figure as manuscript-ready:
-- [ ] Real data with stated source (not demo/placeholder)
-- [ ] Venue-compliant width, font size, resolution, format
-- [ ] No text overlaps, clipped labels, or WCAG contrast failures (check stderr warnings)
-- [ ] Axes labeled with quantity, unit, parentheses/slashes per venue style
-- [ ] Legend distinguishes all plotted elements; "Ours" in bold/accent color when comparing methods
-- [ ] Caption states dataset, protocol, sample size, error bar type, statistical test if claims are made
-- [ ] Numbers in caption match figure data exactly
-- [ ] Exported files tested: EPS opens in Illustrator/Inkscape, PDF renders correctly, fonts embedded
+- Never plot a value without a source, never draw a baseline curve "to look reasonable", and never
+  remove the DEMO stamp while placeholder data remains.
+- Never start a bar axis above zero. For a zoomed comparison, use points with intervals on a
+  labelled range.
+- Never show an error bar or band without naming its statistic and run count in the caption.
+- Never put arms with different protocols, hardware or detectors in one panel without labelling the
+  difference on the figure.
+- Never highlight a setting selected on test data, and never redraw a figure to hide a losing case.
+- Never use colour alone to separate meanings: pair it with a marker, a line style or a glyph.
+  Never use rainbow or jet colour maps.
+- Never claim a render, a visual check or an exported format that did not happen.
+- Never let an arrow or annotation assert a claim that the text and the evidence do not support.
+- Never write figures, scratch output or caches inside the installed skill.
 
-## Frequently asked questions
+## Related files
 
-**Q: My figure has a "DEMO DATA" stamp. How do I remove it?**  
-A: Replace the synthetic/placeholder data in the template with your actual experimental results, then remove or comment out the `pp.mark_demo()` call. The stamp only appears when demo data is explicitly registered.
+| File | Open when |
+|---|---|
+| [references/figure-catalog.md](references/figure-catalog.md) | You are choosing a template, or need what a template expects and what its caption must state |
+| [references/design-rules.md](references/design-rules.md) | You are judging or improving how a figure looks: typography, colour, layout, per-type rules, the final checklist |
+| [references/print-and-venue-specs.md](references/print-and-venue-specs.md) | You need widths, type sizes, resolution, formats or font rules of a venue, with sources and check dates |
+| [references/api.md](references/api.md) | You are building or modifying a figure with figkit, pubplot, render, gallery or demo_scene |
+| [../cse-shared/core/evidence-integrity.md](../cse-shared/core/evidence-integrity.md) | You are checking that plotted values are sourced, tier-labelled and protocol-matched |
+| [../cse-shared/core/terminology-and-notation.md](../cse-shared/core/terminology-and-notation.md) | You need metric conventions, symbols or bilingual terms for axis labels and legends |
+| [../cse-shared/core/artifact-contract.md](../cse-shared/core/artifact-contract.md) | You are naming figure files or deciding what to keep beside a figure |
+| [../cse-shared/core/verdicts-and-loops.md](../cse-shared/core/verdicts-and-loops.md) | You need the figure-iteration budget, effort tiers or verdict words |
+| [../cse-experiment-suite/references/results-tables.md](../cse-experiment-suite/references/results-tables.md) | You are writing a caption, which carries the same obligations as a results table |
 
-**Q: Can I use JPEG for my plots?**  
-A: No. JPEG is lossy and creates compression artifacts in line art and text. IEEE explicitly permits JPEG only for author photographs. Use EPS, PDF, or high-DPI PNG for plots.
-
-**Q: The template uses 9pt labels but my journal requires 7pt. How do I change it?**  
-A: Use `--theme elsevier` (7pt default) or manually edit the template's `pp.use()` call to load a custom theme. Check `scripts/pubplot.py` for theme definitions.
-
-**Q: I have Chinese labels but the font renders as boxes.**  
-A: Use `--theme zh` or `--theme aas`, which load SimSun (宋体) and SimHei (黑体). Verify these fonts are installed on your system. Export to EPS or PDF with embedded fonts.
-
-**Q: How do I add error bars?**  
-A: Use `ax.errorbar(x, y, yerr=std, ...)` for standard deviation, or `yerr=sem` for standard error of the mean. State which one in the caption. See templates 01, 02, 08 for examples.
-
-**Q: My covariance ellipse doesn't match the trajectory spread.**  
-A: Use `pp.cov_ellipse(ax, mean, cov, prob=0.95)` for a 95% probability region. This is exact for 2-D Gaussians. If your estimator produces 3×3 or larger covariances, slice the x-y submatrix. State the probability level in the caption.
-
-**Q: Can I use this for non-CSE domains (robotics, computer vision, machine learning)?**  
-A: Yes. The templates and engine are general-purpose. The CSE pack integration (experiment protocols, claim strength, baseline search) is domain-specific, but the plotting itself works for any quantitative or qualitative data.
+Forward references, owned by other skills. Use `cse-experiment-suite` when a figure needs a
+statistic, a protocol block or more runs; `cse-paper-craft` when captions and the text must be
+reconciled; `cse-paper-to-slides` when a figure is resized for a talk; and
+`cse-pre-submission-review` for a referee-side figure audit.

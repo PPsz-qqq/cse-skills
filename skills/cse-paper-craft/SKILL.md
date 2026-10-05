@@ -198,6 +198,7 @@ terminology, symbols, and the consistency sweep,
 [venue-matrix.md](../cse-shared/core/venue-matrix.md) for the venue classes and the fit statement,
 and [review-rubrics.md](../cse-shared/core/review-rubrics.md) for the scoring dimensions and
 severity tiers. Literature searching and novelty verification belong to cse-lit-radar, experiment
-design and protocol blocks belong to cse-experiment-suite, the pre-submission review belongs to
+design and protocol blocks belong to cse-experiment-suite, drawing and restyling the figures
+belongs to cse-figure-studio, the pre-submission review belongs to
 cse-pre-submission-review, the response letter belongs to cse-response-craft, and the deck belongs
 to cse-paper-to-slides.

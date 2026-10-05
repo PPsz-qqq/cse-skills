@@ -20,31 +20,32 @@ args = pp.template_args(__doc__)
 pp.use(args.theme, args.lang)
 
 metrics = ['HOTA', 'IDF1', 'AssA']
-variants = ['Baseline', '+ Motion cue', '+ Appearance cue', 'Full (ours)']
+variants = [pp.tr('Baseline', '基线'), pp.tr('+ Motion cue', '+ 运动线索'), pp.tr('+ Appearance cue', '+ 外观线索'),
+            pp.tr('Full (ours)', '完整模型（本文）')]
 pp.mark_demo('placeholder ablation numbers')     # delete together with the two arrays below
 mean = np.array([[58.2, 70.1, 55.4], [60.0, 72.4, 58.1], [60.9, 73.5, 59.6], [62.7, 75.8, 62.3]])
 std = np.array([[0.4, 0.5, 0.6], [0.3, 0.4, 0.5], [0.4, 0.4, 0.5], [0.3, 0.3, 0.4]])
-colors = ['#D9DCE1', '#B4BAC2', '#8C939D', pp.OURS]
+colors = ['#DDE1E6', '#B9C0C8', '#8E96A1', pp.OURS]
 
-fig, ax = pp.figure('ieee-single', aspect=0.66)
+fig, ax = pp.figure('ieee-single', aspect=0.68)
 pp.light_grid(ax)
 n = len(variants)
 width = 0.8 / n
 x = np.arange(len(metrics))
 for i, (name, color) in enumerate(zip(variants, colors)):
     pos = x - 0.4 + width * (i + 0.5)
-    ax.bar(pos, mean[i], width * 0.92, yerr=std[i], color=color, label=name, zorder=2,
+    ax.bar(pos, mean[i], width, yerr=std[i], color=color, label=name, zorder=2, edgecolor='#FFFFFF', linewidth=0.6,
            error_kw={'elinewidth': 0.7, 'capthick': 0.7, 'ecolor': '#3C4148'})
 for j in range(len(metrics)):
     gain = mean[-1, j] - mean[0, j]
     pos = x[j] - 0.4 + width * (n - 0.5)
     ax.annotate(f'+{gain:.1f}', (pos, mean[-1, j] + std[-1, j]), xytext=(0, 2.5), textcoords='offset points',
-                ha='center', va='bottom', color=pp.OURS, fontweight='bold', fontsize=7)
+                ha='center', va='bottom', color=pp.OURS, fontweight='bold', fontsize=pp.size('annot'))
 
 ax.set_xticks(x, metrics)
 ax.tick_params(axis='x', length=0)
 ax.set_ylim(0, 85)
-ax.set_ylabel('Score (%)')
+ax.set_ylabel(pp.tr('Score (%)', '得分 (%)'))
 ax.legend(ncols=2, loc='lower left', bbox_to_anchor=(0, 1.0), borderaxespad=0.2, handlelength=1.0)
 
 pp.save(fig, args.out, '11_ablation_bars', args.formats, args.dpi)

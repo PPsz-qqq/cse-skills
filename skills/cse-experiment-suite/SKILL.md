@@ -188,5 +188,6 @@ locations, [terminology-and-notation.md](../cse-shared/core/terminology-and-nota
 conventions and symbol conventions, and
 [verdicts-and-loops.md](../cse-shared/core/verdicts-and-loops.md) for claim-promotion conditions
 and the experiment tuning loop budget. Planning upstream belongs to cse-idea-forge, the literature
-search behind a novelty claim belongs to cse-lit-radar, manuscript writing belongs to
-cse-paper-craft, and the review of a frozen result belongs to cse-pre-submission-review.
+search behind a novelty claim belongs to cse-lit-radar, plotting the frozen results belongs to
+cse-figure-studio, manuscript writing belongs to cse-paper-craft, and the review of a frozen result
+belongs to cse-pre-submission-review.

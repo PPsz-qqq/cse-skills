@@ -32,35 +32,34 @@ shared contract follows from that one commitment.
 
 ## Quick examples
 
-**Find literature gaps and competitors:**
-```
-帮我调研一下多目标跟踪的相关工作，特别是MOT17和MOT20基准上的最新方法
-```
+Requests can be written in Chinese or English; each line below triggers the skill in brackets.
 
-**Design a falsifiable experiment:**
-```
-我想提出一个改进的卡尔曼滤波器用于无人机集群定位，帮我设计实验方案
-```
+| Task | Example request | Skill |
+|---|---|---|
+| Literature | Survey association methods for MOT17 and MOT20 since 2023 and list the nearest competitors to an uncertainty-aware matcher. | `cse-lit-radar` |
+| Idea and plan | I want an adaptive-noise Kalman filter for UAV-swarm cooperative localisation; give me a falsifiable hypothesis and a pilot budget. | `cse-idea-forge` |
+| Experiments | Audit this comparison table: detector source, seeds, and whether the protocols match. | `cse-experiment-suite` |
+| Figures | Draw an IEEE single-column ablation bar chart from `exp/ablation.csv`, with error bars over 3 seeds. | `cse-figure-studio` |
+| Writing | Write the Introduction for T-RO from my claim ledger and position it against ByteTrack and OC-SORT. | `cse-paper-craft` |
+| Review | Mock-review this CVPR submission with three mutually blind reviewers. | `cse-pre-submission-review` |
+| Rebuttal | Draft a point-by-point response letter to these reviewer comments. | `cse-response-craft` |
+| Talk | Turn this paper into a 12-minute oral talk with backup slides. | `cse-paper-to-slides` |
 
-**Generate publication-grade figures:**
-```
-画一个tracking的PR曲线对比图，三条曲线：Ours、ByteTrack、FairMOT，主题用IEEE
-```
+## Figure gallery
 
-**Write manuscript sections:**
-```
-根据我的实验结果写Introduction，目标期刊是IEEE T-RO
-```
+`cse-figure-studio` draws the figures of a paper at their printed size, with venue themes and checks
+for text size and collisions. Every template below was rendered by the skill itself; the data plots
+use built-in placeholder data and therefore carry a DEMO DATA stamp, which the skill keeps on any
+figure whose data is not real.
 
-**Pre-submission review:**
-```
-帮我审一下这篇论文，准备投CVPR 2026
-```
+![Diagram templates: framework, flowchart, network, module, control loop, cooperative system, timing, taxonomy, teaser](docs/assets/figure-studio/gallery-diagrams.png)
 
-**Respond to reviewers:**
-```
-帮我逐条回复这些审稿意见，生成response letter
-```
+![Data plot templates: seed bands, ablation, trade-off, heatmap, raincloud, ANEES consistency, trajectories, PR curves](docs/assets/figure-studio/gallery-plots.png)
+
+![Qualitative templates: tracking strip and re-ID ranking](docs/assets/figure-studio/gallery-qualitative.png)
+
+Template list and venue facts: [figure-catalog.md](skills/cse-figure-studio/references/figure-catalog.md),
+[print-and-venue-specs.md](skills/cse-figure-studio/references/print-and-venue-specs.md).
 
 ## Scoped use
 
@@ -83,7 +82,7 @@ left under the old names, and projects with old `ctrl-*` artifact files keep wor
 | [cse-lit-radar](skills/cse-lit-radar/SKILL.md) | literature search, venue-cycle tracking, benchmark atlas, nearest-competitor ledger | 文献综述, 相关工作, 找论文, literature review, 文献调研 |
 | [cse-idea-forge](skills/cse-idea-forge/SKILL.md) | turn a gap into a falsifiable, budgeted research idea; G0 scope and G1 frozen plan | 选题, 开题, 创新点, research idea, hypothesis |
 | [cse-experiment-suite](skills/cse-experiment-suite/SKILL.md) | design, audit, and report experiments; per-axis protocol blocks, statistics, ablations, reproducibility | 实验设计, 消融实验, 结果分析, ablation, protocol |
-| [cse-figure-studio](skills/cse-figure-studio/SKILL.md) | publication-grade data visualization with venue-compliant themes and demo-data tracking | 画图, 作图, 论文图表, 科研绘图, figure, plot, visualization |
+| [cse-figure-studio](skills/cse-figure-studio/SKILL.md) | diagrams, data plots and qualitative figures at printed size; venue themes, lint, DEMO stamp on placeholder data | 画图, 论文配图, 框架图, 结果曲线, figure, plot |
 | [cse-paper-craft](skills/cse-paper-craft/SKILL.md) | write and revise the manuscript section by section | 写论文, 投稿, 论文写作, manuscript, abstract |
 | [cse-pre-submission-review](skills/cse-pre-submission-review/SKILL.md) | referee-side pre-submission review with mutually blind reviewers | 审稿, 模拟审稿, 预审, mock review, 帮我审一下论文 |
 | [cse-response-craft](skills/cse-response-craft/SKILL.md) | response letters, rebuttals, revision plans | 回复审稿意见, rebuttal, response letter |
@@ -98,11 +97,9 @@ cse-idea-forge     G0 scope -> G1 frozen plan (falsifiable, budgeted)
        |
 cse-experiment-suite   run and audit; G2 evidence freeze (claim ledger)
        |
-       +------------+
-       |            |
-cse-figure-studio   cse-paper-craft    visualize results    write manuscript
-       |            |                   (venue-compliant)   (against ledger)
-       +------------+
+cse-figure-studio      figures from the ledger's data, at printed size
+       |
+cse-paper-craft        write the manuscript against the ledger and the figures
        |
 cse-pre-submission-review  3 blind reviewers -> G3 readiness
        |
@@ -177,7 +174,7 @@ Skills are plain `SKILL.md` bundles. DSH discovers them from `<root>/<name>/SKIL
 level of a scanned root when the filesystem provider is enabled. Healthy enabled watchers pick
 up file changes without a restart; inactive or misconfigured providers do not.
 
-The eight bundles live in the `skills/` directory of this repository, which contains nothing but
+The nine bundles live in the `skills/` directory of this repository, which contains nothing but
 skills, so it can be handed to DSH directly or copied elsewhere as-is.
 
 ```powershell
@@ -214,15 +211,23 @@ If it finds no bundles at all it exits non-zero rather than reporting a clean pa
 root cannot look like success.
 
 `check-dsh-discovery.cjs` uses real YAML parsing and the inspected invocation contract, checking
-all eight distinct expected names rather than just a count. This is an offline compatibility
+all nine distinct expected names rather than just a count. This is an offline compatibility
 check, not live provider activation or session visibility. Run it after frontmatter/layout changes. See [tools/README.md](tools/README.md) for the failure modes both tools exist to catch.
+
+The figure templates have their own regression test, which renders every template and fails on
+any lint warning:
+
+```powershell
+python skills/cse-figure-studio/scripts/gallery.py --out <scratch-dir> [--theme ieee] [--lang zh]
+```
 
 ## Evaluate
 
-[evals/evals.json](evals/evals.json) holds 33 behavioural cases, one or more per skill. Each case
+[evals/evals.json](evals/evals.json) holds 36 behavioural cases, one or more per skill. Each case
 targets a contract rule and asserts on behaviour rather than wording, for example refusing an
 unmatched comparison, refusing a single-seed state-of-the-art claim, refusing to alter a number
-for a slide, and refusing to report a gate as passed without its artifact.
+for a slide, refusing to plot invented baseline curves, and refusing to report a gate as passed
+without its artifact.
 
 ## Provenance
 
@@ -249,14 +254,15 @@ ctrl-skills/                 the repository root
     cse-lit-radar/       literature intelligence
     cse-idea-forge/      scoping and planning
     cse-experiment-suite/  experiments and statistics
-    cse-figure-studio/   publication-grade data visualization
+    cse-figure-studio/   figures: diagrams, data plots, qualitative strips
     cse-paper-craft/     manuscript writing
     cse-pre-submission-review/  referee-side review
     cse-response-craft/  revision correspondence
     cse-paper-to-slides/ decks
   tools/                validator, DSH discovery check, installer and their tests
   evals/                behavioural eval cases
-  docs/                 source-to-mechanism mapping, Chinese quick start, improvement notes
+  docs/                 source-to-mechanism mapping, Chinese quick start, improvement notes,
+                        and the figure gallery images (docs/assets/figure-studio)
   _research/            the research reports the pack was built from
 ```
 

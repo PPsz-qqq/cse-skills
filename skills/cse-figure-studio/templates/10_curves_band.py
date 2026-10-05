@@ -41,9 +41,10 @@ for name, color, plateau, tau in methods:
 
 ax.set_xlim(0, 60)
 ax.set_ylim(36, 66)
-ax.set_xlabel('Epoch')
-ax.set_ylabel('Validation HOTA (%)')
-ax.spines['right'].set_visible(False)
-fig.get_layout_engine().set(w_pad=0.02, h_pad=0.02, rect=(0, 0, 0.86, 1))
+ax.set_xlabel(pp.tr('Epoch', '训练轮次'))
+ax.set_ylabel(pp.tr('Validation HOTA (%)', '验证集 HOTA (%)'))
+ax.text(0.98, 0.04, pp.tr('band: min-max over 3 seeds', '阴影：3 个随机种子的最小-最大范围'), transform=ax.transAxes,
+        ha='right', va='bottom', fontsize=pp.size('annot'), color=pp.MUTED)
+fig.get_layout_engine().set(w_pad=0.02, h_pad=0.02, rect=(0, 0, 0.84, 1))
 
 pp.save(fig, args.out, '10_curves_band', args.formats, args.dpi)

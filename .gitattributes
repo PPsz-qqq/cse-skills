@@ -11,6 +11,7 @@
 *.ps1     text eol=lf
 *.yml     text eol=lf
 *.yaml    text eol=lf
+*.py      text eol=lf
 
 # Binary, never normalized.
 *.png     binary

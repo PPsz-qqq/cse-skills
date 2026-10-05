@@ -14,10 +14,11 @@ node --test tools/install.test.cjs      # Windows only; uses temporary directori
 | Tool | Checks | Does not prove |
 |---|---|---|
 | [validate-skills.cjs](validate-skills.cjs) | real YAML frontmatter, names/types/keys, duplicate names, empty bodies, BOM, descriptions that fit the DSH catalog limit, resolvable relative links, explicit relative inline paths, bundle-root paths misused inside resource files, and qualified cross-skill paths | scientific correctness, full CommonMark semantics, heading-anchor existence or live activation |
-| [check-dsh-discovery.cjs](check-dsh-discovery.cjs) | bundles/flat Markdown/junction discovery, invocation compatibility, all eight distinct expected names, and the catalog text each description produces | a live provider enabled/configured or visibility in this session |
+| [check-dsh-discovery.cjs](check-dsh-discovery.cjs) | bundles/flat Markdown/junction discovery, invocation compatibility, all nine distinct expected names, and the catalog text each description produces | a live provider enabled/configured or visibility in this session |
 | [skill-tools.test.cjs](skill-tools.test.cjs) | deterministic parser/discovery/validator fixtures, real-pack structure and behavioral-case schema | that every behavioral case was executed by a model |
 | [install.test.cjs](install.test.cjs) | installer ownership rules on temporary roots: idempotent links, link-only removal, prefix-sibling links, unowned and modified directories, backups, dangling links, refusal of a target inside the source, and `-WhatIf` | behaviour on a real profile root, network drives or non-Windows systems |
-| [evals.json](../evals/evals.json) | 33 behavior specifications with assertions | an automatic pass report or a complete evaluation runner |
+| [evals.json](../evals/evals.json) | 36 behavior specifications with assertions | an automatic pass report or a complete evaluation runner |
+| [gallery.py](../skills/cse-figure-studio/scripts/gallery.py) | every figure template runs under a given theme and language with no error and no lint warning (text size, overlap, clipping, hairlines) | that a figure is correct for its data, or a visual judgement, which needs a person or a model to look at the output |
 
 ## The DSH catalog limit
 

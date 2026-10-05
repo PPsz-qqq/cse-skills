@@ -22,41 +22,32 @@
 
 ## 快速示例
 
-**文献调研与竞品分析：**
-```
-帮我调研一下多目标跟踪的相关工作，特别是MOT17和MOT20基准上的最新方法
-```
+直接用中文或英文提需求即可，每一行触发括号中的技能。
 
-**实验设计与方案冻结：**
-```
-我想提出一个改进的卡尔曼滤波器用于无人机集群定位，帮我设计可证伪的实验方案
-```
+| 任务 | 示例请求 | 技能 |
+|---|---|---|
+| 文献调研 | 调研 2023 年以来 MOT17、MOT20 上的数据关联方法，列出与“不确定性感知匹配”最接近的竞品 | `cse-lit-radar` |
+| 选题与方案 | 我想做一种自适应噪声卡尔曼滤波用于无人机集群协同定位，帮我给出可证伪假设和 pilot 预算 | `cse-idea-forge` |
+| 实验审计 | 审计这张对比表：检测器来源、随机种子个数、协议是否对齐 | `cse-experiment-suite` |
+| 论文配图 | 用 exp/ablation.csv 画 IEEE 单栏消融柱状图，误差棒为 3 个种子的标准差 | `cse-figure-studio` |
+| 论文写作 | 根据声明台账为 T-RO 写引言，与 ByteTrack、OC-SORT 明确区分 | `cse-paper-craft` |
+| 投稿前自审 | 用三位互盲审稿人模拟审一下这篇 CVPR 稿件 | `cse-pre-submission-review` |
+| 审稿回复 | 针对这些审稿意见逐条起草回复信 | `cse-response-craft` |
+| 学术汇报 | 把这篇论文做成 15 分钟中文组会汇报，附备用页 | `cse-paper-to-slides` |
 
-**出版级数据可视化：**
-```
-画一个tracking的PR曲线对比图，三条曲线：Ours、ByteTrack、FairMOT，主题用IEEE，
-宽度单栏，标注DEMO数据
-```
+## 配图示例
 
-**逐节撰写论文：**
-```
-根据我的实验结果写Introduction，目标期刊是IEEE T-RO，强调我们的协同导航创新点
-```
+`cse-figure-studio` 按印刷尺寸绘制论文配图，提供期刊主题，并自动检查字号与文字碰撞。下面每一张都由该技能直接生成；
+数据图使用内置占位数据，因此带有 DEMO DATA 水印——只要数据不是真实结果，技能就会保留这个水印。
 
-**投稿前自审：**
-```
-帮我审一下这篇论文，准备投CVPR 2026，给出三位审稿人的互盲意见
-```
+![示意图模板：方法框架、算法流程、网络结构、模块细节、控制框图、协同系统、时序图、分类树、范式对比](docs/assets/figure-studio/gallery-diagrams.png)
 
-**审稿意见回复：**
-```
-帮我逐条回复这些审稿意见，生成point-by-point response letter，保持审稿人互盲
-```
+![数据图模板：种子置信带、消融、精度-速度权衡、热力图、云雨图、ANEES 一致性、轨迹、PR 曲线](docs/assets/figure-studio/gallery-plots.png)
 
-**论文转PPT：**
-```
-把这篇论文做成组会汇报PPT，15分钟，中文，重点讲实验结果
-```
+![定性图模板：跟踪帧序列与重识别排序](docs/assets/figure-studio/gallery-qualitative.png)
+
+模板清单与期刊规范见 [figure-catalog.md](skills/cse-figure-studio/references/figure-catalog.md)、
+[print-and-venue-specs.md](skills/cse-figure-studio/references/print-and-venue-specs.md)。
 
 ## 按任务使用
 
@@ -77,7 +68,7 @@
 | [cse-lit-radar](skills/cse-lit-radar/SKILL.md) | 文献检索、会议周期跟踪、基准数据集图谱、最接近竞品台账 | 文献综述, 相关工作, 找论文, 文献调研, literature review |
 | [cse-idea-forge](skills/cse-idea-forge/SKILL.md) | 把研究缺口变成可证伪、有预算的研究构想；产出 G0 范围与 G1 冻结方案 | 选题, 开题, 创新点, research idea, hypothesis |
 | [cse-experiment-suite](skills/cse-experiment-suite/SKILL.md) | 实验设计、审计与结果报告；各方向协议块、统计处理、消融实验、可复现性 | 实验设计, 消融实验, 结果分析, ablation, protocol |
-| [cse-figure-studio](skills/cse-figure-studio/SKILL.md) | 出版级数据可视化，带期刊主题与演示数据追踪 | 画图, 作图, 论文图表, 科研绘图, figure, plot, visualization |
+| [cse-figure-studio](skills/cse-figure-studio/SKILL.md) | 按印刷尺寸绘制示意图、数据图和定性图；期刊主题、自动检查，占位数据加 DEMO 水印 | 画图, 论文配图, 框架图, 结果曲线, figure, plot |
 | [cse-paper-craft](skills/cse-paper-craft/SKILL.md) | 逐节撰写与修改论文正文 | 写论文, 投稿, 论文写作, manuscript, abstract |
 | [cse-pre-submission-review](skills/cse-pre-submission-review/SKILL.md) | 审稿人视角的投稿前自审，多审稿人互盲 | 审稿, 模拟审稿, 预审, 帮我审一下论文, mock review |
 | [cse-response-craft](skills/cse-response-craft/SKILL.md) | 审稿意见回复、rebuttal、修订计划 | 回复审稿意见, rebuttal, response letter |
@@ -92,11 +83,9 @@ cse-idea-forge         G0 范围 -> G1 冻结方案（可证伪、有预算）
        |
 cse-experiment-suite   执行与审计；G2 证据冻结（声明台账）
        |
-       +------------+
-       |            |
-cse-figure-studio   cse-paper-craft    可视化结果         依据台账撰写正文
-       |            |                   （期刊主题）
-       +------------+
+cse-figure-studio      依据台账中的数据按印刷尺寸配图
+       |
+cse-paper-craft        依据台账与配图撰写正文
        |
 cse-pre-submission-review  三位互盲审稿人 -> G3 就绪
        |
@@ -145,7 +134,7 @@ cse-paper-to-slides    面向听众的报告
 技能是普通的 `SKILL.md` 目录包。启用文件系统技能插件后，DSH 按 `<root>/<name>/SKILL.md` 发现技能。
 只有已启用且健康的 watcher 才能无重启更新；离线校验通过不等于当前会话已加载。
 
-八个技能位于本仓库的 `skills/` 目录，该目录只有技能、没有别的东西，因此可直接交给 DSH，或整体拷到其他机器。
+九个技能位于本仓库的 `skills/` 目录，该目录只有技能、没有别的东西，因此可直接交给 DSH，或整体拷到其他机器。
 
 ```powershell
 powershell -File tools/install.ps1 -WhatIf   # 只预览计划，不做任何改动
@@ -177,9 +166,15 @@ description 超过 500 个字符（空白归一化后）会被判失败：DSH �
 这只是离线兼容检查；运行时插件启用、扫描目录及会话可见性需单独核实。结构修改后应运行它。
 工具说明见 [tools/README.md](tools/README.md)。
 
+配图模板有单独的回归测试，会渲染全部模板，出现任何检查警告即失败：
+
+```powershell
+python skills/cse-figure-studio/scripts/gallery.py --out <临时目录> [--theme ieee] [--lang zh]
+```
+
 ## 评测
 
-[evals/evals.json](evals/evals.json) 包含 33 条行为评测，覆盖全部八个技能。每条针对一条契约规则，断言的是**行为**而非措辞。例如：拒绝未对齐协议的对比、拒绝由单次随机种子得出「达到最优」、拒绝为幻灯修改数字、拒绝在缺产物时报告关卡通过。
+[evals/evals.json](evals/evals.json) 包含 36 条行为评测，覆盖全部九个技能。每条针对一条契约规则，断言的是**行为**而非措辞。例如：拒绝未对齐协议的对比、拒绝由单次随机种子得出「达到最优」、拒绝为幻灯修改数字、拒绝为对比图编造基线曲线、拒绝在缺产物时报告关卡通过。
 
 ## 来源与移植
 
@@ -200,14 +195,14 @@ ctrl-skills/                 仓库根目录
     cse-lit-radar/       文献情报
     cse-idea-forge/      选题与规划
     cse-experiment-suite/ 实验与统计
-    cse-figure-studio/   出版级数据可视化
+    cse-figure-studio/   论文配图：示意图、数据图、定性图
     cse-paper-craft/     论文写作
     cse-pre-submission-review/ 审稿人视角自审
     cse-response-craft/  修订往来
     cse-paper-to-slides/ 报告幻灯
   tools/                校验器、DSH 发现检查、安装器及其测试
   evals/                行为评测用例
-  docs/                 来源到机制的映射、中文快速使用、完善记录
+  docs/                 来源到机制的映射、中文快速使用、完善记录，以及配图示例图（docs/assets/figure-studio）
   _research/            构建本包所依据的调研报告
 ```
 

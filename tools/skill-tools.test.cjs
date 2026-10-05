@@ -68,13 +68,15 @@ test('bundles, flat markdown and linked directories are discovered', (t) => {
   assert.ok(result.discovered.some((s) => s.name === 'cse-flat'));
   assert.ok(result.discovered.some((s) => s.name === 'cse-linked'));
 });
-test('eight records cannot conceal a missing name with a duplicate', () => {
+test('the expected records cannot conceal a missing name with a duplicate', () => {
   const discovered = EXPECTED_SKILLS.map((name, i) => ({ name, file: `bundle-${i}`, body: 'instruction' }));
   assert.deepEqual(packProblems({ discovered, skipped: [] }), []);
-  discovered[7].name = discovered[0].name;
+  const last = discovered.length - 1;
+  const hidden = discovered[last].name;
+  discovered[last].name = discovered[0].name;
   const problems = packProblems({ discovered, skipped: [] });
   assert.ok(problems.some((p) => p.includes('duplicate')));
-  assert.ok(problems.some((p) => p.includes('missing expected skill: cse-paper-to-slides')));
+  assert.ok(problems.some((p) => p.includes(`missing expected skill: ${hidden}`)));
 });
 test('empty roots and blank bodies cannot pass validation', (t) => {
   const root = fixture(t);

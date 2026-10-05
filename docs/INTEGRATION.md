@@ -146,8 +146,20 @@ counts as a target range, with the venue and the sampled papers named so the tar
 - **Tool-specific commands.** Upstream slash commands, CLI invocations, and MCP tool names were
   replaced by instructions that work with whatever tools the running agent has.
 - **Bulk skill counts.** Packs advertising hundreds or thousands of skills were treated as
-  catalogues to mine, not as content to mirror. Seven coherent bundles beat several hundred
-  shallow ones, and a flat install of a large catalogue measurably degrades selection.
+  catalogues to mine, not as content to mirror. A handful of coherent bundles (eight workflows
+  since `cse-figure-studio` joined) beats several hundred shallow ones, and a flat install of a
+  large catalogue measurably degrades selection.
+
+## cse-figure-studio
+
+Added on 2026-10-04 and reworked on 2026-10-05. Its mechanisms are the pack's own rules applied to
+figures (a plotted value is a measurement claim; placeholder data is stamped; nothing is claimed
+that was not rendered), plus published colour and typography practice: the Okabe-Ito palette
+(Color Universal Design), Paul Tol's colour schemes, WCAG 2 contrast ratios, and the figure
+guidelines of IEEE, Elsevier, Springer and 自动化学报, cited with access dates in
+[print-and-venue-specs.md](../skills/cse-figure-studio/references/print-and-venue-specs.md). The
+two engines, all 19 templates and the drawn stand-in imagery were written for this pack; no
+upstream file, example or figure was copied.
 - **Unverified numbers.** Anything a report could not confirm is marked `[UNVERIFIED]` in the
   research files and is not stated as fact in this pack.
 

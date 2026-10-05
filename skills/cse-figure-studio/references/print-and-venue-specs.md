@@ -399,52 +399,63 @@ The following numerical specifications were **not stated** in the checked offici
 
 ---
 
-## Usage in `cse-figure-studio`
+## How the skill uses these facts
 
-### Theme mappings
+This section describes the code as shipped. When it disagrees with a venue's current author
+guidelines, the guidelines win: pass the measured width and adjust the theme.
 
-| Theme name | Venue(s) | Font size | Widths | Notes |
-|------------|----------|-----------|--------|-------|
-| `ieee` | IEEE journals, conferences | 9–10 pt | `ieee-single` 88.9mm, `ieee-double` 182mm | Default theme |
-| `elsevier` | Elsevier journals | 7 pt normal, ≥6 pt sub/super | `elsevier-single` 90mm, `elsevier-double` 190mm | Rule of thumb, not strict |
-| `springer` | Springer journals | 8–12 pt | `springer-small` 119mm, `springer-large` 174mm | Check journal format |
-| `zh` | Chinese journals (general) | 9 pt | User-specified | Generic Chinese support |
-| `aas` | 自动化学报 | 8 pt (TNR + 宋体) | `aas-single` 80mm, `aas-double` 160mm | Grayscale 600 ppi EPS |
+### Themes
 
-### Width tokens
+The same theme names exist in [pubplot.py](../scripts/pubplot.py) (data plots) and
+[figkit.py](../scripts/figkit.py) (diagrams).
+Chinese is a language switch (`--lang zh` on data templates), not a theme; it adds the CJK fallback
+font and makes `pp.tr()` return the Chinese label.
 
-Engine translates width tokens to millimeters:
+| Theme | Basis | pubplot sizes in pt: base / label / tick / legend / title / minimum | Typeface |
+|---|---|---|---|
+| `default` | no venue rule; compact and legible at column width | 7.5 / 8 / 7 / 7 / 8 / 6 | Arial (Helvetica) |
+| `ieee` | IEEE: type about 9 to 10 pt at full size | 9 / 9.5 / 9 / 9 / 9.5 / 8 | Arial (Helvetica) |
+| `elsevier` | Elsevier: about 7 pt, scripts at least 6 pt; a rule of thumb | 7 / 7.5 / 7 / 7 / 7.5 / 6 | Arial |
+| `springer` | Springer: about 8 to 12 pt (2 to 3 mm) | 8 / 8.5 / 8 / 8 / 8.5 / 8 | Arial |
+| `aas` | 自动化学报 template: 8 pt, Times New Roman for Latin, 宋体 for Chinese | 8 throughout | Times New Roman + SimSun |
 
-```python
-WIDTH_PRESETS = {
-    'ieee-single': 88.9,
-    'ieee-double': 182.0,
-    'elsevier-minimal': 30.0,
-    'elsevier-single': 90.0,
-    'elsevier-1.5': 140.0,
-    'elsevier-double': 190.0,
-    'springer-small': 119.0,
-    'springer-large': 174.0,
-    'aas-single': 80.0,
-    'aas-double': 160.0,
-    'cvpr-single': 83.34,
-    'cvpr-double': 174.63,
-    'neurips': 139.7,
-    'icml-single': 82.55,
-    'icml-double': 171.45,
-}
-```
+In pubplot the minimum applies to whole text objects; mathtext sub- and superscripts shrink below it
+by design. In figkit (`title / body / small / min_size`) the minimum also bounds sub- and
+superscripts: ieee `9.5 / 9 / 8.5 / 7.2`, elsevier `8 / 7 / 7 / 6`, springer `9 / 8 / 8 / 6`, aas
+`8 / 8 / 8 / 6.4`, default `8.5 / 7.5 / 7 / 6`.
 
-### Export recommendations
+### Width keys
 
-| Venue | Formats | DPI | Color mode | Font embedding |
-|-------|---------|-----|------------|----------------|
-| IEEE | EPS, PDF, PNG | 600 line, 300 photo | RGB or grayscale | Embed all |
-| Elsevier | EPS, PDF, TIFF | 1000 line, 300 halftone, 500 combo | RGB (unless journal says otherwise) | Embed all |
-| Springer | EPS, TIFF | 1200 line, 300 halftone, 600 combo | RGB 8-bit | Embed all |
-| 自动化学报 | EPS only | 600 | Grayscale | ASCII encoding |
-| 控制理论与应用 | EPS | Not stated | Not stated | Not stated |
-| Conferences | PDF, EPS | Not stated | RGB | Embed all; check Type 3 policy |
+Both engines accept these keys, a number (pubplot: inches, figkit: points), or a string with a unit:
+`'241.14pt'` (TeX points, what `\the\columnwidth` prints), `'252bp'`, `'88mm'`, `'8cm'`, `'21pc'`,
+`'3.25in'`. figkit rounds the canvas down to the 0.75 pt grid, so an SVG can be up to 0.75 pt narrower.
+
+| Key | Width | Basis |
+|---|---|---|
+| `ieee-single` | 3.5 in (88.9 mm) | IEEE Author Center, one column |
+| `ieee-double` | 7.16 in (182 mm) | IEEE Author Center, two columns |
+| `elsevier-single` | 90 mm | Elsevier single column |
+| `elsevier-1.5` | 140 mm | Elsevier 1.5 column |
+| `elsevier-double` | 190 mm | Elsevier double column |
+| `springer-single` | 84 mm | Springer large-format, double-column text area |
+| `springer-double` | 174 mm | Springer large-format, single-column text area |
+| `aas-single` | 80 mm | 自动化学报 single column (8 cm) |
+| `aas-double` | 160 mm | 自动化学报 full width (16 cm) |
+
+Conference kits have no key. Pass the measured or derived width instead: CVPR 2026 column
+`'3.28125in'`, ICML 2026 column `'3.25in'`, NeurIPS 2026 text width `'5.5in'`, IEEEtran conference
+column `'21pc'`. Best of all is the value `\the\columnwidth` prints in the actual paper.
+
+### Export by venue
+
+| Venue | Deliver | How, in this skill |
+|---|---|---|
+| IEEE | PDF or EPS (vector), PNG at 600 dpi for line art if raster is required | `--formats pdf,svg,png --dpi 600`; check fonts with `render.py fig.pdf` |
+| Elsevier | EPS or PDF (vector); TIFF at 1000 / 500 / 300 dpi for line / combination / halftone if raster | vector first; raster `png --dpi 1000` then convert only if TIFF is demanded |
+| Springer | EPS (vector) or TIFF at 1200 / 600 / 300 dpi | `eps` (plots: matplotlib; diagrams: needs Ghostscript, pdftops or Inkscape) |
+| 自动化学报 | EPS, greyscale, 600 pixels per inch, no preview, ASCII | `eps-gray` writes exactly that (raster); prefer vector `eps` with greyscale-safe styles if the editor accepts it |
+| 控制理论与应用 | EPS; bilingual figure captions | `eps`; captions are written in the manuscript, not in the figure |
+| Conferences | PDF with all fonts embedded; check the venue's Type 3 rule | PDF from either engine embeds TrueType (Type 42) subsets; `render.py fig.pdf` reports Type 3 fonts |
 
 ---
 

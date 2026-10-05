@@ -23,6 +23,7 @@ work. Do not silently expand a paragraph edit into a full-paper review or an exp
 | `cse-lit-radar` | question or topic, active axes, date window if recency matters | query plan, source/competitor ledger and synthesis in `lit/` |
 | `cse-idea-forge` | pain point, setting and resource constraints | scope, exploratory pilot record and confirmatory plan |
 | `cse-experiment-suite` | a comparison question or result artifacts | protocol blocks, statistical treatment and claim ledger |
+| `cse-figure-studio` | the figure's message, its data files or a supplied figure, venue and width | figure script, data and exports in `fig/`, plus a build report |
 | `cse-paper-craft` | the passage/manuscript and requested change; evidence for new claims | edited section or manuscript and scoped audit |
 | `cse-pre-submission-review` | manuscript or explicitly bounded excerpt | grounded report(s), assessment limits and readiness gaps |
 | `cse-response-craft` | actual reviewer comments and relevant manuscript material | revision ledger/plan; provisional replies or verified final letters |

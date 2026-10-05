@@ -1,7 +1,11 @@
 # Install the cse-* skill pack
 
-The installable root is this package's `skills/` directory: eight bundles at
+The installable root is this package's `skills/` directory: nine bundles at
 `<root>/<name>/SKILL.md`. Installing files and enabling a provider are separate operations.
+
+`cse-figure-studio` also runs Python scripts. Data plots need Python 3 with matplotlib and numpy;
+turning diagram SVGs into PDF or PNG needs a Chrome, Edge or Chromium (or `CSE_FIGURE_BROWSER`);
+previews need Pillow. Check a machine with `python skills/cse-figure-studio/scripts/render.py --doctor`.
 
 ## DSH roots and prerequisites
 

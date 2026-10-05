@@ -69,7 +69,8 @@ The outline is the source of truth. The deck is a rendering of the outline, rege
 5. **Regenerate the figures that fail.** A publication figure scaled to 60 percent renders its
    12 pt labels at 7 pt. Write a plotting script beside the figure, named after it, so the deck can
    be rebuilt. The regenerated figure shows the same data as the paper's figure, verified against
-   the ledger row, not against a recollection.
+   the ledger row, not against a recollection. When the paper's figure came from `cse-figure-studio`,
+   re-run its script at the slide width with larger type instead of redrawing it.
 
 6. **Annotate every number with its ledger row.** Each results or ablation slide records the claim
    IDs it presents. Verify each row's gate is G2 pass and that no value differs from the manuscript
@@ -229,5 +230,6 @@ Rules for the export step.
 
 Forward references, owned by other skills. Use `cse-paper-craft` when the exposition itself needs
 rewriting rather than condensing, `cse-experiment-suite` when a question exposes a missing
-experiment, `cse-lit-radar` when a novelty question needs a documented search, and
+experiment, `cse-figure-studio` when a figure must be redrawn from its data,
+`cse-lit-radar` when a novelty question needs a documented search, and
 `cse-pre-submission-review` when a talk exposes a concern that belongs in a review round.

@@ -16,3 +16,10 @@ __pycache__/
 
 # Generated during development, not part of the deliverable
 *.log
+
+# Figure renders never belong inside a skill bundle; the curated gallery lives in docs/assets
+skills/**/test_out/
+skills/**/*.png
+skills/**/*.pdf
+skills/**/*.svg
+skills/**/*.eps

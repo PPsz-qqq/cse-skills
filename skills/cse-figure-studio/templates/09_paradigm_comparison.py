@@ -23,7 +23,7 @@ def row(y0, title, assoc_title, assoc_sub, ours):
     fig.image_icon(8, cy - 11, 28, 22, tone='gray' if not ours else 'blue', stack=2, offset=3)
     det = fig.box(50, cy - 15, 54, 30, 'Detector', tone='gray')
     asc = fig.box(120, cy - 15, 70, 30, assoc_title, assoc_sub, tone='blue' if ours else 'gray', emphasis=ours,
-                  title_size=8, sub_size=7)
+                  title_size=T.title, sub_size=T.small)
     out = fig.pill(204, cy - 9, 42, 18, 'Tracks', tone='gray')
     fig.arrow((41, cy), det.left)
     fig.arrow(det.right, asc.left)

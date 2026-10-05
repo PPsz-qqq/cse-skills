@@ -62,7 +62,7 @@ fig.panel(262, 4, '(b)')
 fig.group(266, 26, 226, 106, 'Agent $i$', tone='blue')
 R1, R2 = 62, 108
 imu = fig.io(274, R1 - 15, 60, 30, 'IMU', 'odometry', tone='teal')
-local = fig.box(344, R1 - 16, 56, 32, 'Local EKF', 'propagation', tone='gray')
+local = fig.box(343, R1 - 18, 59, 36, 'Local EKF', 'propagation', tone='gray', sub_size=T.small)
 fuse = fig.box(412, 44, 70, 80, 'CI fusion', 'covariance intersection', tone='blue', emphasis=True)
 rng = fig.io(274, R2 - 15, 60, 30, 'UWB', 'range $r_{ij}$', tone='teal')
 fig.arrow(imu.right, local.left)
@@ -70,8 +70,7 @@ fig.arrow(local.right, fuse.port('left', (R1 - fuse.y) / fuse.h))
 fig.arrow(rng.right, fuse.port('left', (R2 - fuse.y) / fuse.h))
 
 # Neighbour messages in (solid), own estimate broadcast out (dashed), labelled on the outer sides.
-nb = fig.box(412, 160, 70, 28, 'Neighbours', '$j\\in\\mathcal{N}_i$', tone='gray', dashed=True, title_size=8,
-             sub_size=7)
+nb = fig.box(412, 158, 70, 30, 'Neighbours', '$j\\in\\mathcal{N}_i$', tone='gray', dashed=True, sub_size=T.small)
 xin, xout = fuse.x + 18, fuse.x + fuse.w - 18
 ymid = (nb.y + fuse.y + fuse.h) / 2
 fig.arrow((xin, nb.y), (xin, fuse.y + fuse.h))

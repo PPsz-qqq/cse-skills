@@ -58,15 +58,30 @@ CYCLE = [OKABE_ITO[k] for k in ('blue', 'orange', 'green', 'vermilion', 'purple'
 INK, MUTED, GRID = '#23272E', '#5F6670', '#E6E8EB'
 
 THEMES = {
-    #           base  label  tick  legend  title  min
+    #           base  label  tick  legend  title  min      (min applies to whole text objects)
     'default': (7.5, 8.0, 7.0, 7.0, 8.0, 6.0),
-    'ieee': (9.5, 9.5, 9.0, 9.0, 10.0, 9.0),     # IEEE Author Center: approximately 9-10 pt at final size
+    'ieee': (9.0, 9.5, 9.0, 9.0, 9.5, 8.0),      # IEEE Author Center: approximately 9-10 pt at full size
     'elsevier': (7.0, 7.5, 7.0, 7.0, 7.5, 6.0),  # Elsevier: about 7 pt lettering, scripts >= 6 pt
-    'springer': (8.0, 8.5, 8.0, 8.0, 8.5, 6.0),  # Springer: 8-12 pt (2-3 mm) lettering
+    'springer': (8.0, 8.5, 8.0, 8.0, 8.5, 8.0),  # Springer: 8-12 pt (2-3 mm) lettering
     'aas': (8.0, 8.0, 8.0, 8.0, 8.0, 8.0),       # 自动化学报 template: 8 pt, Times New Roman / 宋体
 }
 
-_STATE = {'theme': 'default', 'min_size': THEMES['default'][5]}
+# Single-hue sequential scale built on the "ours" blue, monotonic in lightness; for heatmaps whose
+# values have no meaningful midpoint.
+BLUES = ['#F5F9FD', '#E1EDF7', '#C6DCEE', '#A1C6E3', '#77AAD5', '#4E8CC4', '#2E6FAE', '#1A5591', '#0E3D6E',
+         '#082B50']
+# Identity colours for qualitative figures (tracks, agents, classes): Okabe-Ito without yellow/black.
+IDS = ['#0072B2', '#D55E00', '#009E73', '#CC79A7', '#56B4E9', '#E69F00']
+GOOD, BAD = '#009E73', '#D55E00'     # correct / wrong marks; always pair them with a glyph
+
+
+def _sizes(theme):
+    base, label, tick, legend, title, min_size = THEMES[theme]
+    return {'base': base, 'label': label, 'tick': tick, 'legend': legend, 'title': title,
+            'annot': max(tick, min_size), 'min': min_size}
+
+
+_STATE = {'theme': 'default', 'min_size': THEMES['default'][5], 'lang': 'en', 'sizes': _sizes('default')}
 _DEMO = []          # reasons registered by mark_demo(); non-empty means every save() is stamped
 
 
@@ -113,13 +128,38 @@ def use(theme='default', lang='en'):
         'axes.unicode_minus': True,
     }
     if latin:
+        # mathtext.sf carries the CJK face, so Chinese inside a mixed label renders (see cjk_math).
         rc.update({'mathtext.fontset': 'custom', 'mathtext.rm': latin[0], 'mathtext.it': f'{latin[0]}:italic',
-                   'mathtext.bf': f'{latin[0]}:bold', 'mathtext.sf': latin[0]})
+                   'mathtext.bf': f'{latin[0]}:bold', 'mathtext.sf': cjk[0] if cjk else latin[0]})
     else:
         rc['mathtext.fontset'] = 'dejavuserif' if serif else 'dejavusans'
     mpl.rcParams.update(rc)
-    _STATE.update(theme=theme, min_size=min_size)
+    _STATE.update(theme=theme, min_size=min_size, lang=lang, sizes=_sizes(theme))
     return rc
+
+
+def size(kind='annot'):
+    """Font size (pt) of the active theme: 'base', 'label', 'tick', 'legend', 'title', 'annot' or
+    'min'. Use it instead of a hard-coded number so the figure stays lint-clean under every theme."""
+    return _STATE['sizes'][kind]
+
+
+_CJK = re.compile(r'[\u3000-\u303f\u3400-\u4dbf\u4e00-\u9fff\uff00-\uffef]+')
+
+
+def cjk_math(s):
+    """Make Chinese render inside a label that also holds math. matplotlib draws every character of
+    a string containing $...$ with the math fonts, which have no CJK glyphs; this wraps each CJK run
+    outside the math as $\\mathsf{...}$, and use(lang='zh') points mathtext.sf at the CJK font."""
+    if '$' not in s:
+        return s
+    parts = re.split(r'(\$[^$]*\$)', s)
+    return ''.join(p if p.startswith('$') else _CJK.sub(lambda m: '$\\mathsf{' + m.group(0) + '}$', p) for p in parts)
+
+
+def tr(en, zh=None):
+    """Label in the active language: use(theme, lang='zh') selects zh when it is given."""
+    return cjk_math(zh) if _STATE['lang'] == 'zh' and zh else en
 
 
 def width_in(width):
@@ -142,6 +182,99 @@ def figure(width='ieee-single', height=None, aspect=0.62, nrows=1, ncols=1, **kw
     h = width_in(height) if height is not None else w * aspect
     fig, axes = plt.subplots(nrows, ncols, figsize=(w, h), layout='constrained', **kw)
     return fig, axes
+
+
+def canvas(width='ieee-double', height=2.0):
+    """Figure without a layout engine, for image grids whose axes are placed with place()."""
+    return plt.figure(figsize=(width_in(width), width_in(height)))
+
+
+def place(fig, left, top, width, height):
+    """Axes at a rectangle given in inches from the figure's top-left corner."""
+    W, H = fig.get_size_inches()
+    return fig.add_axes((left / W, 1 - (top + height) / H, width / W, height / H))
+
+
+def render_array(draw, width, height, scale=1, dpi=100, background='#FFFFFF'):
+    """Rasterise draw(ax) into an RGB uint8 array of (height*scale, width*scale) pixels on an
+    off-screen canvas. The axes use logical pixel coordinates 0..width, 0..height with the origin at
+    the top-left, like an image; scale only adds resolution. Used for the illustrated stand-in
+    scenes of the qualitative templates."""
+    import numpy as np
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    from matplotlib.figure import Figure
+    f = Figure(figsize=(width * scale / dpi, height * scale / dpi), dpi=dpi, facecolor=background)
+    FigureCanvasAgg(f)
+    ax = f.add_axes((0, 0, 1, 1))
+    ax.set_xlim(0, width)
+    ax.set_ylim(height, 0)
+    ax.set_axis_off()
+    draw(ax)
+    f.canvas.draw()
+    return np.asarray(f.canvas.buffer_rgba())[..., :3].copy()
+
+
+def image_panel(ax, img, size=None, frame='#C9CED4', lw=0.5):
+    """Show an image in pixel coordinates (origin top-left) with a thin frame and no ticks. size=(w, h)
+    sets the logical coordinate range when the array was rendered at a higher scale."""
+    h, w = img.shape[:2] if size is None else (size[1], size[0])
+    ax.imshow(img, extent=(0, w, h, 0), interpolation='antialiased')
+    ax.set_xlim(0, w)
+    ax.set_ylim(h, 0)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for spine in ax.spines.values():
+        spine.set_visible(frame is not None)
+        if frame is not None:
+            spine.set_color(frame)
+            spine.set_linewidth(lw)
+    return ax
+
+
+def label_fill(color, text='#FFFFFF', target=4.5):
+    """Darken a colour until text on it reaches the WCAG contrast target (4.5:1 for small text)."""
+    c = to_rgb(color)
+    for _ in range(30):
+        if contrast_ratio(c, text) >= target:
+            break
+        c = tuple(v * 0.93 for v in c)
+    return c
+
+
+def box(ax, xyxy, color, label=None, dashed=False, lw=1.3, text='#FFFFFF'):
+    """Bounding box (x0, y0, x1, y1) in image pixels with a label tab on its top-left corner. The tab
+    sits above the box, or inside it when there is no room, and its fill is darkened until the text
+    is readable. Call after the axes has its final position."""
+    from matplotlib.patches import Rectangle
+    x0, y0, x1, y1 = xyxy
+    ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, edgecolor=color, linewidth=lw,
+                           linestyle=(0, (3.0, 2.0)) if dashed else '-', joinstyle='miter', zorder=4))
+    if not label:
+        return None
+    fs, pad = size('annot'), 0.22
+    tab_pt = fs * (1.25 + 2 * pad)
+    img_h = abs(ax.get_ylim()[0] - ax.get_ylim()[1])
+    ax_h_pt = ax.get_position().height * ax.figure.get_size_inches()[1] * 72
+    above = y0 - tab_pt * img_h / ax_h_pt > 0
+    off = pad * fs
+    tab = ax.annotate(label, (x0, y0), xytext=(off - lw / 2, off if above else -off), textcoords='offset points',
+                      ha='left', va='bottom' if above else 'top', fontsize=fs, fontweight='bold', color=text,
+                      zorder=5, annotation_clip=False,
+                      bbox={'boxstyle': f'square,pad={pad}', 'facecolor': label_fill(color, text), 'edgecolor': 'none'})
+    renderer = ax.figure.canvas.get_renderer()
+    pad_px = off * ax.figure.dpi / 72
+    if tab.get_window_extent(renderer).x1 + pad_px > ax.get_window_extent(renderer).x1:
+        tab.set_horizontalalignment('right')         # would spill past the image: anchor on the right side
+        tab.xy = (x1, y0)
+        tab.xyann = (-(off - lw / 2), tab.xyann[1])
+    return tab
+
+
+def chip(ax, text, x=0.025, y=0.965, fill='#2B3036', color='#FFFFFF'):
+    """Small rounded chip in axes fractions, e.g. a frame index or camera name on an image."""
+    return ax.text(x, y, text, transform=ax.transAxes, ha='left', va='top', fontsize=size('annot'), color=color,
+                   zorder=6, bbox={'boxstyle': 'round,pad=0.3,rounding_size=0.4', 'facecolor': fill,
+                                   'edgecolor': 'none'})
 
 
 def light_grid(ax, axis='y'):
@@ -194,6 +327,78 @@ def end_label(ax, x, y, text, color, dx=4, dy=0, **kw):
     """Direct label at the end of a line, which reads faster than a legend."""
     return ax.annotate(text, (x, y), xytext=(dx, dy), textcoords='offset points', color=color,
                        va='center', ha='left', fontsize=mpl.rcParams['legend.fontsize'], **kw)
+
+
+def _line_points(ax):
+    """Display-space points sampled every ~4 px along the visible lines of an axes."""
+    import numpy as np
+    from matplotlib.cbook import STEP_LOOKUP_MAP
+    pts = []
+    for line in ax.get_lines():
+        if not line.get_visible() or line.get_linestyle() in ('None', '', ' ') or len(line.get_xydata()) < 2:
+            continue
+        xy = np.asarray(line.get_xydata(), float)
+        style = line.get_drawstyle()
+        if style != 'default' and style in STEP_LOOKUP_MAP:
+            xy = np.column_stack(STEP_LOOKUP_MAP[style](xy[:, 0], xy[:, 1]))
+        d = line.get_transform().transform(xy)
+        for a, b in zip(d[:-1], d[1:]):
+            n = max(1, int(np.hypot(*(b - a)) / 4))
+            pts += [a + (b - a) * t for t in np.linspace(0, 1, n + 1)]
+    return pts
+
+
+def label_points(ax, x, y, labels, marker_size=16.0, colors=None, weights=None, fontsize=None, pad=2.0,
+                 order=None):
+    """Direct labels for scatter points. Each label takes the first of eight positions around its
+    marker (right, left, above, below, then the diagonals) that collides with no earlier label, no
+    marker, no plotted line, no legend and no axes edge; if none is free, the least-overlapping one.
+    marker_size is the scatter size s (pt^2), scalar or per point. Place the legend first. Returns the
+    annotations; lint() still reports any collision that remains."""
+    import numpy as np
+    fig = ax.figure
+    fig.canvas.draw()                         # settle the layout so data-to-display transforms are final
+    renderer = fig.canvas.get_renderer()
+    k = fig.dpi / 72.0
+    n = len(labels)
+    s = np.broadcast_to(np.asarray(marker_size, float), (n,))
+    P = ax.transData.transform(np.column_stack([x, y]))
+    taken = [(px - r, py - r, px + r, py + r) for (px, py), r in zip(P, np.sqrt(s) / 2 * k)]
+    taken += [(px - 1.5 * k, py - 1.5 * k, px + 1.5 * k, py + 1.5 * k) for px, py in _line_points(ax)]
+    legend = ax.get_legend()
+    if legend is not None:
+        bb = legend.get_window_extent(renderer)
+        taken.append((bb.x0, bb.y0, bb.x1, bb.y1))
+    frame = ax.get_window_extent(renderer)
+    dirs = [(1, 0, 'left', 'center'), (-1, 0, 'right', 'center'), (0, 1, 'center', 'bottom'),
+            (0, -1, 'center', 'top'), (0.75, 0.75, 'left', 'bottom'), (-0.75, 0.75, 'right', 'bottom'),
+            (0.75, -0.75, 'left', 'top'), (-0.75, -0.75, 'right', 'top')]
+    out = []
+    for i in (order if order is not None else range(n)):
+        off = np.sqrt(s[i]) / 2 + pad
+        best = None
+        for dx, dy, ha, va in dirs:
+            ann = ax.annotate(labels[i], (x[i], y[i]), xytext=(dx * off, dy * off), textcoords='offset points',
+                              ha=ha, va=va, fontsize=fontsize or size('annot'),
+                              color=colors[i] if colors is not None else INK,
+                              fontweight=weights[i] if weights is not None else 'normal')
+            bb = ann.get_window_extent(renderer)
+            box = (bb.x0, bb.y0, bb.x1, bb.y1)
+            hit = sum(max(0.0, min(box[2], t[2]) - max(box[0], t[0])) * max(0.0, min(box[3], t[3]) - max(box[1], t[1]))
+                      for t in taken)
+            outside = box[0] < frame.x0 or box[2] > frame.x1 or box[1] < frame.y0 or box[3] > frame.y1
+            score = hit + (1e9 if outside else 0.0)
+            if best is None or score < best[0]:
+                if best is not None:
+                    best[1].remove()
+                best = (score, ann, box)
+            else:
+                ann.remove()
+            if score == 0:
+                break
+        taken.append(best[2])
+        out.append(best[1])
+    return out
 
 
 def chi2_interval(df, alpha=0.05):
@@ -269,6 +474,10 @@ def ylorbr():
     return cmap(TOL_YLORBR, 'tol_ylorbr')
 
 
+def blues():
+    return cmap(BLUES, 'cse_blues')
+
+
 def _luminance(color):
     lin = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in to_rgb(color)]
     return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
@@ -329,7 +538,7 @@ def _drawn_texts(fig):
         if not ax.get_visible():
             continue
         for axis in (ax.xaxis, ax.yaxis):
-            if not axis.get_visible():
+            if not ax.axison or not axis.get_visible():     # set_axis_off() hides ticks and labels
                 continue
             lo, hi = sorted(axis.get_view_interval())
             tol = 1e-9 * max(1.0, abs(lo), abs(hi))
@@ -455,9 +664,11 @@ def template_args(description=''):
     return args
 
 
-__all__ = ['use', 'figure', 'save', 'lint', 'width_in', 'light_grid', 'panel_label', 'tint', 'band', 'end_label',
+__all__ = ['use', 'size', 'tr', 'cjk_math', 'figure', 'canvas', 'place', 'render_array', 'image_panel', 'label_fill', 'box',
+           'chip', 'save', 'lint', 'width_in', 'light_grid', 'panel_label', 'tint', 'band', 'end_label', 'label_points',
            'series_style', 'GRAY_STYLES', 'SAVE_FORMATS', 'chi2_interval', 'anees_bounds', 'cov_ellipse', 'cmap',
-           'iridescent', 'sunset', 'ylorbr', 'contrast_ratio', 'text_color_for', 'mark_demo', 'demo_rng',
+           'iridescent', 'sunset', 'ylorbr', 'blues', 'contrast_ratio', 'text_color_for', 'mark_demo', 'demo_rng',
            'is_demo', 'template_args',
            'WIDTHS_IN', 'THEMES', 'OKABE_ITO', 'TOL_BRIGHT', 'TOL_HIGH_CONTRAST', 'TOL_VIBRANT', 'TOL_MUTED',
-           'TOL_IRIDESCENT', 'TOL_YLORBR', 'TOL_SUNSET', 'OURS', 'BASELINES', 'CYCLE', 'INK', 'MUTED', 'GRID']
+           'TOL_IRIDESCENT', 'TOL_YLORBR', 'TOL_SUNSET', 'BLUES', 'IDS', 'GOOD', 'BAD', 'OURS', 'BASELINES',
+           'CYCLE', 'INK', 'MUTED', 'GRID']

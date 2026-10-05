@@ -55,7 +55,7 @@ for i, (vals, color) in enumerate(zip(data, colors)):
     jitter = jitter_rng.uniform(-0.09, 0.09, vals.size)
     ax.scatter(vals, y0 - 0.2 + jitter, s=5, color=color, alpha=0.8, linewidth=0, zorder=2)
 
-ax.set_yticks(range(len(methods)), methods)
+ax.set_yticks(range(len(methods)), [pp.tr(m, {'Factor graph': '因子图', 'Ours': '本文'}.get(m)) for m in methods])
 for lbl, color in zip(ax.get_yticklabels(), colors):
     lbl.set_color(pp.OURS if color == pp.OURS else pp.INK)
     lbl.set_fontweight('bold' if color == pp.OURS else 'normal')
@@ -63,6 +63,6 @@ ax.tick_params(axis='y', length=0)
 ax.spines['left'].set_visible(False)
 ax.set_ylim(-0.45, len(methods) - 0.45)
 ax.set_xlim(0, 3.4)
-ax.set_xlabel('Position error per sequence (m)')
+ax.set_xlabel(pp.tr('Position error per sequence (m)', '每条序列的位置误差 (m)'))
 
 pp.save(fig, args.out, '14_distribution', args.formats, args.dpi)
